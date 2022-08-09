@@ -106,3 +106,6 @@ dist
 # ide based
 .vscode/
 .idea/
+
+# All draft files should not be included
+**/draft*
