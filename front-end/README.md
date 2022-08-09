@@ -58,7 +58,7 @@ run:
 
 Enforced by Prettier and ESlint
 Make sure to use :vs: `VScode` and install extensions
-#### [`Prettier`]([dbaeumer.vscode-eslint](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)) [`ESlint`](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+#### [`Prettier`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) [`ESlint`](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
 ### End-of-Line Character Sequences: LF
 Check at the bottom line of your VScode
