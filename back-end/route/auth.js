@@ -13,7 +13,6 @@ const passport = require('passport')
 })*/
 
 //define the register page
-
 app.post('/register', (req, res)=>{
   const password = req.body.password;
   const username = req.body.username;

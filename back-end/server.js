@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const session = require("express-session")
 const authRouter=require("./route/auth")
 
-require('./passport');
+//require('./passport');
 //app
 app = express();
 dotenv.config();
@@ -50,14 +50,14 @@ mongoose
   .then(() => console.log("database is connected"));
 
 // Event handlers for the connection
-const db = mongoose.connection;
+/*const db = mongoose.connection;
 db.on("error", (err) => {
   console.log(err);
   process.exit(1);
 });
 db.once("open", () => {
   console.log(`Mongo connection started on ${db.host}: ${db.port}`);
-});
+});*/
 
 // Start the server & listen for requests
 app.set("port", port);
