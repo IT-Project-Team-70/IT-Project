@@ -24,6 +24,7 @@
     "mongoose": "^6.5.1",
     "morgan": "^1.10.0",
     "node-redis": "^0.1.7",
+    "nodemailer": "^6.7.8",
     "nodemon": "^2.0.19",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",

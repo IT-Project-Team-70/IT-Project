@@ -3,6 +3,7 @@ const User = require('../model/User')
 const express = require('express')
 const app = express()
 const passport = require('passport')
+const nodemailer = require('nodemailer')
 require('../passport')
 
 //handle the login request
@@ -53,5 +54,13 @@ app.get('/loginFailure', function(req, res, next){
 app.get('/loginSuccess', function(req, res, next){
   console.log(req.session)
   res.status(200).send('You successfully logged in')
+})
+
+//forget password
+app.get('/forgetPassword', function(req, res, next){
+  const email = req.body.email
+
+  //find the email to check if it exists or not 
+  User.findOne()
 })
 module.exports = app
