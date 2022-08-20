@@ -102,3 +102,10 @@ dist
 
 # TernJS port file
 .tern-port
+
+# ide based
+.vscode/
+.idea/
+
+# All draft files should not be included
+**/draft*

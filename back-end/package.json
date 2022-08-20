@@ -12,10 +12,21 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
-    "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
+    "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
     "mongoose": "^6.5.1",
-    "nodemon": "^2.0.19"
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.19",
+    "passport": "^0.6.0"
+  },
+  "devDependencies": {
+    "debug": "^4.3.4",
+    "dotenv": "^16.0.1",
+    "jshint": "^2.13.5",
+    "prettier": "^2.7.1"
   }
 }
