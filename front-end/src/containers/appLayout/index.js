@@ -2,24 +2,30 @@ import { Box, Button, Divider, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import { RouteItems } from '../../routes/routeItems'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const AppLayout = (props) => {
   const { children = <></> } = props
   const history = useHistory()
+  const pathName = useLocation().pathname
   return (
     <Fragment>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', height: '8vh' }}>
         {RouteItems.map((routeItem, index) => {
           return (
             <Fragment key={routeItem.name}>
               <Box
                 sx={{
                   display: 'flex',
-                  padding: index === 0 ? '12px' : '8px',
+                  paddingLeft: index === 0 ? '12px' : '8px',
+                  paddingRight: index === 0 ? '12px' : '8px',
                   flexGrow: 0,
                   flexShrink: 1,
                   maxWidth: index === 0 ? '150px' : '100px',
+                  boxShadow:
+                    index !== 0 && pathName === routeItem.path
+                      ? '0px -7px 0px 0px #E66B3B inset'
+                      : 'none',
                 }}
               >
                 <Button
@@ -44,7 +50,7 @@ const AppLayout = (props) => {
                 flexItem
                 sx={{
                   borderColor: '#E66B3B',
-                  borderRightWidth: '4px',
+                  borderRightWidth: '5px',
                   marginTop: '22px',
                   marginBottom: '22px',
                 }}
@@ -53,6 +59,11 @@ const AppLayout = (props) => {
           )
         })}
       </Box>
+      <Divider
+        sx={{
+          borderColor: '#E66B3B',
+        }}
+      />
       <div className="content">
         <main className="main-content">{children}</main>
       </div>
