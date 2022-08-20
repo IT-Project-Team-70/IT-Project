@@ -3,15 +3,22 @@ const User = require('../model/User')
 const express = require('express')
 const app = express()
 const passport = require('passport')
-
+require('../passport')
 
 //handle the login request
-/*router.post('/login', (req, res) =>{
-  passport.authenticate('local', (err, user, info) =>{
+app.post('/login', passport.authenticate('local', {failureRedirect: '/loginFailure', successRedirect: '/loginSuccess'}), (req, res, next)=>{
+  if (err) next(err)
+})
 
+//handle user's logout
+app.post('/logout', (res, req)=>{
+  req.logout(function(err){
+    if(err){
+      return next(err)
+    }
+    res.redirect('/')
   })
-})*/
-
+})
 //define the register page
 app.post('/register', (req, res)=>{
   const password = req.body.password;
@@ -34,6 +41,17 @@ app.post('/register', (req, res)=>{
   }).catch(err => res.status(500).send("Errors while registering"))
 
   //redirect users to the login page
-  //res.redirect('/login')
+  res.redirect('/login')
+})
+
+//login unsuccessfully
+app.get('/loginFailure', function(req, res, next){
+  res.status(401).send('Either password or username is incorrect')
+})
+
+//login successfully 
+app.get('/loginSuccess', function(req, res, next){
+  console.log(req.session)
+  res.status(200).send('You successfully logged in')
 })
 module.exports = app

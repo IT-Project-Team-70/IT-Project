@@ -11,7 +11,7 @@ function genPassword(password){
 }
 //This function is used to check if the password provided by the user is correct when he first logs in. 
 function isValidPassword(password, hash, salt){
-  const hashVerify = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex')
+  const hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
   return hashVerify === hash
 }
 module.exports = {

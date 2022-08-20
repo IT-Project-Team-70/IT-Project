@@ -2,17 +2,18 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const User = require("./model/User")
 const authHelper = require("./helper/auth")
+const session = require('express-session')
 
 //configure strategy
 passport.use(new LocalStrategy(
-  function(email, passport, done){
-    User.findOne({email: email}).then( user => {
+  function(username, password, done){
+    User.findOne({username: username}).then( user => {
       //no user found
       if(!user){
         return done(null, false, {message: 'Incorrect email or password'})
       }
-      //password is invalid
       if(!authHelper.isValidPassword(password, user.hash, user.salt)){
+      
         return done(null, false)
       }
       //login successful 
@@ -21,12 +22,11 @@ passport.use(new LocalStrategy(
   }
 ))
 
-/*passport.serializeUser((user, done) =>{
-  done(user., )
-})*/
-
-passport.deserializeUser(()=>{
-
+passport.serializeUser((user, done) =>{
+  done(null, user._id)
 })
 
-const deserializeUser
+passport.deserializeUser((user, done)=>{
+  User.findById(user._id).then(user => done(null, user)).catch(err => done(err))
+})
+
