@@ -1,7 +1,6 @@
 import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
@@ -11,11 +10,14 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { ThemeProvider } from '@mui/material/styles'
+import useTheme from '../../css/muiTheme'
+import LoginPanel from '../login/login'
+import PropTypes from 'prop-types'
 
-const theme = createTheme()
-
-export default function SignUpPanel() {
+export default function SignUpPanel({ onChange = () => {} }) {
+  const [toLogin, setToLogin] = React.useState(false)
+  const theme = useTheme()
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -25,10 +27,11 @@ export default function SignUpPanel() {
     })
   }
 
-  return (
+  return toLogin ? (
+    <LoginPanel onChange={onChange} />
+  ) : (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 0,
@@ -111,7 +114,13 @@ export default function SignUpPanel() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link
+                  onClick={() => {
+                    onChange('Login')
+                    setToLogin(true)
+                  }}
+                  variant="body2"
+                >
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -122,3 +131,4 @@ export default function SignUpPanel() {
     </ThemeProvider>
   )
 }
+SignUpPanel.propTypes = { onChange: PropTypes.func }

@@ -5,9 +5,7 @@ import { RouteItems } from '../../routes/routeItems'
 import { useHistory, useLocation } from 'react-router-dom'
 import useTheme from '../../css/muiTheme'
 import LoginInButton from '../login/loginButton'
-import LoginPanel from '../login/login'
 import SignUpButton from '../signUp/signupButton'
-import SignUpPanel from '../signUp/signup'
 
 const AppLayout = (props) => {
   const { children = <></> } = props
@@ -35,7 +33,7 @@ const AppLayout = (props) => {
                     paddingRight: index === 0 ? '12px' : '8px',
                     flexGrow: 0,
                     flexShrink: 1,
-                    maxWidth: index === 0 ? '180px' : '100px',
+                    maxWidth: index === 0 ? '150px' : '100px',
                     boxShadow:
                       index !== 0 && pathName === routeItem.path
                         ? '0px -7px 0px 0px #E66B3B inset'
@@ -78,13 +76,11 @@ const AppLayout = (props) => {
         >
           <ThemeProvider theme={theme}>
             <Box sx={{ paddingRight: '8px' }}>
-              <LoginInButton>
-                <LoginPanel />
-              </LoginInButton>
+              <LoginInButton />
             </Box>
-            <SignUpButton>
-              <SignUpPanel />
-            </SignUpButton>
+            <Box sx={{ paddingRight: '8px' }}>
+              <SignUpButton />
+            </Box>
           </ThemeProvider>
         </Box>
       </Box>

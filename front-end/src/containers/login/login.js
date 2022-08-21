@@ -13,8 +13,11 @@ import Typography from '@mui/material/Typography'
 import { ThemeProvider } from '@mui/material/styles'
 import CookImage from './cook.png'
 import useTheme from '../../css/muiTheme'
+import SignUpPanel from '../signUp/signup'
+import PropTypes from 'prop-types'
 
-export default function LoginPanel() {
+export default function LoginPanel({ onChange = () => {} }) {
+  const [toSignUp, setToSignUP] = React.useState(false)
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -25,7 +28,9 @@ export default function LoginPanel() {
   }
   const theme = useTheme()
 
-  return (
+  return toSignUp ? (
+    <SignUpPanel onChange={onChange} />
+  ) : (
     <ThemeProvider theme={theme}>
       <Grid container>
         <Grid
@@ -99,14 +104,20 @@ export default function LoginPanel() {
                 login
               </Button>
             </Box>
-            <Grid container>
-              <Grid item xs>
+            <Grid container flexDirection="column">
+              <Grid item>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link
+                  onClick={() => {
+                    onChange('Sign up')
+                    setToSignUP(true)
+                  }}
+                  variant="body2"
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -117,3 +128,5 @@ export default function LoginPanel() {
     </ThemeProvider>
   )
 }
+
+LoginPanel.propTypes = { onChange: PropTypes.func }
