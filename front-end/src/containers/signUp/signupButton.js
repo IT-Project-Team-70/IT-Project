@@ -8,9 +8,7 @@ import DialogContent from '@mui/material/DialogContent'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
-const BootstrapDialog = styled((props) => (
-  <Dialog fullWidth={true} maxWidth={'lg'} {...props} />
-))(({ theme }) => ({
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
@@ -48,7 +46,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default function SignInButton({ children }) {
+export default function SignUpButton({ children }) {
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
@@ -61,18 +59,22 @@ export default function SignInButton({ children }) {
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Sign In
+        Sign Up
       </Button>
       <BootstrapDialog
         onClose={handleClose}
-        aria-labelledby="SignInButton"
+        aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <BootstrapDialogTitle id="SignInButton" onClose={handleClose}>
-          Sign In
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleClose}
+        >
+          Sign Up
         </BootstrapDialogTitle>
         <DialogContent dividers>{children}</DialogContent>
       </BootstrapDialog>
     </div>
   )
 }
+SignUpButton.propTypes = { children: PropTypes.node }

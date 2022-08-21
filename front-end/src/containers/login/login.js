@@ -1,7 +1,6 @@
 import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
@@ -11,12 +10,11 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import CookImage from '../cook.png'
+import { ThemeProvider } from '@mui/material/styles'
+import CookImage from './cook.png'
+import useTheme from '../../css/muiTheme'
 
-const theme = createTheme()
-
-export default function SignInSide() {
+export default function LoginPanel() {
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -25,17 +23,19 @@ export default function SignInSide() {
       password: data.get('password'),
     })
   }
+  const theme = useTheme()
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
-        <CssBaseline />
+      <Grid container>
         <Grid
           item
           xs={false}
           sm={4}
-          md={7}
+          md={8}
+          lg={8}
           sx={{
+            width: '100vw',
             backgroundImage: `url(${CookImage})`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
@@ -43,20 +43,10 @@ export default function SignInSide() {
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundPosition: 'start',
           }}
         />
-        <Grid
-          item
-          xs={8}
-          sm={6}
-          md={3}
-          component={Paper}
-          elevation={6}
-          square
-          display={'flex'}
-          justifyContent={'flex-end'}
-        >
+        <Grid item xs={12} sm={8} md={4} lg={4} component={Paper} elevation={6}>
           <Box
             sx={{
               my: 8,
@@ -70,13 +60,18 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Login
             </Typography>
             <Box
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+              sx={{
+                mt: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
             >
               <TextField
                 margin="normal"
@@ -101,21 +96,21 @@ export default function SignInSide() {
                 label="Remember me"
               />
               <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Sign In
+                login
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="#" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
       </Grid>

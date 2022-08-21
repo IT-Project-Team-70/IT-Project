@@ -46,7 +46,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default function CustomizedDialogs({ children }) {
+const LoginInButton = ({ children }) => {
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
@@ -58,22 +58,25 @@ export default function CustomizedDialogs({ children }) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Sign Up
+      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+        LogIn
       </Button>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        maxWidth="lg"
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          Sign Up
+          Login
         </BootstrapDialogTitle>
         <DialogContent dividers>{children}</DialogContent>
       </BootstrapDialog>
     </div>
   )
 }
+export default LoginInButton
+LoginInButton.propTypes = { children: PropTypes.node }
