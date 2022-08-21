@@ -3,8 +3,27 @@ import './App.css'
 import { RouteItems } from './routes/routeItems'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import AppLayout from './containers/appLayout/index'
+import AxiosV1 from './api/axiosV1'
 
 function App() {
+  // AxiosV1 setting
+  AxiosV1.interceptors.response.use(
+    function (response) {
+      return response
+    },
+    function (err) {
+      // check if http status response
+      if (err.response) {
+        if (err.response.status === 401) {
+          console.error(err)
+        } else if (err.response.status === 502) {
+          // setServer502(true)
+        }
+      }
+      return Promise.reject(err)
+    }
+  )
+
   return (
     <BrowserRouter>
       <Switch
