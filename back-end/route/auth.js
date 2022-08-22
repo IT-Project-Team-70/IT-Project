@@ -1,9 +1,10 @@
 const authHelper = require('../helper/auth')
 const User = require('../model/User')
+const Token = require('../model/Token')
 const express = require('express')
 const app = express()
 const passport = require('passport')
-const nodemailer = require('nodemailer')
+const crypto = require('crypto')
 require('../passport')
 
 //handle the login request
@@ -47,20 +48,40 @@ app.post('/register', (req, res)=>{
 
 //login unsuccessfully
 app.get('/loginFailure', function(req, res, next){
-  res.status(401).send('Either password or username is incorrect')
+  return res.status(401).send('Either password or username is incorrect')
 })
 
 //login successfully 
 app.get('/loginSuccess', function(req, res, next){
   console.log(req.session)
-  res.status(200).send('You successfully logged in')
+  return res.status(200).send('You successfully logged in')
+})
+
+app.get('/resetPassword/:userId/:token', async (req, res)=>{
+  return res.status(200).send("Hello word")
 })
 
 //forget password
-app.get('/forgetPassword', function(req, res, next){
+app.post('/forgetPassword', async (req, res)=>{
   const email = req.body.email
 
   //find the email to check if it exists or not 
-  User.findOne()
+  const user = await User.findOne({email: email})
+  //cannot verify the user's email
+  if(!user){
+    return res.status(404).send("Cannot verified the user's email")
+  }
+  //check if the current user has token or not 
+  let token = await Token.findOne({userId: user._id})
+  if(!token){
+    //create a new token
+    token = new Token({
+      userId: user._id,
+      token: crypto.randomBytes(32).toString('hex')
+   })
+    await token.save()
+  }
+  //send a reset to this email
+  authHelper.sendEmail(email, user._id, token.token)
 })
 module.exports = app
