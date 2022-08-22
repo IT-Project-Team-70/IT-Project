@@ -4,16 +4,12 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 const session = require("express-session")
 const MongoStore = require("connect-mongo")
-
-//const redis = require("redis")
-//const redisStore = require("connect-redis")(session)
-//const redisClient = redis.createClient()
-/*redisClient.on("connect", () =>{
-  console.log("connected to redis successfully")
-})*/
+const fs = require("fs")
+const https = require("https")
 
 const authRouter=require("./route/auth")
 const passport = require("passport");
+const { Http2ServerResponse } = require("http2");
 const app = express();
 require('./passport');
 dotenv.config();
@@ -34,7 +30,6 @@ app.use(session({
   }),
   cookie: {
     secure: process.env.ENVIRONMENT === "production", //if secure is true => only transmit over HTTPS
-    httpOnly: true,
     maxAge: 30 * 1000
   }
 }))
@@ -76,6 +71,13 @@ db.once("open", () => {
 
 // Start the server & listen for requests
 app.set("port", port);
-app.listen(port || 3000, () => {
+
+//configure https 
+https.createServer({
+  key: fs.readFileSync('../server.key'),
+  cert: fs.readFileSync('../server.cert')
+},
+app)
+.listen(port || 3000,  () => {
   console.log(`Ther server is running on ${port}`);
 });
