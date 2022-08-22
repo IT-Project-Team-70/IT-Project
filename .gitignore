@@ -109,3 +109,6 @@ dist
 
 # All draft files should not be included
 **/draft*
+
+# Exclude all .DS_Store file from Mac user
+**/.DS_Store

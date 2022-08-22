@@ -1,25 +1,69 @@
 import React from 'react'
-import logo from './logo.svg'
 import './App.css'
+import { RouteItems } from './routes/routeItems'
+import { Route, BrowserRouter, Switch } from 'react-router-dom'
+import AppLayout from './containers/appLayout/index'
+import AxiosV1 from './api/axiosV1'
 
 function App() {
+  // AxiosV1 setting
+  AxiosV1.interceptors.response.use(
+    function (response) {
+      return response
+    },
+    function (err) {
+      // check if http status response
+      if (err.response) {
+        if (err.response.status === 401) {
+          console.error(err)
+        } else if (err.response.status === 502) {
+          // setServer502(true)
+        }
+      }
+      return Promise.reject(err)
+    }
+  )
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch
+        path={RouteItems.reduce(
+          (acc, curr) => (curr.authority ? [...acc, curr.path] : acc),
+          []
+        )}
+        exact={true}
+      >
+        {RouteItems.map((routeItem) => (
+          <Route
+            key={routeItem.path}
+            path={routeItem.path}
+            exact={routeItem.exact}
+            render={(routeProps) => (
+              <AppLayout>
+                <routeItem.component {...routeProps} />{' '}
+              </AppLayout>
+            )}
+          />
+        ))}
+        <Route
+          render={(routeProps) => (
+            <div
+              style={{
+                border: '1px solid red',
+                height: '100vh',
+                width: '100vw',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+              }}
+            >
+              Oops! there is no resource here.
+            </div>
+          )}
+        />
+      </Switch>
+    </BrowserRouter>
   )
 }
 
