@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'http://localhost:8000/'
+const baseURL = 'https://localhost:8000/'
 
 const AxiosV1 = axios.create({
   baseURL: baseURL,
@@ -8,7 +8,7 @@ const AxiosV1 = axios.create({
 })
 AxiosV1.CancelToken = axios.CancelToken
 AxiosV1.isCancel = axios.isCancel
-AxiosV1.defaults.withCredentials = true
+// AxiosV1.defaults.withCredentials = true
 export const fetchData = async (apiConfig) => {
   const response = await AxiosV1(apiConfig)
   if (response.data.success) {

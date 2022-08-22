@@ -12,10 +12,10 @@ export const callApi = async ({
     await onStart()
     const res = await AxiosV1(apiConfig)
     if (res.response.status === 200) {
-      await onSuccess(res.data)
-      result = res.data
+      await onSuccess(res)
+      result = res
     } else {
-      onError(res.data)
+      onError(res)
       // throw new Error(JSON.stringify(res.data, ['message', 'showToUser'], '\t'))
     }
   } catch (error) {
