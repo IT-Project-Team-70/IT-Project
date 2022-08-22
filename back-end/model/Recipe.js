@@ -1,4 +1,5 @@
 const { default: mongoose } = require('mongoose')
+const validation = require('./validation')
 
 /* ***************************************************************************************** */
 const imageSchema = new mongoose.Schema({
@@ -63,6 +64,10 @@ const recipeSchema = new mongoose.Schema({
   instructions: { type: String, required: true, minlength: 1, maxlength: 255 },
   steps: { type: [stepsSchema] },
 })
+
+recipeSchema.methods.joiValidate = function (recipe) {
+  return validation.validateRecipe(recipe)
+}
 
 const RecipeModel = mongoose.model('Recipe', recipeSchema)
 

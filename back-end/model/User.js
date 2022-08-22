@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
   ],
 })
 
+userSchema.methods.joiValidate = function (user) {
+  return validation.validateUser(user)
+}
+
 const UserModel = mongoose.model('User', userSchema)
 
 /* ***************************************************************************************** */
