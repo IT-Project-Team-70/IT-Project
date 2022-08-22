@@ -14,6 +14,7 @@ app.post('/login', passport.authenticate('local', {failureRedirect: '/loginFailu
 
 //handle user's logout
 app.post('/logout', (res, req)=>{
+  console.log(req.session)
   req.logout(function(err){
     if(err){
       return next(err)
@@ -41,9 +42,7 @@ app.post('/register', (req, res)=>{
   newUser.save().then((user) =>{
     console.log(user)
   }).catch(err => res.status(500).send("Errors while registering"))
-
-  //redirect users to the login page
-  res.redirect('/login')
+ 
 })
 
 //login unsuccessfully
@@ -53,7 +52,9 @@ app.get('/loginFailure', function(req, res, next){
 
 //login successfully 
 app.get('/loginSuccess', function(req, res, next){
-  console.log(req.session)
+  console.log(req.session.user)
+  //redirect to personal working space 
+
   return res.status(200).send('You successfully logged in')
 })
 
