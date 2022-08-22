@@ -41,6 +41,7 @@ app.post('/register', (req, res)=>{
 
   newUser.save().then((user) =>{
     console.log(user)
+    res.status(200).send("Register successfully")
   }).catch(err => res.status(500).send("Errors while registering"))
  
 })
