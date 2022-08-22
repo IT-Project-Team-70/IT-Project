@@ -1,9 +1,44 @@
-const { default: mongoose } = require("mongoose");
-const crypto = require("crypto");
+const { default: mongoose } = require('mongoose')
+// const crypto = require('crypto')
 
-
+/* ***************************************************************************************** */
 //we store hash and salt into our database instead of the plain password to enhance security
-const userSchema = new mongoose.Schema({email: {type: 'string', unique: true, required: true}, salt: 'string', hash: 'string', username: {type: 'string', unique: true, required: true}})
+const userSchema = new mongoose.Schema({
+  role: { type: String, required: true, default: 'user' },
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    minlength: 1,
+    maxlength: 50,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+    minlength: 5,
+    maxlength: 255,
+  },
 
-const userModel = mongoose.model('User', userSchema)
-module.exports = userModel
+  salt: { type: String },
+  hash: { type: String },
+
+  recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
+  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
+
+  friends: [
+    {
+      details: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      status: { type: String, default: 'pending' },
+      // conversation: [{type: mongoose.Schema.Types.ObjectId, ref: 'Message'}]
+    },
+  ],
+})
+
+const UserModel = mongoose.model('User', userSchema)
+
+/* ***************************************************************************************** */
+
+module.exports = {
+  User: UserModel,
+}
