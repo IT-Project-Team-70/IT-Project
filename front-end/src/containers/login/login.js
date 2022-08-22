@@ -51,7 +51,7 @@ export default function LoginPanel({ onChange = () => {} }) {
             backgroundPosition: 'start',
           }}
         />
-        <Grid item xs={12} sm={8} md={4} lg={4} component={Paper} elevation={6}>
+        <Grid item xs={12} sm={8} md={4} lg={3} component={Paper} elevation={6}>
           <Box
             sx={{
               my: 8,
@@ -104,7 +104,7 @@ export default function LoginPanel({ onChange = () => {} }) {
                 login
               </Button>
             </Box>
-            <Grid container flexDirection="column">
+            <Grid container flexDirection="column" alignContent={'center'}>
               <Grid item>
                 <Link href="#" variant="body2">
                   Forgot password?
@@ -117,6 +117,7 @@ export default function LoginPanel({ onChange = () => {} }) {
                     setToSignUP(true)
                   }}
                   variant="body2"
+                  display={'block'}
                 >
                   {"Don't have an account? Sign Up"}
                 </Link>
