@@ -110,7 +110,7 @@ export default function LoginPanel({ onChange = () => {} }) {
                   Forgot password?
                 </Link>
               </Grid>
-              <Grid item>
+              <Grid item class="link_cursor">
                 <Link
                   onClick={() => {
                     onChange('Sign up')

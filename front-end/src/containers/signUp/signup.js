@@ -112,7 +112,7 @@ export default function SignUpPanel({ onChange = () => {} }) {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="flex-end" class="link_cursor">
               <Grid item>
                 <Link
                   onClick={() => {
