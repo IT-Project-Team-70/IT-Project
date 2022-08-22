@@ -41,7 +41,16 @@ function validateUser(user) {
   return Joi.validate(user, schema)
 }
 
+function validateTage(tag) {
+  const schema = {
+    name: Joi.string().min(1).max(25).required(),
+  }
+
+  return Joi.validate(tag, schema)
+}
+
 module.exports = {
   validateRecipe,
   validateUser,
+  validateTage,
 }
