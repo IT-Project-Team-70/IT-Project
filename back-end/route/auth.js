@@ -13,14 +13,22 @@ app.post('/login', passport.authenticate('local', {failureRedirect: '/loginFailu
 })
 
 //handle user's logout
-app.post('/logout', (res, req)=>{
-  console.log(req.session)
-  req.logout(function(err){
+app.post('/logout', (req, res, next)=>{
+  
+   req.logOut(function(err){
     if(err){
       return next(err)
     }
-    res.redirect('/')
-  })
+    req.session.destroy(function(err){
+      if(err){
+        return next(err)
+      }
+      return es.status(200).send("logout successfully")
+     })
+   })
+   res.session.destroy(function(err){
+    res.status(200).send("logout successfully")
+   })
 })
 //define the register page
 app.post('/register', (req, res)=>{
@@ -53,7 +61,7 @@ app.get('/loginFailure', function(req, res, next){
 
 //login successfully 
 app.get('/loginSuccess', function(req, res, next){
-  console.log(req.session.user)
+  console.log(req.session)
   //redirect to personal working space 
 
   return res.status(200).send('You successfully logged in')
@@ -86,4 +94,8 @@ app.post('/forgetPassword', async (req, res)=>{
   //send a reset to this email
   authHelper.sendEmail(email, user._id, token.token)
 })
+
+//when visit the protected routes, the server checks the req to see if the req.session.passport.user exists
+//the req.session.passport.user = userId
+app.get('protected-routes', )
 module.exports = app

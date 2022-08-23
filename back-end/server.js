@@ -35,7 +35,7 @@ app.use(session({
 }))
 
 app.use(passport.initialize());
-app.use(passport.session())
+app.use(passport.authenticate('session'))
 
 //add authentication routes to the app
 app.use(authRouter)
