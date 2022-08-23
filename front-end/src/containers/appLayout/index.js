@@ -36,10 +36,10 @@ const AppLayout = (props) => {
                     flexShrink: 1,
                     maxWidth: index === 0 ? '150px' : '100px',
                     minWidth: index === 0 ? '150px' : '0px',
-                    boxShadow:
-                      index !== 0 && pathName === routeItem.path
-                        ? '0px -5px 0px 0px #fff inset'
-                        : 'none',
+                    // boxShadow:
+                    //   index !== 0 && pathName === routeItem.path
+                    //     ? '0px -5px 0px 0px #fff inset'
+                    //     : 'none',
                   }}
                 >
                   <Button
@@ -47,12 +47,24 @@ const AppLayout = (props) => {
                       '&': {
                         textTransform: 'none',
                       },
+                      '&.MuiButton-root:hover': {
+                        backgroundColor: '#E66B3B',
+                      },
+                      backgroundColor:
+                        index !== 0 && pathName === routeItem.path
+                          ? '#fff'
+                          : 'transparent',
                     }}
                     onClick={() => history.push(routeItem.path)}
                   >
                     <Typography
                       variant={index === 0 ? 'h6' : 'subtitle1'}
-                      sx={{ color: '#fff' }}
+                      sx={{
+                        color: pathName === routeItem.path ? '#E0470B' : '#fff',
+                        '&:hover': {
+                          color: '#fff',
+                        },
+                      }}
                     >
                       {routeItem.name}
                     </Typography>

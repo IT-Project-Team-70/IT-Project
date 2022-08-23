@@ -2,6 +2,7 @@ const authAPI = {
   login: (data) => ({
     method: 'post',
     url: '/login',
+    withCredentials: false,
     headers: {},
     data: {
       // username: '',
@@ -18,6 +19,7 @@ const authAPI = {
   register: (data) => ({
     method: 'post',
     url: '/register',
+    withCredentials: false,
     headers: {},
     data: {
       // "password":"00000000",

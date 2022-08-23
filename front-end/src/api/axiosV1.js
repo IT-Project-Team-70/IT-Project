@@ -1,10 +1,12 @@
 import axios from 'axios'
 
 // const baseURL = ''
-const baseURL = 'https://localhost:8000/'
+const baseURL = 'http://localhost:8000/'
 
 const AxiosV1 = axios.create({
   baseURL: baseURL,
+  // withCredentials: true,
+  // headers: { 'Access-Control-Allow-Origin': 'http://localhost:8000' },
   // data: { header: { token: localStorage.token || '' } },
 })
 AxiosV1.CancelToken = axios.CancelToken

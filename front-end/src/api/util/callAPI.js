@@ -11,7 +11,7 @@ export const callApi = async ({
   try {
     await onStart()
     const res = await AxiosV1(apiConfig)
-    if (res.response.status === 200) {
+    if (res.status === 200) {
       await onSuccess(res)
       result = res
     } else {
