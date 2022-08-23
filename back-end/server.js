@@ -73,13 +73,13 @@ db.once("open", () => {
 app.set("port", port);
 
 //configure https 
-https.createServer({
+/*https.createServer({
   key: fs.readFileSync('../security/key.pem'),
   cert: fs.readFileSync('../security/cert.pem'),
   rejectUnauthorized: false,
   
-},
-app)
+},*/
+app
 .listen(port || 3000,  () => {
   console.log(`Ther server is running on ${port}`);
 });
