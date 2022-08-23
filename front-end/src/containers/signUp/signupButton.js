@@ -9,7 +9,7 @@ export default function SignUpButton() {
     <DialogButton
       dialogTitle={title}
       buttonText="Sign up"
-      buttonProps={{ variant: 'outlined' }}
+      buttonProps={{ variant: 'outlined', sx: { backgroundColor: '#fff' } }}
       dialogProps={{ maxWidth: 'lg' }}
       dialogContent={(onClose) => (
         <SignUpPanel

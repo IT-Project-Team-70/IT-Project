@@ -20,6 +20,7 @@ const AppLayout = (props) => {
           flexDirection: 'row',
           height: '60px',
           justifyContent: 'space-between',
+          backgroundColor: '#E0470B',
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -37,7 +38,7 @@ const AppLayout = (props) => {
                     minWidth: index === 0 ? '150px' : '0px',
                     boxShadow:
                       index !== 0 && pathName === routeItem.path
-                        ? '0px -7px 0px 0px #E66B3B inset'
+                        ? '0px -5px 0px 0px #fff inset'
                         : 'none',
                   }}
                 >
@@ -51,7 +52,7 @@ const AppLayout = (props) => {
                   >
                     <Typography
                       variant={index === 0 ? 'h6' : 'subtitle1'}
-                      sx={{ color: '#E0470B' }}
+                      sx={{ color: '#fff' }}
                     >
                       {routeItem.name}
                     </Typography>
@@ -62,10 +63,10 @@ const AppLayout = (props) => {
                   variant="middle"
                   flexItem
                   sx={{
-                    borderColor: '#E66B3B',
-                    borderRightWidth: '5px',
-                    marginTop: '22px',
-                    marginBottom: '22px',
+                    borderColor: '#fff',
+                    borderRightWidth: '1px',
+                    marginTop: '7px',
+                    marginBottom: '7px',
                   }}
                 />
               </Fragment>

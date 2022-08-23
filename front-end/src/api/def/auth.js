@@ -34,5 +34,14 @@ const authAPI = {
       ...data,
     },
   }),
+  test: (data) => ({
+    method: 'GET',
+    url: 'https://nominatim.openstreetmap.org/search.php?q=test&format=json',
+    headers: {},
+    data: {
+      // username: '',
+      // password: '',
+    },
+  }),
 }
 export default authAPI
