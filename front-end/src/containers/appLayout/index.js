@@ -60,7 +60,10 @@ const AppLayout = (props) => {
                     <Typography
                       variant={index === 0 ? 'h6' : 'subtitle1'}
                       sx={{
-                        color: pathName === routeItem.path ? '#E0470B' : '#fff',
+                        color:
+                          index !== 0 && pathName === routeItem.path
+                            ? '#E0470B'
+                            : '#fff',
                         '&:hover': {
                           color: '#fff',
                         },
