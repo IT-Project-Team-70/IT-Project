@@ -1,8 +1,8 @@
 import { Box, Button, Divider, ThemeProvider, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
-import { RouteItems } from '../../routes/routeItems'
 import { useHistory, useLocation } from 'react-router-dom'
+import { RouteItems } from '../../routes/routeItems'
 import useTheme from '../../css/muiTheme'
 import LoginInButton from '../login/loginButton'
 import SignUpButton from '../signUp/signupButton'
@@ -18,7 +18,7 @@ const AppLayout = (props) => {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          height: '8vh',
+          height: '60px',
           justifyContent: 'space-between',
         }}
       >
@@ -34,6 +34,7 @@ const AppLayout = (props) => {
                     flexGrow: 0,
                     flexShrink: 1,
                     maxWidth: index === 0 ? '150px' : '100px',
+                    minWidth: index === 0 ? '150px' : '0px',
                     boxShadow:
                       index !== 0 && pathName === routeItem.path
                         ? '0px -7px 0px 0px #E66B3B inset'

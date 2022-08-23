@@ -1,6 +1,6 @@
 import * as React from 'react'
-// import PropTypes from 'prop-types'
 import DialogButton from '../../component/dialogButton'
+// import PropTypes from 'prop-types'
 import SignUpPanel from './signup'
 
 export default function SignUpButton() {

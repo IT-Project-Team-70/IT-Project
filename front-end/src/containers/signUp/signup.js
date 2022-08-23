@@ -11,9 +11,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { ThemeProvider } from '@mui/material/styles'
-import useTheme from '../../css/muiTheme'
-import LoginPanel from '../login/login'
 import PropTypes from 'prop-types'
+import LoginPanel from '../login/login'
+import useTheme from '../../css/muiTheme'
+import callApi from '../../api/util/callAPI'
+import authApi from '../../api/def/auth'
 
 export default function SignUpPanel({ onChange = () => {} }) {
   const [toLogin, setToLogin] = React.useState(false)
@@ -22,9 +24,11 @@ export default function SignUpPanel({ onChange = () => {} }) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     console.log({
+      userName: data.get('userName'),
       email: data.get('email'),
       password: data.get('password'),
     })
+    callApi(authApi)
   }
 
   return toLogin ? (
@@ -56,11 +60,11 @@ export default function SignUpPanel({ onChange = () => {} }) {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="userName"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="userName"
+                  label="User Name"
                   autoFocus
                 />
               </Grid>
@@ -112,7 +116,7 @@ export default function SignUpPanel({ onChange = () => {} }) {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end" class="link_cursor">
+            <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
                   onClick={() => {

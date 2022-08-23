@@ -74,8 +74,10 @@ app.set("port", port);
 
 //configure https 
 https.createServer({
-  key: fs.readFileSync('../server.key'),
-  cert: fs.readFileSync('../server.cert')
+  key: fs.readFileSync('../security/key.pem'),
+  cert: fs.readFileSync('../security/cert.pem'),
+  rejectUnauthorized: false,
+  
 },
 app)
 .listen(port || 3000,  () => {

@@ -70,7 +70,9 @@ app.get('/loginSuccess', function(req, res, next){
 app.get('/resetPassword/:userId/:token', async (req, res)=>{
   return res.status(200).send("Hello word")
 })
-
+app.get('/test', (req, res) =>{
+  return res.status(200).send("Hi")
+})
 //forget password
 app.post('/forgetPassword', async (req, res)=>{
   const email = req.body.email
