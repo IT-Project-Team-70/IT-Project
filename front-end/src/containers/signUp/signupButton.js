@@ -9,7 +9,15 @@ export default function SignUpButton() {
     <DialogButton
       dialogTitle={title}
       buttonText="Sign up"
-      buttonProps={{ variant: 'outlined', sx: { backgroundColor: '#fff' } }}
+      buttonProps={{
+        variant: 'outlined',
+        sx: {
+          backgroundColor: '#fff',
+          '&.MuiButton-root:hover': {
+            backgroundColor: '#dedede',
+          },
+        },
+      }}
       dialogProps={{ maxWidth: 'lg' }}
       dialogContent={(onClose) => (
         <SignUpPanel
