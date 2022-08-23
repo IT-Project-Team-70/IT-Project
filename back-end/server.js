@@ -6,11 +6,15 @@ const session = require("express-session")
 const MongoStore = require("connect-mongo")
 const fs = require("fs")
 const https = require("https")
-
+const cors = require('cors');
 const authRouter=require("./route/auth")
 const passport = require("passport");
 const { Http2ServerResponse } = require("http2");
+
+
 const app = express();
+
+app.use(cors())
 require('./passport');
 dotenv.config();
 
