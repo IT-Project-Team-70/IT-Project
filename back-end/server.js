@@ -39,7 +39,7 @@ app.use(session({
   }),
   cookie: {
     secure: process.env.ENVIRONMENT === "production", //if secure is true => only transmit over HTTPS
-    maxAge: 30 * 1000
+    maxAge: 24 * 60 * 60 * 1000
   }
 }))
 
