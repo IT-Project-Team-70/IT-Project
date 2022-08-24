@@ -5,6 +5,8 @@ const express = require("express");
 const app = express();
 const passport = require("passport");
 const crypto = require("crypto");
+
+
 require("../passport");
 
 //handle the login request
@@ -85,20 +87,21 @@ app.get("/resetPassword/:userId/:token", async (req, res) => {
     let token = await Token.findOne({ token: req.params.token });
     if (token == null) {
       req.flash("info", "This token has been expired");
-      res.redirect("/forgetPassword");
+      return res.status(404).send(null)
     }
-    return res.status(200);
+    return res.status(200).send(token)
   } catch (err) {
     return res.status(500).send("Errors while resetting password");
   }
 });
 
-app.post("/resetPasword/:userId/:token", async (req, res) => {
+app.post("/resetPassword", async (req, res) => {
   try {
-    const newPassword = req.body.newPassword;
-    const id = req.params.userId;
-    await User.findByIdAndUpdate(id, { password: newPassword });
-    return res.status(200).send("Update password successfully");
+    const hashSalt = authHelper.genPassword(req.body.newPassword);
+    const id = req.body.userId;
+    const user = await User.findByIdAndUpdate(id, {$set: {hash: hashSalt.hash, salt: hashSalt.salt}});
+    
+    return res.status(200).send(user);
   } catch (err) {
     return res.status(500).send("Errors while resetting password");
   }
@@ -126,6 +129,7 @@ app.post("/forgetPassword", async (req, res) => {
   }
   //send a reset to this email
   authHelper.sendEmail(email, user._id, token.token);
+  return res.status(200).send('send email successfully')
 });
 
 //when visit the protected routes, the server checks the req to see if the req.session.passport.user exists
