@@ -11,9 +11,16 @@ const flash = require("express-flash");
 
 const app = express();
 
-app.use(cors());
 app.use(flash());
 require("./passport");
+
+app.use(cors({
+  origin: ['http://localhost:3000'],
+  credentials: true,
+  sameSite: 'none'
+}))
+require('./passport');
+
 dotenv.config();
 
 // Declare the middleware for the app

@@ -30,8 +30,9 @@ app.post("/logout", (req, res, next) => {
         if (err) {
           return next(err);
         }
-        return res.status(200).send("logout successfully");
-      });
+       
+      })
+     return res.status(200).send("logout successfully");;
     }
     return res.status(200).send("logout successfully")
    
