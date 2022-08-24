@@ -36,7 +36,7 @@ async function sendEmail(email, userId, token){
       from: process.env.EMAIL_USER,
       to: email,
       subject: "reset password",
-      html: '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br><a href = "https://localhost:8000/resetPassword/' + authDetails +'">here</a>'}
+      html: '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br><a href = "http://localhost:8000/resetPassword/' + authDetails +'">here</a>'}
       await transporter.sendMail(message)
     console.log('send email successfully')
   }

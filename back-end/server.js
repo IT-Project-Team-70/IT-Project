@@ -2,20 +2,18 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const session = require("express-session")
-const MongoStore = require("connect-mongo")
-const fs = require("fs")
-const https = require("https")
-const cors = require('cors');
-const authRouter=require("./route/auth")
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const cors = require("cors");
+const authRouter = require("./route/auth");
 const passport = require("passport");
-const { Http2ServerResponse } = require("http2");
-
+const flash = require("express-flash");
 
 const app = express();
 
-app.use(cors())
-require('./passport');
+app.use(cors());
+app.use(flash());
+require("./passport");
 dotenv.config();
 
 // Declare the middleware for the app
