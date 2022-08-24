@@ -2,7 +2,6 @@ const authAPI = {
   login: (data) => ({
     method: 'post',
     url: '/login',
-    withCredentials: false,
     headers: {},
     data: {
       // username: '',
@@ -19,7 +18,6 @@ const authAPI = {
   register: (data) => ({
     method: 'post',
     url: '/register',
-    withCredentials: false,
     headers: {},
     data: {
       // "password":"00000000",
@@ -34,15 +32,6 @@ const authAPI = {
     headers: {
       // email:''
       ...data,
-    },
-  }),
-  test: (data) => ({
-    method: 'GET',
-    url: 'https://nominatim.openstreetmap.org/search.php?q=test&format=json',
-    headers: {},
-    data: {
-      // username: '',
-      // password: '',
     },
   }),
 }
