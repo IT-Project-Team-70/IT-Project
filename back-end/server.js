@@ -4,17 +4,21 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 const session = require("express-session")
 const MongoStore = require("connect-mongo")
-
-//const redis = require("redis")
-//const redisStore = require("connect-redis")(session)
-//const redisClient = redis.createClient()
-/*redisClient.on("connect", () =>{
-  console.log("connected to redis successfully")
-})*/
-
+const fs = require("fs")
+const https = require("https")
+const cors = require('cors');
 const authRouter=require("./route/auth")
 const passport = require("passport");
+const { Http2ServerResponse } = require("http2");
+
+
 const app = express();
+
+app.use(cors({
+  origin: ['http://localhost:3000'],
+  credentials: true,
+  sameSite: 'none'
+}))
 require('./passport');
 dotenv.config();
 
@@ -34,13 +38,12 @@ app.use(session({
   }),
   cookie: {
     secure: process.env.ENVIRONMENT === "production", //if secure is true => only transmit over HTTPS
-    httpOnly: true,
     maxAge: 30 * 1000
   }
 }))
 
 app.use(passport.initialize());
-app.use(passport.session())
+app.use(passport.authenticate('session'))
 
 //add authentication routes to the app
 app.use(authRouter)
@@ -76,6 +79,15 @@ db.once("open", () => {
 
 // Start the server & listen for requests
 app.set("port", port);
-app.listen(port || 3000, () => {
+
+//configure https 
+/*https.createServer({
+  key: fs.readFileSync('../security/key.pem'),
+  cert: fs.readFileSync('../security/cert.pem'),
+  rejectUnauthorized: false,
+  
+},*/
+app
+.listen(port || 3000,  () => {
   console.log(`Ther server is running on ${port}`);
 });

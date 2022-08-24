@@ -1,7 +1,7 @@
 import AxiosV1 from '../axiosV1'
 
 export const callApi = async ({
-  apiConfig = {},
+  apiConfig,
   onStart = () => {},
   onSuccess = (resData) => {},
   onError = (error) => {},
@@ -30,3 +30,4 @@ export const callApi = async ({
   onFinally()
   return result
 }
+export default callApi

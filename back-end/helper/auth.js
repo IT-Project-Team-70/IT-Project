@@ -1,4 +1,7 @@
 const crypto = require('crypto')
+const nodemailer = require('nodemailer')
+const dotenv = require('dotenv')
+dotenv.config()
 
 //This function is used to generate salt and hash for a plain text password when a user first registers.
 function genPassword(password){
@@ -14,7 +17,35 @@ function isValidPassword(password, hash, salt){
   const hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
   return hashVerify === hash
 }
+
+//This function is used to send the reset password link
+async function sendEmail(email, userId, token){
+  try{ 
+    let transporter = nodemailer.createTransport({
+      service: process.env.SERVICE,
+      secure: false,
+      auth:{
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      },
+      from: process.env.EMAIL_USER
+    })
+    const authDetails = `${userId}/${token}`
+    //http://localhost:8000/resetPassword/' + authDetails + '
+    const message = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "reset password",
+      html: '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br><a href = "https://localhost:8000/resetPassword/' + authDetails +'">here</a>'}
+      await transporter.sendMail(message)
+    console.log('send email successfully')
+  }
+  catch(err){
+    console.log(err, "email not sent ")
+  }
+}
 module.exports = {
   isValidPassword,
-  genPassword
+  genPassword,
+  sendEmail
 }

@@ -1,9 +1,10 @@
 const authHelper = require('../helper/auth')
 const User = require('../model/User')
+const Token = require('../model/Token')
 const express = require('express')
 const app = express()
 const passport = require('passport')
-const nodemailer = require('nodemailer')
+const crypto = require('crypto')
 require('../passport')
 
 //handle the login request
@@ -12,13 +13,22 @@ app.post('/login', passport.authenticate('local', {failureRedirect: '/loginFailu
 })
 
 //handle user's logout
-app.post('/logout', (res, req)=>{
-  req.logout(function(err){
+app.post('/logout', (req, res, next)=>{
+  
+   req.logOut(function(err){
     if(err){
       return next(err)
     }
-    res.redirect('/')
-  })
+    req.session.destroy(function(err){
+      if(err){
+        return next(err)
+      }
+      return es.status(200).send("logout successfully")
+     })
+   })
+   res.session.destroy(function(err){
+    res.status(200).send("logout successfully")
+   })
 })
 //define the register page
 app.post('/register', (req, res)=>{
@@ -39,28 +49,55 @@ app.post('/register', (req, res)=>{
 
   newUser.save().then((user) =>{
     console.log(user)
+    res.status(200).send("Register successfully")
   }).catch(err => res.status(500).send("Errors while registering"))
-
-  //redirect users to the login page
-  res.redirect('/login')
+ 
 })
 
 //login unsuccessfully
 app.get('/loginFailure', function(req, res, next){
-  res.status(401).send('Either password or username is incorrect')
+  return res.status(401).send('Either password or username is incorrect')
 })
 
 //login successfully 
 app.get('/loginSuccess', function(req, res, next){
   console.log(req.session)
-  res.status(200).send('You successfully logged in')
+  //redirect to personal working space 
+
+  return res.status(200).send('You successfully logged in')
 })
 
+app.get('/resetPassword/:userId/:token', async (req, res)=>{
+  return res.status(200).send("Hello word")
+})
+app.get('/test', (req, res) =>{
+  return res.status(200).send("Hi")
+})
 //forget password
-app.get('/forgetPassword', function(req, res, next){
+app.post('/forgetPassword', async (req, res)=>{
   const email = req.body.email
 
   //find the email to check if it exists or not 
-  User.findOne()
+  const user = await User.findOne({email: email})
+  //cannot verify the user's email
+  if(!user){
+    return res.status(404).send("Cannot verified the user's email")
+  }
+  //check if the current user has token or not 
+  let token = await Token.findOne({userId: user._id})
+  if(!token){
+    //create a new token
+    token = new Token({
+      userId: user._id,
+      token: crypto.randomBytes(32).toString('hex')
+   })
+    await token.save()
+  }
+  //send a reset to this email
+  authHelper.sendEmail(email, user._id, token.token)
 })
+
+//when visit the protected routes, the server checks the req to see if the req.session.passport.user exists
+//the req.session.passport.user = userId
+app.get('protected-routes', )
 module.exports = app

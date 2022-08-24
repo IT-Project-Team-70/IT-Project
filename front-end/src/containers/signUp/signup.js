@@ -12,6 +12,8 @@ import { ThemeProvider } from '@mui/material/styles'
 import PropTypes from 'prop-types'
 import LoginPanel from '../login/login'
 import useTheme from '../../css/muiTheme'
+import callApi from '../../api/util/callAPI'
+import authApi from '../../api/def/auth'
 
 export default function SignUpPanel({ onChange = () => {} }) {
   const [toLogin, setToLogin] = React.useState(false)
@@ -20,9 +22,11 @@ export default function SignUpPanel({ onChange = () => {} }) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     console.log({
+      userName: data.get('userName'),
       email: data.get('email'),
       password: data.get('password'),
     })
+    callApi(authApi)
   }
 
   return toLogin ? (
