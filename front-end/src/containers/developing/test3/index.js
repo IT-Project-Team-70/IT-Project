@@ -37,7 +37,7 @@ const Test3 = (props) => {
             Forgot your password?
           </Typography>
           <Typography color="text.secondary">
-            Enter your email address below and we'll get you back on track.
+            Enter your email address below and we will get you back on track.
           </Typography>
         </Box>
         <form>
