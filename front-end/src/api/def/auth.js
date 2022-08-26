@@ -27,9 +27,10 @@ const authAPI = {
     },
   }),
   forgetPassword: (data) => ({
-    method: 'get',
+    method: 'post',
     url: '/forgetPassword',
-    headers: {
+    headers: {},
+    data: {
       // email:''
       ...data,
     },

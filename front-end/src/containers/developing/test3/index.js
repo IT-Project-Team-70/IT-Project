@@ -1,13 +1,8 @@
 import React from 'react'
-import { Box } from '@mui/system'
 import ForgotPassword from '../../forgotPassword'
 
 const Test2 = (props) => {
-  return (
-    <Box>
-      <ForgotPassword />
-    </Box>
-  )
+  return <ForgotPassword />
 }
 
 Test2.propTypes = {}

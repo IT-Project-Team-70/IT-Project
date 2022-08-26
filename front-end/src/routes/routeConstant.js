@@ -1,6 +1,7 @@
 export const FRONTPAGE = '/'
 export const EVERYONES_KITCHEN = `/everyones_kitchen`
 export const PERSONAL_KITCHEN = '/personal_kitchen'
+export const RESET_PASSWORD = '/resetPassword'
 
 // Developing
 export const DEV = `/dev`
