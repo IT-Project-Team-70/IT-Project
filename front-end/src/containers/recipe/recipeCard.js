@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
@@ -13,23 +14,25 @@ import ShareIcon from '@mui/icons-material/Share'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import placeholderImage from './PlaceholderImage.png'
 
-export default function RecipeCard() {
+export default function RecipeCard(props) {
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            A
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="(Author Name)"
-        subheader="January 1, 2022"
-      />
+      {props.hideAuthor || (
+        <CardHeader
+          avatar={
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+              A
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title="(Author Name)"
+          subheader="January 1, 2022"
+        />
+      )}
       <CardMedia
         component="img"
         height="200"
@@ -54,4 +57,8 @@ export default function RecipeCard() {
       </CardActions>
     </Card>
   )
+}
+
+RecipeCard.propTypes = {
+  hideAuthor: PropTypes.bool,
 }
