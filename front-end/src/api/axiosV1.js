@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // const baseURL = ''
-const baseURL = 'http://localhost:8000/'
+const baseURL = 'https://localhost:8000/'
 
 const AxiosV1 = axios.create({
   baseURL: baseURL,

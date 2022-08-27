@@ -32,12 +32,18 @@ const authAPI = {
     },
   }),
   forgetPassword: (data) => ({
-    method: 'get',
+    method: 'post',
     url: '/forgetPassword',
-    headers: {
+    headers: {},
+    data: {
       // email:''
       ...data,
     },
+  }),
+  loginWithGoogle: () => ({
+    method: 'get',
+    url: '/google',
+    headers: {},
   }),
 }
 export default authAPI

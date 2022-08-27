@@ -5,9 +5,7 @@ const express = require("express");
 const app = express();
 const passport = require("passport");
 const crypto = require("crypto");
-
-
-require("../passport");
+require("../passport.js");
 
 //handle the login request
 app.post(
@@ -27,26 +25,23 @@ app.post("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-    if(req.session){
+    if (req.session) {
       req.session.destroy(function (err) {
         if (err) {
           return next(err);
         }
-       
-      })
-     return res.status(200).send("logout successfully");;
+      });
+      return res.status(200).send("logout successfully");
     }
-    return res.status(200).send("logout successfully")
-   
+    return res.status(200).send("logout successfully");
   });
-  
 });
 //define the register page
 app.post("/register", (req, res) => {
   const password = req.body.password;
   const username = req.body.username;
   const email = req.body.email;
-  
+
   //generate a hash and a salt from the given password
   const saltHash = authHelper.genPassword(password);
 
@@ -65,9 +60,20 @@ app.post("/register", (req, res) => {
       res.status(200).send("Register successfully");
     })
     .catch((err) => {
-      console.log(err)
-      res.status(500).send("Errors while registering")});
+      console.log(err);
+      res.status(500).send("Errors while registering");
+    });
 });
+
+//this will take us to the google account sign in page
+app.get("/google", passport.authenticate("google", { scope: ["email"] }));
+app.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/loginSuccess",
+    failureRedirect: "/loginFailure",
+  })
+);
 
 //login unsuccessfully
 app.get("/loginFailure", function (req, res, next) {
@@ -87,10 +93,11 @@ app.get("/resetPassword/:userId/:token", async (req, res) => {
     let token = await Token.findOne({ token: req.params.token });
     if (token == null) {
       req.flash("info", "This token has been expired");
-      return res.status(404).send(null)
+      return res.status(404).send(null);
     }
-    return res.status(200).send(token)
+    return res.status(200).send(token);
   } catch (err) {
+    console.log(err);
     return res.status(500).send("Errors while resetting password");
   }
 });
@@ -99,8 +106,10 @@ app.post("/resetPassword", async (req, res) => {
   try {
     const hashSalt = authHelper.genPassword(req.body.newPassword);
     const id = req.body.userId;
-    const user = await User.findByIdAndUpdate(id, {$set: {hash: hashSalt.hash, salt: hashSalt.salt}});
-    
+    const user = await User.findByIdAndUpdate(id, {
+      $set: { hash: hashSalt.hash, salt: hashSalt.salt },
+    });
+
     return res.status(200).send(user);
   } catch (err) {
     return res.status(500).send("Errors while resetting password");
@@ -129,7 +138,7 @@ app.post("/forgetPassword", async (req, res) => {
   }
   //send a reset to this email
   authHelper.sendEmail(email, user._id, token.token);
-  return res.status(200).send('send email successfully')
+  return res.status(200).send("send email successfully");
 });
 
 //when visit the protected routes, the server checks the req to see if the req.session.passport.user exists

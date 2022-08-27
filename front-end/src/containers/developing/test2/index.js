@@ -1,7 +1,26 @@
-import React from 'react'
+import { Button } from '@mui/material'
+import React, { Fragment } from 'react'
+import authAPI from '../../../api/def/auth'
+import { callApi } from '../../../api/util/callAPI'
+import LoadingSpinner from '../../../component/loadingSpinner'
 
 const Test2 = (props) => {
-  return <div>Test2</div>
+  const loginWithGoogle = () => {
+    callApi({
+      apiConfig: authAPI.loginWithGoogle(),
+      onStart: () => {},
+      onSuccess: (data) => {
+        console.log(data)
+      },
+      onError: (err) => {},
+      onFinally: () => {},
+    })
+  }
+  return (
+    <Fragment>
+      <Button onClick={loginWithGoogle}>loginWithGoogle</Button>
+    </Fragment>
+  )
 }
 
 Test2.propTypes = {}
