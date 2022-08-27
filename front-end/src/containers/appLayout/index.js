@@ -111,9 +111,6 @@ const AppLayout = (props) => {
           className="main-content"
           style={{
             height: 'inherit',
-            '&.css-0': {
-              backgroundColor: 'black',
-            },
           }}
         >
           {children}
