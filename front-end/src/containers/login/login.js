@@ -140,7 +140,6 @@ export default function LoginPanel({
                 </Typography>
                 <Box
                   component="form"
-                  noValidate
                   onSubmit={handleSubmit}
                   sx={{
                     mt: 1,

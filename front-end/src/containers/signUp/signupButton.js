@@ -19,7 +19,7 @@ export default function SignUpButton() {
         },
       }}
       dialogProps={{ maxWidth: 'lg' }}
-      dialogContent={(onClose) => (
+      dialogContent={({ onClose }) => (
         <SignUpPanel
           onClose={onClose}
           onChange={(title) => {
