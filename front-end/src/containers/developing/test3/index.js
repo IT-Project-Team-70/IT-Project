@@ -4,7 +4,7 @@ import Form from './Form'
 
 const Test2 = (props) => {
   return (
-    <Grid item container xs={12} md={6} alignItems={'center'}>
+    <Grid item container>
       <Form />
     </Grid>
   )

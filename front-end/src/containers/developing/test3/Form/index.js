@@ -39,15 +39,24 @@ const Form = () => {
   }
 
   return (
-    <Box display="flex" width="10">
+    <Grid
+      sx={{
+        display: 'inline-flex',
+        width: '100vw',
+        spacing: 0,
+        justify: 'space-around',
+      }}
+    >
       <Box
         padding={{ xs: 3, sm: 6 }}
-        width={'100%'}
         component={Card}
         borderRadius={2}
         boxShadow={4}
-        marginBottom={4}
-        fullWidth
+        marginTop={1}
+        marginBottom={1}
+        marginLeft={1}
+        marginRight={1}
+        sx={{ width: '1000%' }}
       >
         <form noValidate autoComplete="off">
           <Grid item xs={12}>
@@ -205,11 +214,14 @@ const Form = () => {
 
       <Box
         padding={{ xs: 3, sm: 6 }}
-        width={'100%'}
         component={Card}
         borderRadius={2}
         boxShadow={4}
-        marginBottom={4}
+        marginTop={1}
+        marginBottom={1}
+        marginLeft={1}
+        marginRight={1}
+        sx={{ width: '1000%' }}
       >
         <Grid item xs={12}>
           <TextField
@@ -225,11 +237,14 @@ const Form = () => {
       </Box>
       <Box
         padding={{ xs: 3, sm: 6 }}
-        width={'100%'}
         component={Card}
         borderRadius={2}
         boxShadow={4}
-        marginBottom={4}
+        marginTop={1}
+        marginBottom={1}
+        marginLeft={1}
+        marginRight={1}
+        sx={{ width: '1000%' }}
       >
         <Grid item xs={12}>
           <TextField
@@ -243,7 +258,7 @@ const Form = () => {
           />
         </Grid>
       </Box>
-    </Box>
+    </Grid>
   )
 }
 
