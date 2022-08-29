@@ -1,8 +1,13 @@
 import React from 'react'
-import ForgotPassword from '../../forgotPassword'
+import { Grid } from '@mui/material'
+import Form from './Form'
 
 const Test2 = (props) => {
-  return <ForgotPassword />
+  return (
+    <Grid item container xs={12} md={6} alignItems={'center'}>
+      <Form />
+    </Grid>
+  )
 }
 
 Test2.propTypes = {}
