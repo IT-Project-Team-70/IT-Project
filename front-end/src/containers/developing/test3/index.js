@@ -1,13 +1,8 @@
 import React from 'react'
-import { Grid } from '@mui/material'
-import Form from './Form'
+import Form from './uploadRecipe'
 
 const Test2 = (props) => {
-  return (
-    <Grid item container>
-      <Form />
-    </Grid>
-  )
+  return <Form />
 }
 
 Test2.propTypes = {}
