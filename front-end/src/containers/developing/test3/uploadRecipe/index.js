@@ -5,6 +5,8 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 // import { useTheme } from '@mui/material'
 import RecipeDetail from './recipeDetail'
+import Ingredient from './ingredient'
+import Procedure from './procedure'
 
 const Form = () => {
   const [noneInputData, setNoneInputData] = useState({})
@@ -59,11 +61,19 @@ const Form = () => {
           height="calc(100% - 52.5px)"
           sx={{ paddingLeft: '8px' }}
         >
-          <RecipeDetail
-            onChange={(data) => {
-              setNoneInputData((prev) => ({ ...prev, ...data }))
-            }}
-          />
+          <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
+            <RecipeDetail
+              onChange={(data) => {
+                setNoneInputData((prev) => ({ ...prev, ...data }))
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
+            <Ingredient />
+          </Grid>
+          <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
+            <Procedure />
+          </Grid>
         </Grid>
       </Box>
     </Box>

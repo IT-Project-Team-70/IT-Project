@@ -43,7 +43,7 @@ const RecipeDetail = ({ onChange = () => {} }) => {
   }, [files, source])
 
   return (
-    <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
+    <Fragment>
       <Grid item>
         <Typography variant="h5" sx={{ paddingLeft: '8px' }}>
           Recipe Details
@@ -277,7 +277,7 @@ const RecipeDetail = ({ onChange = () => {} }) => {
           </Grid>
         </Box>
       </Grid>
-    </Grid>
+    </Fragment>
   )
 }
 
