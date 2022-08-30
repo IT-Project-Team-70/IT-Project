@@ -18,12 +18,13 @@ import authAPI from '../../api/def/auth'
 import LoadingSpinner from '../../component/loadingSpinner'
 import { Fragment } from 'react'
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
+import ForgotPassword from '../forgotPassword'
 
 export default function LoginPanel({
   onChange = () => {},
   onClose = () => {},
 }) {
-  const [toSignUp, setToSignUP] = React.useState(false)
+  const [toPage, setToPage] = React.useState({ toPage: false, to: '' })
   const [isloading, setIsLoading] = React.useState(false)
   const [error, setError] = React.useState({ error: false, errorMeessage: '' })
   const [success, setSuccess] = React.useState({
@@ -59,12 +60,22 @@ export default function LoginPanel({
     })
     setIsLoading(false)
   }
+  const toComponent = () => {
+    switch (toPage.to) {
+      case 'Sign up':
+        return <SignUpPanel onChange={onChange} onClose={onClose} />
+      case 'Forget Password':
+        return <ForgotPassword onChange={onChange} onClose={onClose} />
+      default:
+        return <></>
+    }
+  }
 
-  return toSignUp ? (
-    <SignUpPanel onChange={onChange} onClose={onClose} />
+  return toPage.toPage ? (
+    toComponent()
   ) : (
     <ThemeProvider theme={theme}>
-      <Grid container>
+      <Grid container height="inherit">
         <Grid
           item
           xs={false}
@@ -129,7 +140,6 @@ export default function LoginPanel({
                 </Typography>
                 <Box
                   component="form"
-                  noValidate
                   onSubmit={handleSubmit}
                   sx={{
                     mt: 1,
@@ -167,7 +177,13 @@ export default function LoginPanel({
 
                 <Grid container flexDirection="column">
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link
+                      onClick={() => {
+                        onChange('Forget Password')
+                        setToPage({ toPage: true, to: 'Forget Password' })
+                      }}
+                      variant="body2"
+                    >
                       Forgot password?
                     </Link>
                   </Grid>
@@ -175,7 +191,7 @@ export default function LoginPanel({
                     <Link
                       onClick={() => {
                         onChange('Sign up')
-                        setToSignUP(true)
+                        setToPage({ toPage: true, to: 'Sign up' })
                       }}
                       variant="body2"
                     >

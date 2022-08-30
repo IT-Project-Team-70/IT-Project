@@ -106,8 +106,15 @@ const AppLayout = (props) => {
           borderColor: '#E66B3B',
         }}
       />
-      <div className="content">
-        <main className="main-content">{children}</main>
+      <div className="content" style={{ height: 'calc(100vh - 61px)' }}>
+        <div
+          className="main-content"
+          style={{
+            height: 'inherit',
+          }}
+        >
+          {children}
+        </div>
       </div>
     </Fragment>
   )
