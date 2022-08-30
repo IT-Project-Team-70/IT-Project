@@ -5,6 +5,7 @@ import {
   TEST_1,
   TEST_2,
   TEST_3,
+  // RESET_PASSWORD,
 } from './routeConstant'
 
 import {
@@ -37,6 +38,13 @@ const RouteItems = [
     exact: true,
     authority: true,
   },
+  // {
+  //   name: 'ResetPassword',
+  //   path: RESET_PASSWORD,
+  //   component: null,
+  //   exact: true,
+  //   authority: true,
+  // },
   {
     name: 'Test 1',
     path: TEST_1,

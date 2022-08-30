@@ -1,7 +1,7 @@
 import AxiosV1 from '../axiosV1'
 
 export const callApi = async ({
-  apiConfig = {},
+  apiConfig,
   onStart = () => {},
   onSuccess = (resData) => {},
   onError = (error) => {},
@@ -11,11 +11,11 @@ export const callApi = async ({
   try {
     await onStart()
     const res = await AxiosV1(apiConfig)
-    if (res.response.status === 200) {
-      await onSuccess(res.data)
-      result = res.data
+    if (res.status === 200) {
+      await onSuccess(res)
+      result = res
     } else {
-      onError(res.data)
+      onError(res)
       // throw new Error(JSON.stringify(res.data, ['message', 'showToUser'], '\t'))
     }
   } catch (error) {
@@ -30,3 +30,4 @@ export const callApi = async ({
   onFinally()
   return result
 }
+export default callApi

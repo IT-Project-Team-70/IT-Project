@@ -7,8 +7,9 @@ require('../passport')
 
 const authHelper = require('../helper/auth')
 const Token = require('../model/Token')
-const User = require('../model/user')
-const authController = require('../controllers/authController')
+const User = require('../model/User')
+// const authController = require('../controllers/authController')
+const authController = require("../controller/auth")
 
 //handle the login request
 app.post(

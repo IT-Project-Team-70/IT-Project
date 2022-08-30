@@ -1,6 +1,6 @@
 const { default: mongoose } = require('mongoose')
 const validation = require('./validation')
-// const crypto = require('crypto')
+const crypto = require('crypto')
 
 /* ***************************************************************************************** */
 //we store hash and salt into our database instead of the plain password to enhance security
@@ -20,9 +20,17 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 255,
   },
+  // gmail: { type: "string", unique: true },
 
   salt: { type: String },
   hash: { type: String },
+  google: {
+    id: { type: String },
+    name: { type: String },
+    email: { type: String },
+  },
+  // salt: "string",
+  // hash: "string",
 
   recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],

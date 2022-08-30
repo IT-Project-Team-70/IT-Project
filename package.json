@@ -1,0 +1,25 @@
+{
+  "name": "it-project",
+  "version": "1.0.0",
+  "description": "Team 70: dont-forget-ur-password This branch is used to create user accounts. Allowing users to register, log in, log out.",
+  "main": "index.js",
+  "scripts": {
+    "server": "npm start --prefix back-end",
+    "client": "npm start --prefix front-end",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harry-Guanqin-Wang/IT-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Harry-Guanqin-Wang/IT-Project/issues"
+  },
+  "homepage": "https://github.com/Harry-Guanqin-Wang/IT-Project#readme",
+  "dependencies": {
+    "concurrently": "^7.3.0"
+  }
+}

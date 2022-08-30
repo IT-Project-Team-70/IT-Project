@@ -9,6 +9,7 @@ const pkController = require('../controllers/personalKitchenController')
 /* ********************************************************************************************* */
 router.get('/', isAuthenticated, (req, res) => {
   // res.redirect('/personalKitchen/home')
+  return res.status(200).send(req.passport.session.user);
 })
 
 router.get('/home', isAuthenticated, (req, res) => {})
@@ -33,3 +34,5 @@ router.post('/personal-kitchen/tag-recipe/:id', isAuthenticated, (req, res) => {
 // delete a recipe from the database
 router.delete('/personal-kitchen/:id', isAuthenticated, (req, res) => {})
 
+
+module.exports = app;

@@ -1,9 +1,10 @@
 import React from 'react'
+import ForgotPassword from '../../forgotPassword'
 
-const Test3 = (props) => {
-  return <div>Test3</div>
+const Test2 = (props) => {
+  return <ForgotPassword />
 }
 
-Test3.propTypes = {}
+Test2.propTypes = {}
 
-export default Test3
+export default Test2

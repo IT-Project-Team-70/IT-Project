@@ -12,14 +12,16 @@ const LoginInButton = () => {
       buttonText="Login"
       buttonProps={{ variant: 'contained', color: 'secondary' }}
       dialogProps={{ maxWidth: 'lg' }}
-      dialogContent={(onClose) => (
-        <LoginPanel
-          onClose={onClose}
-          onChange={(title) => {
-            setTitle(title)
-          }}
-        />
-      )}
+      dialogContent={({ onClose }) => {
+        return (
+          <LoginPanel
+            onClose={onClose}
+            onChange={(title) => {
+              setTitle(title)
+            }}
+          />
+        )
+      }}
     />
   )
 }

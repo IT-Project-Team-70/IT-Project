@@ -1,6 +1,6 @@
 import * as React from 'react'
-// import PropTypes from 'prop-types'
 import DialogButton from '../../component/dialogButton'
+// import PropTypes from 'prop-types'
 import SignUpPanel from './signup'
 
 export default function SignUpButton() {
@@ -9,9 +9,17 @@ export default function SignUpButton() {
     <DialogButton
       dialogTitle={title}
       buttonText="Sign up"
-      buttonProps={{ variant: 'outlined' }}
+      buttonProps={{
+        variant: 'outlined',
+        sx: {
+          backgroundColor: '#fff',
+          '&.MuiButton-root:hover': {
+            backgroundColor: '#dedede',
+          },
+        },
+      }}
       dialogProps={{ maxWidth: 'lg' }}
-      dialogContent={(onClose) => (
+      dialogContent={({ onClose }) => (
         <SignUpPanel
           onClose={onClose}
           onChange={(title) => {

@@ -2,16 +2,27 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const session = require("express-session")
-const MongoStore = require("connect-mongo")
-const fs = require("fs")
-const https = require("https")
-
-const authRouter=require("./route/auth")
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const cors = require("cors");
+const authRouter = require("./route/auth.js");
 const passport = require("passport");
-const { Http2ServerResponse } = require("http2");
+const flash = require("express-flash");
+const https = require("https")
+const fs = require("fs")
 const app = express();
-require('./passport');
+require("./passport");
+app.use(flash());
+
+app.use(
+  cors({
+    origin: ["https://localhost:3000"],
+    credentials: true,
+    sameSite: "none",
+  })
+);
+
+
 dotenv.config();
 
 // Declare the middleware for the app
@@ -19,26 +30,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //create a session
-app.use(session({
-  secret: process.env.COOKIE_SECRET, 
-  credentials: true, 
-  name: "sid", 
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.DATABASE
-  }),
-  cookie: {
-    secure: process.env.ENVIRONMENT === "production", //if secure is true => only transmit over HTTPS
-    maxAge: 30 * 1000
-  }
-}))
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    credentials: true,
+    name: "sid",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.DATABASE,
+    }),
+    cookie: {
+      secure: process.env.ENVIRONMENT === "production", //if secure is true => only transmit over HTTPS
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
 
 app.use(passport.initialize());
-app.use(passport.session())
+app.use(passport.authenticate("session"));
 
 //add authentication routes to the app
-app.use(authRouter)
+app.use(authRouter);
 
 // app.use(express.static(__dirname + '/public'))
 if (app.get("env") === "development") {
@@ -72,12 +85,13 @@ db.once("open", () => {
 // Start the server & listen for requests
 app.set("port", port);
 
-//configure https 
+//configure https
 https.createServer({
-  key: fs.readFileSync('../server.key'),
-  cert: fs.readFileSync('../server.cert')
+  key: fs.readFileSync('../security/DontForgetUrRecipe.key'),
+  cert: fs.readFileSync('../security/DontForgetUrRecipe.crt'),
+  rejectUnauthorized: false,
+  
 },
-app)
-.listen(port || 3000,  () => {
+app).listen(port || 3000, () => {
   console.log(`Ther server is running on ${port}`);
 });

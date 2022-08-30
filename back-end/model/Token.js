@@ -9,7 +9,7 @@ const tokenSchema = mongoose.Schema({
 
   token: { type: String, required: true },
   //the token will expire after 1 hour since the time it is created
-  createdAt: { type: Date, default: Date.now(), expires: 3600 },
+  createdAt: {type: Date, default: Date.now(), expires: 36000}
 })
 
 const tokenModel = mongoose.model('Token', tokenSchema)
