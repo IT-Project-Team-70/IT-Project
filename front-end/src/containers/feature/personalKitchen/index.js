@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import * as React from 'react'
 import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
 import Drawer from '@mui/material/Drawer'
 import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
@@ -64,8 +65,23 @@ const PersonalKitchen = (props) => {
             </List>
           </Box>
         </Drawer>
-          <RecipeCard></RecipeCard>
-          <RecipeCard></RecipeCard>
+          <Grid container gap={1}>
+            <Grid>
+              <RecipeCard/>
+            </Grid>
+            <Grid>
+              <RecipeCard/>
+            </Grid>
+            <Grid>
+              <RecipeCard/>
+            </Grid>
+            <Grid>
+              <RecipeCard/>
+            </Grid>
+            <Grid>
+              <RecipeCard/>
+            </Grid>
+          </Grid>
       </Box>
     </ThemeProvider>
   )
