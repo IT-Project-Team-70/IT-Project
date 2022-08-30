@@ -1,11 +1,14 @@
-const authHelper = require('../helper/auth')
-const User = require('../model/User')
-const Token = require('../model/Token')
 const express = require('express')
 const app = express()
+
 const passport = require('passport')
 const crypto = require('crypto')
 require('../passport')
+
+const authHelper = require('../helper/auth')
+const Token = require('../model/Token')
+const User = require('../model/user')
+const authController = require('../controllers/authController')
 
 //handle the login request
 app.post(
