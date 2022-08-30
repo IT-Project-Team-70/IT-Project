@@ -114,5 +114,5 @@ module.exports = {
   loginFailure,
   resetPasswordHandler,
   updatePasswordHandler,
-  forgetPasswordHandler
+  forgetPasswordHandler,
 }
