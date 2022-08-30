@@ -23,6 +23,7 @@ const PersonalKitchen = (props) => {
   const theme = useTheme()
   return (
     <ThemeProvider theme={theme}>
+      <Box sx={{ height:'inherit', overflowY:'auto' }}>
       <Box sx={{ display: 'flex' }}>
         <Drawer
           variant="permanent"
@@ -82,6 +83,7 @@ const PersonalKitchen = (props) => {
               <RecipeCard/>
             </Grid>
           </Grid>
+      </Box>
       </Box>
     </ThemeProvider>
   )
