@@ -19,7 +19,7 @@ app.post(
 //handle user's logout
 app.post("/logout", authController.logoutHandler)
 //define the register page
-app.post("/register", authController.registerHanlder)
+app.post("/register", authController.registerHandler)
 
 //this will take us to the google account sign in page
 app.get("/google", passport.authenticate("google", { scope: ["email"] }));

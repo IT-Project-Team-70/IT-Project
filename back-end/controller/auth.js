@@ -2,12 +2,15 @@ const User = require('../model/User')
 const Token = require('../model/Token')
 const authHelper = require ('../helper/auth')
 const crypto = require("crypto");
+const passport = require("passport");
+require("../passport.js");
 
 const loginSuccess = (req, res, next)=>{
   console.log(req.session);
   //redirect to personal working space
   return res.status(200).send("You successfully logged in");
 }
+
 const loginFailure =  (req, res, next)=>{
   return res.status(401).send("Either password or username is incorrect");
 }
