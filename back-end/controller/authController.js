@@ -1,4 +1,4 @@
-const User = require('../model/User')
+const User = require('../model/user')
 const Token = require('../model/Token')
 const authHelper = require ('../helper/auth')
 const crypto = require("crypto");
