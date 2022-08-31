@@ -111,7 +111,7 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                 variant="outlined"
                 size="medium"
                 fullWidth
-                required
+                //   required
               />
             </Grid>
             <Grid item xs={12}>
@@ -119,7 +119,7 @@ const RecipeDetail = ({ onChange = () => {} }) => {
               <TextField
                 name="servingSize"
                 id="servingSize"
-                required
+                //   required
                 size="medium"
                 fullWidth
                 select
@@ -145,7 +145,7 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                 <TextField
                   id="PrepareTimeHour"
                   name="PrepareTimeHour"
-                  required
+                  //   required
                   size="medium"
                   select
                   fullWidth
@@ -168,7 +168,7 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                   name="PrepareTimeMinute"
                   select
                   fullWidth
-                  required
+                  //   required
                   defaultValue={'0'}
                 >
                   <MenuItem value={'0'}>0</MenuItem>
@@ -189,7 +189,7 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                 fullWidth
                 select
                 defaultValue={'breakfast'}
-                required
+                //   required
               >
                 <MenuItem value={'breakfast'}>Breakfast</MenuItem>
                 <MenuItem value={'lunch'}>Lunch</MenuItem>
@@ -203,8 +203,8 @@ const RecipeDetail = ({ onChange = () => {} }) => {
               <Typography variant="body1">Other Categories</Typography>
               <TextField
                 fullWidth
-                multiline
-                rows={3}
+                // multiline
+                // rows={3}
                 variant="outlined"
                 color="primary"
                 size="medium"
@@ -249,7 +249,7 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                   variant="outlined"
                   size="medium"
                   fullWidth
-                  required
+                  //   required
                   placeholder={
                     source === 'URL'
                       ? 'URL'
@@ -267,7 +267,7 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                 name="description"
                 multiline
                 rows={6}
-                required
+                //   required
                 variant="outlined"
                 color="primary"
                 size="medium"

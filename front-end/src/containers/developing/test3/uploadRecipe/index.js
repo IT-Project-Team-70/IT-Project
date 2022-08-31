@@ -10,12 +10,21 @@ import Procedure from './procedure'
 
 const Form = () => {
   const [noneInputData, setNoneInputData] = useState({})
+  const [procedureError, setProcedureError] = useState(false)
   const handleSubmit = (event) => {
-    const data = new FormData(event.currentTarget)
-    for (var pair of data.entries()) {
-      console.log(pair[0], pair[1])
+    //check if procedure is empty
+    if (noneInputData.procedure && noneInputData.procedure !== '') {
+      setProcedureError(false)
+      const data = new FormData(event.currentTarget)
+      for (var pair of data.entries()) {
+        console.log(pair[0], pair[1])
+      }
+      console.log(noneInputData)
+    } else {
+      //procedure is empty
+      setProcedureError(true)
     }
-    console.log(noneInputData)
+
     event.preventDefault()
   }
 
@@ -69,10 +78,19 @@ const Form = () => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
-            <Ingredient />
+            <Ingredient
+              onChange={(data) => {
+                setNoneInputData((prev) => ({ ...prev, indegrients: data }))
+              }}
+            />
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
-            <Procedure />
+            <Procedure
+              onChange={(data) => {
+                setNoneInputData((prev) => ({ ...prev, procedure: data }))
+              }}
+              error={procedureError}
+            />
           </Grid>
         </Grid>
       </Box>
