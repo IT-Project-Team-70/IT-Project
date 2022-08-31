@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "debug": "^4.3.4",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.2",
     "jshint": "^2.13.5",
     "prettier": "^2.7.1"
   }

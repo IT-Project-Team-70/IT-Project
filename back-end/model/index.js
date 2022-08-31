@@ -14,9 +14,9 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // userCreateIndex: true,
-    dbName: "Don't Forget your Recipes",
+    dbName: "Don't-Forget-your-Recipes",
   })
-  .then(() => console.log('database is connected'))
+  .then(() => console.log('Database is Connected !!'))
 
 // Event handlers for the connection
 const db = mongoose.connection
@@ -29,18 +29,3 @@ db.on('error', (err) => {
 db.once('open', () => {
   console.log(`Mongo connection started on ${db.host}:${db.port}`)
 })
-
-// ******************************************************************************************** //
-const User = require('../model/user')
-const Recipe = require('../model/recipe')
-const Tag = require('../model/tag')
-const Token = require('../model/token')
-const validation = require('../model/validation')
-
-// module.exports = {
-//   User,
-//   Recipe,
-//   Tag,
-//   Token,
-//   validation,
-// }

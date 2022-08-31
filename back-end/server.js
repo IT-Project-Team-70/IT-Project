@@ -26,7 +26,8 @@ const testingRouter = require('./route/testing.js')
 // Initialize the app
 const app = express()
 dotenv.config()
-if (app.get('env') === 'development') {
+const env = process.env.ENVIRONMENT || app.get('env')
+if (env === 'development') {
   app.use(morgan('tiny'))
   console.log('Env: Develop Model -- Morgan is enabled ... ')
 }
@@ -93,5 +94,5 @@ https
     app
   )
   .listen(port || 8080, () => {
-    console.log(`Ther server is running on ${port}`)
+    console.log(`Ther server is running on port ${port}`)
   })

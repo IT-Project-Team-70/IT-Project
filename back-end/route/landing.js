@@ -3,7 +3,6 @@ const router = express.Router()
 
 // const { isAuthenticated, hasRole } = require('../helper/auth')
 
-const landingController = require('../controllers/landingController')
+const landingController = require('../controller/landingController')
 
-
-
+module.exports = router

@@ -1,38 +1,38 @@
 const express = require('express')
 const router = express.Router()
 
-// const { isAuthenticated, hasRole } = require('../helper/auth')
+// const { hasRole } = require('../helper/auth')
 
-const pkController = require('../controllers/personalKitchenController')
+const pkController = require('../controller/personalKitchenController')
 
 /* ********************************************************************************************* */
-router.get('/', isAuthenticated, (req, res) => {
+router.get('/', (req, res) => {
   // res.redirect('/personalKitchen/home')
   return res.status(200).send(req.passport.session.user)
 })
 
-router.get('/personal-kitchen', isAuthenticated, (req, res) => {})
-router.get('personal-kitchen/home', isAuthenticated, (req, res) => {})
-router.get('/personal-kitchen/:id', isAuthenticated, (req, res) => {})
+router.get('/personal-kitchen', (req, res) => {})
+router.get('personal-kitchen/home', (req, res) => {})
+router.get('/personal-kitchen/:id', (req, res) => {})
 
-router.get('/personal-kitchen/category', isAuthenticated, (req, res) => {})
-router.get('/personal-kitchen/category/:id', isAuthenticated, (req, res) => {})
+router.get('/personal-kitchen/category', (req, res) => {})
+router.get('/personal-kitchen/category/:id', (req, res) => {})
 
-router.get('/personal-kitchen/favorite', isAuthenticated, (req, res) => {})
-router.get('/personal-kitchen/favorite/:id', isAuthenticated, (req, res) => {})
+router.get('/personal-kitchen/favorite', (req, res) => {})
+router.get('/personal-kitchen/favorite/:id', (req, res) => {})
 
 // editing old recipes
-router.post('/personal-kitchen/:id', isAuthenticated, (req, res) => {})
+router.post('/personal-kitchen/:id', (req, res) => {})
 // post a new recipe into the database
-router.post('/personal-kitchen/new-recipe', isAuthenticated, (req, res) => {})
+router.post('/personal-kitchen/new-recipe', (req, res) => {})
 // change recipe tags, move into another category
 router.post(
   '/personal-kitchen/tag-recipe/:id',
-  isAuthenticated,
+  // isAuthenticated,
   (req, res) => {}
 )
 
 // delete a recipe from the database
-router.delete('/personal-kitchen/:id', isAuthenticated, (req, res) => {})
+router.delete('/personal-kitchen/:id', (req, res) => {})
 
-module.exports = app
+module.exports = router

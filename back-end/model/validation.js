@@ -4,49 +4,60 @@ const Joi = require('joi')
 /* ***************************************************************************************** */
 
 function validateRecipe(recipe) {
-  const schema = {
+  const schema = Joi.object().keys({
     title: Joi.string().min(1).max(50).required(),
     source: Joi.object().required(),
-    tagList: Joi.array().items(Joi.string()).required(),
-    course: Joi.string()
-      .valid(
-        'Appetizer',
-        'Main',
-        'Side',
-        'Dessert',
-        'Other',
-        'All',
-        'Breakfast',
-        'Lunch',
-        'Dinner'
-      )
-      .required(),
-    image: Joi.object().required(),
+    tagList: Joi.array().items(Joi.string()),
+    // course: Joi.object().keys({
+    //   name: Joi.string().valid(
+    //     'Appetizer',
+    //     'Main',
+    //     'Side',
+    //     'Dessert',
+    //     'Other',
+    //     'Breakfast',
+    //     'Lunch',
+    //     'Dinner',
+    //     'All'
+    //   ),
+    // })
+    // .required(),
+    image: Joi.object(),
     description: Joi.string().min(1).max(255).required(),
-    notes: Joi.string().min(1).max(255).required(),
+    notes: Joi.string().min(1).max(255),
     prepTime: Joi.object().required(),
     serveSize: Joi.number().required(),
-  }
+    ingredients: Joi.array()
+      .items(
+        Joi.object().keys({
+          name: Joi.string().min(1).max(255).required(),
+          quantity: Joi.string().min(1).max(255).required(),
+          unit: Joi.string().min(1).max(255).required(),
+        })
+      )
+      .required(),
+    instructions: Joi.string().min(1).max(255).required(),
+  })
 
-  return Joi.validate(recipe, schema)
+  return schema.validate(recipe)
 }
 
 function validateUser(user) {
-  const schema = {
+  const schema = Joi.object().keys({
     username: Joi.string().min(1).max(50).required(),
     // password: Joi.string().min(1).max(255).required(),
     email: Joi.string().min(1).max(255).required(),
-  }
+  })
 
-  return Joi.validate(user, schema)
+  return schema.validate(user)
 }
 
 function validateTage(tag) {
-  const schema = {
+  const schema = Joi.object().keys({
     name: Joi.string().min(1).max(25).required(),
-  }
+  })
 
-  return Joi.validate(tag, schema)
+  return schema.validate(tag)
 }
 
 module.exports = {
