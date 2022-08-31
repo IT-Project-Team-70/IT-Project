@@ -2,37 +2,45 @@ const mongoose = require('mongoose')
 
 // ******************************************************************************************** //
 // Connect to the database
-// if (process.env.NODE_ENV !== 'production') {
-//     require('dotenv').config();
-// }
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
-// Connect to your mongo database using the MONGO_URL environment variable
-// mongoose.connect(process.env.MONGO_URL, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     // userCreateIndex: true,
-//     // dbName: ''
-// });
+//loading environment variable
+const database = process.env.DATABASE
+// Connect to your mongo database from environment variable
+mongoose
+  .connect(database, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // userCreateIndex: true,
+    dbName: "Don't Forget your Recipes",
+  })
+  .then(() => console.log('database is connected'))
 
 // Event handlers for the connection
-// const db = mongoose.connection;
+const db = mongoose.connection
 // exit on error
-// db.on('error', (err) => {
-//     console.log(err);
-//     process.exit(1);
-// });
+db.on('error', (err) => {
+  console.log(err)
+  process.exit(1)
+})
 // Log to console once the database is open
-// db.once('open', () => { console.log(`Mongo connection started on ${db.host}:${db.port}`) });
+db.once('open', () => {
+  console.log(`Mongo connection started on ${db.host}:${db.port}`)
+})
 
 // ******************************************************************************************** //
-const user = require('../model/user')
-const recipe = require('../model/recipe')
+const User = require('../model/user')
+const Recipe = require('../model/recipe')
+const Tag = require('../model/tag')
+const Token = require('../model/token')
 const validation = require('../model/validation')
 
-module.exports = {
-  user: user,
-  User: user.User,
-  recipe: recipe,
-  Recipe: recipe.Recipe,
-  validation: validation,
-}
+// module.exports = {
+//   User,
+//   Recipe,
+//   Tag,
+//   Token,
+//   validation,
+// }

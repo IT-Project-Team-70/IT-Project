@@ -73,7 +73,4 @@ const RecipeModel = mongoose.model('Recipe', recipeSchema)
 
 /* ***************************************************************************************** */
 
-
-module.exports = {
-  Recipe: RecipeModel,
-}
+module.exports = RecipeModel

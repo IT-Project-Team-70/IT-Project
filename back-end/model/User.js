@@ -1,6 +1,5 @@
 const { default: mongoose } = require('mongoose')
 const validation = require('./validation')
-const crypto = require('crypto')
 
 /* ***************************************************************************************** */
 //we store hash and salt into our database instead of the plain password to enhance security
@@ -50,8 +49,8 @@ userSchema.methods.joiValidate = function (user) {
 
 const UserModel = mongoose.model('User', userSchema)
 
-
 /* ***************************************************************************************** */
-module.exports = {
-  User: UserModel,
-}
+// module.exports = {
+//   User: UserModel,
+// }
+module.exports = UserModel

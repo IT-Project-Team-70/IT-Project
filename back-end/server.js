@@ -1,97 +1,97 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const morgan = require("morgan");
-const mongoose = require("mongoose");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const cors = require("cors");
-const authRouter = require("./route/auth.js");
-const passport = require("passport");
-const flash = require("express-flash");
-const https = require("https")
-const fs = require("fs")
-const app = express();
-require("./passport");
-app.use(flash());
+const morgan = require('morgan')
+const dotenv = require('dotenv')
+const https = require('https')
+const fs = require('fs')
 
+// Experss
+const express = require('express')
+const session = require('express-session')
+const flash = require('express-flash')
+const passport = require('passport')
+require('./passport')
+
+// Databse
+const mongoDB = require('./model')
+const MongoStore = require('connect-mongo')
+const cors = require('cors')
+
+// Routers
+const authRouter = require('./route/auth.js')
+const landingRouter = require('./route/landing.js')
+const personalKitchenRouter = require('./route/personalKitchen.js')
+const everyoneKitchenRouter = require('./route/everyoneKitchen.js')
+const testingRouter = require('./route/testing.js')
+
+// ******************************************************************************************** //
+// Initialize the app
+const app = express()
+dotenv.config()
+if (app.get('env') === 'development') {
+  app.use(morgan('tiny'))
+  console.log('Env: Develop Model -- Morgan is enabled ... ')
+}
+
+// Declare Middlewares for the app
+app.use(flash())
 app.use(
   cors({
-    origin: ["https://localhost:3000"],
+    origin: ['https://localhost:3000'],
     credentials: true,
-    sameSite: "none",
+    sameSite: 'none',
   })
-);
-
-
-dotenv.config();
-
-// Declare the middleware for the app
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+)
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+// app.use(express.static(__dirname + '/public'))
 //create a session
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
     credentials: true,
-    name: "sid",
+    name: 'sid',
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.DATABASE,
     }),
     cookie: {
-      secure: process.env.ENVIRONMENT === "production", //if secure is true => only transmit over HTTPS
+      secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
-);
+)
+app.use(passport.initialize())
+app.use(passport.authenticate('session'))
 
-app.use(passport.initialize());
-app.use(passport.authenticate("session"));
+// ******************************************************************************************** //
+// Add routers to the app
+app.use(authRouter)
+app.use('/', landingRouter)
+app.use('/home', landingRouter)
+app.use('/personalKitchen', personalKitchenRouter)
+app.use('/forum', everyoneKitchenRouter)
+app.use('/testing', testingRouter)
 
-//add authentication routes to the app
-app.use(authRouter);
+app.all('*', (req, res) => {
+  // render the 404 page
+  res.status(404).send('404 Not Found')
+})
 
-// app.use(express.static(__dirname + '/public'))
-if (app.get("env") === "development") {
-  app.use(morgan("tiny"));
-  console.log("Env: Develop Model -- Morgan is enabled ... ");
-}
-
-//loading environment variable
-const port = process.env.PORT;
-const database = process.env.DATABASE;
-
-//connect to mongo database from environment variable
-mongoose
-  .connect(database, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    // dbName: ''
-  })
-  .then(() => console.log("database is connected"));
-
-// Event handlers for the connection
-const db = mongoose.connection;
-db.on("error", (err) => {
-  console.log(err);
-  process.exit(1);
-});
-db.once("open", () => {
-  console.log(`Mongo connection started on ${db.host}: ${db.port}`);
-});
-
+// ******************************************************************************************** //
 // Start the server & listen for requests
-app.set("port", port);
+const port = process.env.PORT
+app.set('port', port)
 
 //configure https
-https.createServer({
-  key: fs.readFileSync('../security/DontForgetUrRecipe.key'),
-  cert: fs.readFileSync('../security/DontForgetUrRecipe.crt'),
-  rejectUnauthorized: false,
-  
-},
-app).listen(port || 3000, () => {
-  console.log(`Ther server is running on ${port}`);
-});
+https
+  .createServer(
+    {
+      key: fs.readFileSync('../security/DontForgetUrRecipe.key'),
+      cert: fs.readFileSync('../security/DontForgetUrRecipe.crt'),
+      rejectUnauthorized: false,
+    },
+    app
+  )
+  .listen(port || 8080, () => {
+    console.log(`Ther server is running on ${port}`)
+  })

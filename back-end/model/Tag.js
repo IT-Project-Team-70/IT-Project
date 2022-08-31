@@ -34,7 +34,4 @@ async function createNewTag(tag) {
 
 /* ***************************************************************************************** */
 
-module.exports = {
-  Tag: TagModel,
-  createNewTag,
-}
+module.exports = TagModel
