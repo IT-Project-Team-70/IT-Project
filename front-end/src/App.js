@@ -4,6 +4,7 @@ import { RouteItems } from './routes/routeItems'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import AppLayout from './containers/appLayout/index'
 import AxiosV1 from './api/axiosV1'
+import '../src/css/index.scss'
 
 function App() {
   // AxiosV1 setting

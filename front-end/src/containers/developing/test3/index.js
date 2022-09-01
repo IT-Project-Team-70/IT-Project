@@ -1,8 +1,8 @@
 import React from 'react'
-import ForgotPassword from '../../forgotPassword'
+import Form from './uploadRecipe'
 
 const Test2 = (props) => {
-  return <ForgotPassword />
+  return <Form />
 }
 
 Test2.propTypes = {}
