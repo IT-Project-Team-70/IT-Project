@@ -8,7 +8,7 @@ import RecipeDetail from './recipeDetail'
 import Ingredient from './ingredient'
 import Procedure from './procedure'
 
-const Form = () => {
+const UploadRecipe = () => {
   const [noneInputData, setNoneInputData] = useState({})
   const [procedureError, setProcedureError] = useState(false)
   const handleSubmit = (event) => {
@@ -98,4 +98,4 @@ const Form = () => {
   )
 }
 
-export default Form
+export default UploadRecipe

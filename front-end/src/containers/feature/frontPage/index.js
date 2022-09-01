@@ -9,6 +9,7 @@ import foodImage from './FoodImage.webp'
 
 const FrontPage = (props) => {
   const theme = useTheme()
+
   return (
     <ThemeProvider theme={theme}>
       <Box>

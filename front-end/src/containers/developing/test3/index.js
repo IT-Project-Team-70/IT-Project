@@ -1,5 +1,5 @@
 import React from 'react'
-import Form from './uploadRecipe'
+import Form from '../../feature/personalKitchen/uploadRecipe'
 
 const Test2 = (props) => {
   return <Form />

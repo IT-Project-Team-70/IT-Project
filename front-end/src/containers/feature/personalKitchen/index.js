@@ -1,9 +1,6 @@
-/* eslint-disable prettier/prettier */
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import Drawer from '@mui/material/Drawer'
-import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
 import ListItem from '@mui/material/ListItem'
@@ -16,74 +13,59 @@ import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined'
 import { ThemeProvider } from '@mui/material'
 import useTheme from '../../../css/muiTheme/index'
 import RecipeCard from '../../recipe/recipeCard'
-
-const drawerWidth = 240
+import { useHistory } from 'react-router-dom'
+import { UPLOAD_RECIPE } from '../../../routes/routeConstant'
 
 const PersonalKitchen = (props) => {
+  const history = useHistory()
   const theme = useTheme()
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ height:'inherit', overflowY:'auto' }}>
-      <Box sx={{ display: 'flex' }}>
-        <Drawer
-          variant="permanent"
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {
-              width: drawerWidth,
-              boxSizing: 'border-box',
-            },
-            zIndex: -1,
-          }}
-        >
-          <Toolbar />
-          <Box sx={{ overflow: 'auto' }}>
-            <List>
-              {['My Recipes', 'Favourites'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      {index % 2 === 0 ? <MenuBookIcon /> : <FastfoodIcon />}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
+      <Box sx={{ display: 'flex', height: 'inherit' }}>
+        <Box>
+          <List sx={{ width: '240px' }}>
+            {['My Recipes', 'Favourites'].map((text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <MenuBookIcon /> : <FastfoodIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
             <Divider />
-            <List>
-              {['New Recipe'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <AddCircleOutlinedIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => history.push(UPLOAD_RECIPE)}>
+                <ListItemIcon>
+                  <AddCircleOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary={'New Recipe'} />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
+        <Box sx={{ height: 'inherit', overflowY: 'auto' }}>
+          <Box sx={{ height: '100%' }}>
+            <Grid container gap={1}>
+              <Grid>
+                <RecipeCard />
+              </Grid>
+              <Grid>
+                <RecipeCard />
+              </Grid>
+              <Grid>
+                <RecipeCard />
+              </Grid>
+              <Grid>
+                <RecipeCard />
+              </Grid>
+              <Grid>
+                <RecipeCard />
+              </Grid>
+            </Grid>
           </Box>
-        </Drawer>
-          <Grid container gap={1}>
-            <Grid>
-              <RecipeCard/>
-            </Grid>
-            <Grid>
-              <RecipeCard/>
-            </Grid>
-            <Grid>
-              <RecipeCard/>
-            </Grid>
-            <Grid>
-              <RecipeCard/>
-            </Grid>
-            <Grid>
-              <RecipeCard/>
-            </Grid>
-          </Grid>
-      </Box>
+        </Box>
       </Box>
     </ThemeProvider>
   )
