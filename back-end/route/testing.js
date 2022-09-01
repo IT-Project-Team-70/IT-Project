@@ -5,38 +5,52 @@ const router = express.Router()
 
 const User = require('../model/user')
 const Recipe = require('../model/recipe')
-const pkController = require('../controller/personalKitchenController')
+// const pkController = require('../controller/personalKitchenController')
+const recipeController = require('../controller/recipeController')
 const userController = require('../controller/userController')
 
-router.get('/', (req, res) => {
+router.get('/getRecipes', (req, res) => {
   console.log('reached testing route 1: getting all recipes ...\n')
-  console.log(pkController.getAllRecipes())
+  console.log(recipeController.getAllRecipes())
   return res.status(200).send('Hello World!')
 })
 
-router.get('/tag', (req, res) => {
+router.get('/getTags', (req, res) => {
   console.log('reached testing route: getting all tags ...\n')
-  console.log(pkController.getAllTags())
+  console.log(recipeController.getAllTags())
   return res.status(200).send('Hello World!') //send(req.passport.session.user)
 })
 
-router.post('/', (req, res) => {
-  console.log('reached testing router 2: creating a new recipes ...\n')
+router.post('/newRecipe', (req, res) => {
+  console.log('reached testing route: creating a new recipes ...\n')
   console.log(req.body)
 
-  pkController.createNewRecipe(req.body) // catch error
+  recipeController.createNewRecipe(req.body)
+  // catch error
+  return res.status(200).send('Hello World!')
+})
+
+router.post('/newTag/:isCourse', (req, res) => {
+  console.log('reached testing route: creating a new tag ...\n')
+  console.log(req.body)
+
+  recipeController.createNewTagAdmi(req.body, req.params.isCourse)
   return res.status(200).send('Hello World!')
 })
 
 module.exports = router
 
-// const recipe = {
-//   title: 'Test Recipe',
-//   source: { type: 'website', content: 'www.test.com' },
-//   course: { name: 'Main' },
-//   description: 'This is a test recipe',
-//   prepTime: { hours: 0, minutes: 0 },
-//   serveSize: 1,
-//   ingredients: [{ name: 'garlic', quantity: '1', unit: 'piece' }],
-//   instructions: 'This is a test cooking instruction',
-// }
+/* ***************************************************************************************** */
+// example of recipe, copy this for testing post request
+const recipe = {
+  title: 'Test Recipe 2',
+  source: { type: 'website', content: 'www.test.com' },
+  courseList: ['630f7fae68ff4782b343a551'],
+  description: 'This is a test recipe',
+  prepTime: { hours: 0, minutes: 0 },
+  serveSize: 1,
+  ingredients: [{ name: 'garlic', quantity: '1', unit: 'piece' }],
+  instructions: 'This is a test cooking instruction',
+}
+
+// remember to check course to be empty and assigned to 'all'

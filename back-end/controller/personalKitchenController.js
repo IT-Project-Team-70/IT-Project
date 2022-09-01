@@ -1,88 +1,42 @@
-const Recipe = require('../model/recipe')
-const Tag = require('../model/tag')
+const recipeController = require('../controller/recipeController')
 
-// get all tags
-async function getAllTags() {
-  const tags = await Tag.find({})
-  return tags
+function getPersonalKitchen() {
+  const allRecipes = recipeController.getAllRecipes()
+  const allTags = recipeController.getAllTags()
+  const courseTag = recipeController.getCourseTag()
+  return { recipes: allRecipes, tags: allTags, courses: courseTag }
 }
 
-// Create a new recipe
-async function createNewRecipe(recipe) {
-  try {
-    // create recipe and validate
-    const newRecipe = new Recipe(recipe)
-    const { error } = newRecipe.joiValidate(recipe)
-    if (error) {
-      throw new Error(error.details[0].message)
-    }
-    // save the recipe into the database
-    const result = await newRecipe.save()
-    return result
-  } catch (err) {
-    console.log(err)
-    throw new Error(err)
-  }
+function getOneRecipeById(id) {
+  const recipe = recipeController.getRecipeById(id)
+  return recipe
 }
 
-// Get all recipes
-async function getAllRecipes() {
-  try {
-    const result = await Recipe.find()
-    return result
-  } catch (err) {
-    console.log(err)
-    throw new Error(err)
-  }
+function registerNewRecipe(recipe) {
+  const newRecipe = recipeController.createNewRecipe(recipe)
+  return newRecipe
 }
 
-async function getRecipeById(id) {
-  try {
-    const result = await Recipe.findById(id)
-    return result
-  } catch (err) {
-    console.log(err)
-    throw new Error(err)
-  }
+function editOldRecipe(id, recipe) {
+  const updatedRecipe = recipeController.updateRecipe(id, recipe)
+  return updatedRecipe
 }
 
-async function getRecipeByTag(tag) {}
-
-// Update a recipe
-async function updateRecipe(id, recipe) {
-  const { error } = recipe.joiValidate()
-  if (error) {
-    throw new Error(error.details[0].message)
-    return error
-  }
-
-  try {
-    const result = await Recipe.findByIdAndUpdate(id, recipe, {
-      new: true,
-    })
-    return result
-  } catch (err) {
-    console.log(err)
-    throw new Error(err)
-  }
+function tagOldRecipe(id, recipe) {
+  const taggedRecipe = recipeController.tagRecipe(id, recipe)
+  return taggedRecipe
 }
 
-// Delete a recipe
-async function deleteRecipe(id) {
-  try {
-    const result = await Recipe.findByIdAndDelete(id)
-    return result
-  } catch (err) {
-    console.log(err)
-    throw new Error(err)
-  }
+function deleteOldRecipe(id) {
+  const recipe = recipeController.deleteRecipe(id)
+  return recipe
 }
 
 module.exports = {
-  getAllTags,
-  createNewRecipe,
-  getAllRecipes,
-  getRecipeById,
-  updateRecipe,
-  deleteRecipe,
+  getPersonalKitchen,
+  getOneRecipeById,
+  editOldRecipe,
+  tagOldRecipe,
+  registerNewRecipe,
+  deleteOldRecipe,
 }

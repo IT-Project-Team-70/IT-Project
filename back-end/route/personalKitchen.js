@@ -11,28 +11,53 @@ router.get('/', (req, res) => {
   return res.status(200).send(req.passport.session.user)
 })
 
-router.get('/personal-kitchen', (req, res) => {})
-router.get('personal-kitchen/home', (req, res) => {})
-router.get('/personal-kitchen/:id', (req, res) => {})
+router.get('/personalKitchen', (req, res) => {
+  const pageData = pkController.getPersonalKitchen()
+  return res.status(200).send(pageData)
+})
+router.get('personalKitchen/home', (req, res) => {
+  // redirect to personal Kitchen dashboard
+  res.redirect('/personalKitchen')
+})
 
-router.get('/personal-kitchen/category', (req, res) => {})
-router.get('/personal-kitchen/category/:id', (req, res) => {})
+router.get('/personalKitchen/:id', (req, res) => {
+  const recipe = pkController.getOneRecipeById(req.params.id)
+  if (recipe === null) {
+    return res.status(404).send('Recipe not found')
+  }
+  return res.status(200).send(recipe)
+})
 
-router.get('/personal-kitchen/favorite', (req, res) => {})
-router.get('/personal-kitchen/favorite/:id', (req, res) => {})
+router.get('/personalKitchen/category', (req, res) => {})
+router.get('/personalKitchen/category/:id', (req, res) => {})
 
-// editing old recipes
-router.post('/personal-kitchen/:id', (req, res) => {})
+router.get('/personalKitchen/favorite', (req, res) => {})
+router.get('/personalKitchen/favorite/:id', (req, res) => {})
+
 // post a new recipe into the database
-router.post('/personal-kitchen/new-recipe', (req, res) => {})
+router.post('/personalKitchen/newRecipe', (req, res) => {
+  const newRecipe = pkController.registerNewRecipe(req.body)
+  return res.status(200).send(newRecipe)
+})
+// editing old recipes
+router.post('/personalKitchen/oldRecipe/:id', (req, res) => {
+  const updatedRecipe = pkController.editOldRecipe(req.params.id, req.body)
+  return res.status(200).send(updatedRecipe)
+})
 // change recipe tags, move into another category
 router.post(
-  '/personal-kitchen/tag-recipe/:id',
+  '/personalKitchen/tagRecipe/:id',
   // isAuthenticated,
   (req, res) => {}
 )
 
 // delete a recipe from the database
-router.delete('/personal-kitchen/:id', (req, res) => {})
+router.delete('/personalKitchen/:id', (req, res) => {
+  const recipe = pkController.deleteOldRecipe(req.params.id)
+  if (recipe === null) {
+    return res.status(404).send('Recipe not found')
+  }
+  return res.status(200).send(recipe)
+})
 
 module.exports = router

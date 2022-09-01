@@ -1,67 +1,44 @@
-const Joi = require('joi')
-// const { default: mongoose } = require('mongoose')
+const Joi = require('joi-oid')
 
 /* ***************************************************************************************** */
 
-function validateRecipe(recipe) {
-  const schema = Joi.object().keys({
-    title: Joi.string().min(1).max(50).required(),
-    source: Joi.object().required(),
-    tagList: Joi.array().items(Joi.string()),
-    // course: Joi.object().keys({
-    //   name: Joi.string().valid(
-    //     'Appetizer',
-    //     'Main',
-    //     'Side',
-    //     'Dessert',
-    //     'Other',
-    //     'Breakfast',
-    //     'Lunch',
-    //     'Dinner',
-    //     'All'
-    //   ),
-    // })
-    // .required(),
-    image: Joi.object(),
-    description: Joi.string().min(1).max(255).required(),
-    notes: Joi.string().min(1).max(255),
-    prepTime: Joi.object().required(),
-    serveSize: Joi.number().required(),
-    ingredients: Joi.array()
-      .items(
-        Joi.object().keys({
-          name: Joi.string().min(1).max(255).required(),
-          quantity: Joi.string().min(1).max(255).required(),
-          unit: Joi.string().min(1).max(255).required(),
-        })
-      )
-      .required(),
-    instructions: Joi.string().min(1).max(255).required(),
-  })
+let userSchema = Joi.object().keys({
+  username: Joi.string().min(1).max(50).required(),
+  // password: Joi.string().min(1).max(255).required(),
+  email: Joi.string().min(1).max(255).required(),
+})
 
-  return schema.validate(recipe)
-}
+let tagSchema = Joi.object().keys({
+  name: Joi.string().min(1).max(25).required(),
+  isCourse: Joi.boolean().required(),
+  userCreated: Joi.boolean().required(),
+})
 
-function validateUser(user) {
-  const schema = Joi.object().keys({
-    username: Joi.string().min(1).max(50).required(),
-    // password: Joi.string().min(1).max(255).required(),
-    email: Joi.string().min(1).max(255).required(),
-  })
+let ingredientSchema = Joi.object().keys({
+  name: Joi.string().min(1).max(255).required(),
+  quantity: Joi.string().min(1).max(255).required(),
+  unit: Joi.string().min(1).max(255).required(),
+})
 
-  return schema.validate(user)
-}
+let recipeSchema = Joi.object().keys({
+  title: Joi.string().min(1).max(50).required(),
+  source: Joi.object().required(),
+  tagList: Joi.array().items(Joi.objectId()).default([]),
+  courseList: Joi.array().items(Joi.objectId()).required(),
+  // image: Joi.object(),
+  description: Joi.string().min(1).max(255).required(),
+  notes: Joi.string().min(0).max(255),
+  prepTime: Joi.object().required(),
+  serveSize: Joi.number().required(),
+  ingredients: Joi.array().items(ingredientSchema).required(),
+  instructions: Joi.string().min(1).max(255).required(),
+  steps: Joi.array(),
+})
 
-function validateTage(tag) {
-  const schema = Joi.object().keys({
-    name: Joi.string().min(1).max(25).required(),
-  })
-
-  return schema.validate(tag)
-}
+/* ***************************************************************************************** */
 
 module.exports = {
-  validateRecipe,
-  validateUser,
-  validateTage,
+  validateUser: (user) => userSchema.validate(user),
+  validateTage: (tag) => tagSchema.validate(tag),
+  validateRecipe: (recipe) => recipeSchema.validate(recipe),
 }

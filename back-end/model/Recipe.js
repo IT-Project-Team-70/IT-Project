@@ -34,35 +34,26 @@ const recipeSchema = new mongoose.Schema({
   title: { type: String, required: true, minlength: 1, maxlength: 50 },
   source: { type: sourceSchema, required: true },
 
-  tagList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
-  // course: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Tag',
-  //   required: true,
-  //   enum: [
-  //     { name: 'Appetizer' },
-  //     { name: 'Main' },
-  //     { name: 'Side' },
-  //     { name: 'Dessert' },
-  //     { name: 'Other' },
-  //     { name: 'Breakfast' },
-  //     { name: 'Lunch' },
-  //     { name: 'Dinner' },
-  //     { name: 'All' },
-  //   ],
-  //   default: { name: 'All' },
-  // },
+  tagList: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
+    default: [],
+  },
+  courseList: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
+    required: true,
+    // default: [Tag.findOne({ name: 'all' })._id],
+  },
 
   image: { type: imageSchema },
   description: { type: String, required: true, minlength: 1, maxlength: 255 },
-  notes: { type: String, minlength: 1, maxlength: 255 },
+  notes: { type: String, minlength: 0, maxlength: 255, default: '' },
 
   prepTime: { type: prepTimeSchema, required: true },
   serveSize: { type: Number, required: true },
   ingredients: { type: [ingredientSchema], required: true },
 
   instructions: { type: String, required: true, minlength: 1, maxlength: 255 },
-  steps: { type: [stepsSchema] },
+  steps: { type: [stepsSchema], default: [] },
 })
 
 recipeSchema.methods.joiValidate = function (recipe) {
@@ -74,3 +65,15 @@ const RecipeModel = mongoose.model('Recipe', recipeSchema)
 /* ***************************************************************************************** */
 
 module.exports = RecipeModel
+
+// enum: [
+//   { name: 'Appetizer' },
+//   { name: 'Main' },
+//   { name: 'Side' },
+//   { name: 'Dessert' },
+//   { name: 'Other' },
+//   { name: 'Breakfast' },
+//   { name: 'Lunch' },
+//   { name: 'Dinner' },
+//   { name: 'All' },
+// ],
