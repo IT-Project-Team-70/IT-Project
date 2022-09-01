@@ -11,7 +11,7 @@ export default function FolderCard(props) {
   const theme = useTheme()
   return (
     <ThemeProvider theme={theme}>
-      <Card sx={{ maxWidth: 380, bgcolor: 'primary.main' }}>
+      <Card sx={{ width: 380, bgcolor: 'primary.main', flexShrink: 0 }}>
         <CardMedia
           component="img"
           height="350"

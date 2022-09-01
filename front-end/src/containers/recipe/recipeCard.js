@@ -16,7 +16,7 @@ import placeholderImage from './PlaceholderImage.png'
 
 export default function RecipeCard(props) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, flexShrink: 0 }}>
       {props.hideAuthor || (
         <CardHeader
           avatar={
