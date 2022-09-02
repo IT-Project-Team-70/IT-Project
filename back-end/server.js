@@ -28,6 +28,8 @@ dotenv.config({ path: '../.env' });
 // Declare the middleware for the app
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('./front-end/build'));
+
 
 //create a session
 app.use(
@@ -59,10 +61,12 @@ if (app.get("env") === "development") {
   console.log("Env: Develop Model -- Morgan is enabled ... ");
 }
 
-console.log("test",process.env.ENV)
 //loading environment variable
 const port = process.env.PORT;
 const database = process.env.DATABASE;
+
+
+
 
 //connect to mongo database from environment variable
 mongoose
@@ -86,6 +90,7 @@ db.once("open", () => {
 // Start the server & listen for requests
 app.set("port", port);
 
+
 //configure https
 https.createServer({
   key: fs.readFileSync('../security/DontForgetUrRecipe.key'),
@@ -95,4 +100,10 @@ https.createServer({
 },
 app).listen(port || 3000, () => {
   console.log(`Ther server is running on ${port}`);
+});
+
+console.log('../front-end/build/index.html')
+// Handle React routing, return all requests to React app
+app.get('/', function(req, res) {
+  res.sendFile("/../../front-end/build/index.html");
 });
