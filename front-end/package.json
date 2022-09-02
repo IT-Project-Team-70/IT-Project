@@ -43,8 +43,8 @@
     "webpack": "^5.74.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "cross-env NODE_ENV=production react-scripts build",
+    "start": "cross-env NODE_ENV=production REACT_APP_TEST_MODE=ON react-scripts start",
+    "build": "cross-env NODE_ENV=production REACT_APP_TEST_MODE=OFF react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -64,5 +64,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
