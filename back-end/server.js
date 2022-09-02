@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require('path');
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
@@ -28,7 +29,7 @@ dotenv.config({ path: '../.env' });
 // Declare the middleware for the app
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('../front-end/build'));
+app.use(express.static(path.join(__dirname +'/../front-end/build')));
 
 
 //create a session
@@ -93,8 +94,8 @@ app.set("port", port);
 
 //configure https
 https.createServer({
-  key: fs.readFileSync('../security/DontForgetUrRecipe.key'),
-  cert: fs.readFileSync('../security/DontForgetUrRecipe.crt'),
+  key: fs.readFileSync(path.join(__dirname +'/../security/DontForgetUrRecipe.key')),
+  cert: fs.readFileSync(path.join(__dirname +'/../security/DontForgetUrRecipe.crt')),
   rejectUnauthorized: false,
   
 },
