@@ -59,6 +59,7 @@ if (app.get("env") === "development") {
   console.log("Env: Develop Model -- Morgan is enabled ... ");
 }
 
+console.log("test",process.env)
 //loading environment variable
 const port = process.env.PORT;
 const database = process.env.DATABASE;
