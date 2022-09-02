@@ -7,6 +7,7 @@ import AxiosV1 from './api/axiosV1'
 import '../src/css/index.scss'
 
 function App() {
+  console.log('NODE_ENV', process.env)
   // AxiosV1 setting
   AxiosV1.interceptors.response
     .use

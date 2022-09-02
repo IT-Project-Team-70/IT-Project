@@ -58,19 +58,25 @@ const RouteItems = [
     name: 'Test 1',
     path: TEST_1,
     component: Test1,
-    authority: process.env.NODE_ENV === 'development',
+    authority:
+      process.env.NODE_ENV &&
+      (process.env.REACT_APP_TEST_MODE === 'ON') === 'development',
   },
   {
     name: 'Test 2',
     path: TEST_2,
     component: Test2,
-    authority: process.env.NODE_ENV === 'development',
+    authority:
+      process.env.NODE_ENV &&
+      (process.env.REACT_APP_TEST_MODE === 'ON') === 'development',
   },
   {
     name: 'Test 3',
     path: TEST_3,
     component: Test3,
-    authority: process.env.NODE_ENV === 'development',
+    authority:
+      process.env.NODE_ENV &&
+      (process.env.REACT_APP_TEST_MODE === 'ON') === 'development',
   },
 ]
 
