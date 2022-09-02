@@ -6,7 +6,7 @@
   "scripts": {
     "server": "cd back-end && npm install  && npm start ",
     "client": "cd front-end && yarn herokuDeploy",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "npm run client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "npm run dev",
     "start": "npm run server"
