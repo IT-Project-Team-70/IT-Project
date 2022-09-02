@@ -9,6 +9,7 @@ const cors = require("cors");
 const authRouter = require("./route/auth.js");
 const passport = require("passport");
 const flash = require("express-flash");
+const http = require("http")
 const https = require("https")
 const fs = require("fs")
 const app = express();
@@ -93,12 +94,12 @@ app.set("port", port);
 
 
 //configure https
-https.createServer({
+const server = process.env.ENVIRONMENT === "production"?server = http.createServer(app):  https.createServer({
   key: fs.readFileSync(path.join(__dirname +'/../security/DontForgetUrRecipe.key')),
   cert: fs.readFileSync(path.join(__dirname +'/../security/DontForgetUrRecipe.crt')),
   rejectUnauthorized: false,
-  
 },
-app).listen(port || 3000, () => {
+app)
+server.listen(port || 3000, () => {
   console.log(`Ther server is running on ${port}`);
 });
