@@ -23,7 +23,7 @@ app.use(
 );
 
 
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
 // Declare the middleware for the app
 app.use(express.json());
@@ -59,7 +59,7 @@ if (app.get("env") === "development") {
   console.log("Env: Develop Model -- Morgan is enabled ... ");
 }
 
-console.log("test",process.env)
+console.log("test",process.env.ENV)
 //loading environment variable
 const port = process.env.PORT;
 const database = process.env.DATABASE;
