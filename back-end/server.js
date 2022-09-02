@@ -101,9 +101,3 @@ https.createServer({
 app).listen(port || 3000, () => {
   console.log(`Ther server is running on ${port}`);
 });
-
-console.log('../front-end/build/index.html')
-// Handle React routing, return all requests to React app
-app.get('/', function(req, res) {
-  res.sendFile("/../../front-end/build/index.html");
-});
