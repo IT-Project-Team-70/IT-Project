@@ -48,7 +48,8 @@
     "build": "cross-env NODE_ENV=production REACT_APP_TEST_MODE=OFF react-scripts build",
     "start": "HTTPS=true SSL_CRT_FILE=../security/DontForgetUrRecipe.crt SSL_KEY_FILE=../security/DontForgetUrRecipe.key cross-env NODE_ENV=production REACT_APP_TEST_MODE=ON react-scripts start",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "herokuDeploy":"cross-env REACT_APP_TEST_MODE=OFF && yarn install && cross-env NODE_ENV=production REACT_APP_TEST_MODE=OFF react-scripts start"
   },
   "eslintConfig": {
     "extends": [
