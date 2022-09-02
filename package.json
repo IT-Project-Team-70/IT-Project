@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Harry-Guanqin-Wang/IT-Project#readme",
   "dependencies": {
-    "concurrently": "^7.3.0"
+    "concurrently": "^7.3.0",
+    "heroku": "^7.63.0"
   }
 }
