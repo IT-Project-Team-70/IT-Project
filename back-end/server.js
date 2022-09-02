@@ -28,7 +28,7 @@ dotenv.config({ path: '../.env' });
 // Declare the middleware for the app
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('./front-end/build'));
+app.use(express.static('../front-end/build'));
 
 
 //create a session

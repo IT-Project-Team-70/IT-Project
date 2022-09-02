@@ -1,5 +1,6 @@
 {
   "name": "front-end",
+  "proxy":"https://localhost:8000/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -49,7 +50,7 @@
     "start": "HTTPS=true SSL_CRT_FILE=../security/DontForgetUrRecipe.crt SSL_KEY_FILE=../security/DontForgetUrRecipe.key cross-env NODE_ENV=production REACT_APP_TEST_MODE=ON react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "herokuDeploy":"yarn install && cross-env REACT_APP_TEST_MODE=OFF REACT_APP_TEST_MODE=OFF PORT=3000 react-scripts build"
+    "herokuDeploy":"yarn install && cross-env REACT_APP_TEST_MODE=OFF REACT_APP_TEST_MODE=OFF && yarn build"
   },
   "eslintConfig": {
     "extends": [
