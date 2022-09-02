@@ -3,8 +3,8 @@ require('../passport.js')
 const crypto = require('crypto')
 
 const authHelper = require('../helper/auth')
-const Token = require('../model/Token')
-const User = require('../model/user')
+const Token = require('../models/Token')
+const User = require('../models/user')
 
 const loginSuccess = (req, res, next) => {
   console.log(req.session)

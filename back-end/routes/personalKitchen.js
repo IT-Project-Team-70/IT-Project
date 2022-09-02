@@ -3,7 +3,7 @@ const router = express.Router()
 
 // const { hasRole } = require('../helper/auth')
 
-const pkController = require('../controller/personalKitchenController')
+const pkController = require('../controllers/personalKitchenController')
 
 /* ********************************************************************************************* */
 router.get('/', (req, res) => {

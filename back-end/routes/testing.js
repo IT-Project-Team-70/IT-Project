@@ -3,11 +3,9 @@ const router = express.Router()
 
 // const { isAuthenticated, hasRole } = require('../helper/auth')
 
-const User = require('../model/user')
-const Recipe = require('../model/recipe')
-// const pkController = require('../controller/personalKitchenController')
-const recipeController = require('../controller/recipeController')
-const userController = require('../controller/userController')
+// const pkController = require('../controllers/personalKitchenController')
+const recipeController = require('../controllers/recipeController')
+const userController = require('../controllers/userController')
 
 router.get('/getRecipes', (req, res) => {
   console.log('reached testing route 1: getting all recipes ...\n')

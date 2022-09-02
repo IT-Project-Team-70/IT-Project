@@ -3,6 +3,6 @@ const router = express.Router()
 
 // const { isAuthenticated, hasRole } = require('../helper/auth')
 
-const ekController = require('../controller/everyoneKitchenController')
+const ekController = require('../controllers/everyoneKitchenController')
 
 module.exports = router

@@ -1,5 +1,5 @@
-const Recipe = require('../model/recipe')
-const Tag = require('../model/tag')
+const Recipe = require('../models/recipe')
+const Tag = require('../models/tag')
 
 // get all tags
 async function getAllTags() {

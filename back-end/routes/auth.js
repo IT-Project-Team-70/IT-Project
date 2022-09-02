@@ -6,9 +6,9 @@ const crypto = require('crypto')
 require('../passport')
 
 const authHelper = require('../helper/auth')
-const Token = require('../model/Token')
-const User = require('../model/user') // to be moved to the controller
-// const authController = require('../controller/authController')
+const Token = require('../models/Token')
+const User = require('../models/user') // to be moved to the controller
+// const authController = require('../controllers/authController')
 
 //handle the login request
 app.post(
