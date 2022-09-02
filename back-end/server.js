@@ -94,7 +94,7 @@ app.set("port", port);
 
 
 //configure https
-const server = process.env.ENVIRONMENT === "production"?server = http.createServer(app);
+const server = http.createServer(app);
 server.listen(port || 3000, () => {
   console.log(`Ther server is running on ${port}`);
 });
