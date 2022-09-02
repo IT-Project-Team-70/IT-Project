@@ -5,6 +5,7 @@ import {
   TEST_1,
   TEST_2,
   TEST_3,
+  UPLOAD_RECIPE,
   // RESET_PASSWORD,
 } from './routeConstant'
 
@@ -15,6 +16,7 @@ import {
 } from '../containers/feature'
 
 import { Test1, Test2, Test3 } from '../containers/developing'
+import UploadRecipe from '../containers/feature/personalKitchen/uploadRecipe'
 
 const RouteItems = [
   {
@@ -37,6 +39,13 @@ const RouteItems = [
     component: PersonalKitchen,
     exact: true,
     authority: true,
+  },
+  {
+    name: 'Upload Recipe',
+    path: UPLOAD_RECIPE,
+    component: UploadRecipe,
+    exact: true,
+    authority: false,
   },
   // {
   //   name: 'ResetPassword',
