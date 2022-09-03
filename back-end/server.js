@@ -11,7 +11,7 @@ const passport = require('passport')
 require('./passport')
 
 // Databse
-const mongoDB = require('./model')
+const mongoDB = require('./models')
 const MongoStore = require('connect-mongo')
 const cors = require('cors')
 

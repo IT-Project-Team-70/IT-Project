@@ -17,29 +17,27 @@ const loginFailure = (req, res, next) => {
 }
 
 const registerHandler = async (req, res) => {
-  const password = req.body.password
+  try{
+    const password = req.body.password
   const username = req.body.username
   const email = req.body.email
   //generate a hash and a salt from the given password
   const saltHash = authHelper.genPassword(password)
   // verify your email to log in successfully
   //register a new user account
-  const newUser = new User({
+  let newUser = new User({
     email: email,
     salt: saltHash.salt,
     hash: saltHash.hash,
     username: username,
   })
-  await newUser
-    .save()
-    .then((user) => {
-      console.log(user)
-      res.status(200).send('Register successfully')
-    })
-    .catch((err) => {
-      console.log(err)
-      res.status(500).send('Errors while registering')
-    })
+  let user = await newUser.save()
+  res.status(200).send('Register successfully')
+  }
+  catch(err){
+    throw new Error(err)
+    res.status(500).send('Errors while registering')
+  }
 }
 
 const logoutHandler = (req, res, next) => {

@@ -1,4 +1,4 @@
-const recipeController = require('../controller/recipeController')
+const recipeController = require('./recipeController')
 
 function getPersonalKitchen() {
   const allRecipes = recipeController.getAllRecipes()
