@@ -1,9 +1,9 @@
 const passport = require('passport')
-require('../passport.js')
 const crypto = require('crypto')
 const authHelper = require('../helper/authHelper')
 const Token = require('../models/token')
 const User = require('../models/user')
+require('../passport')
 
 function loginSuccess (req, res, next){
   //redirect to personal working space

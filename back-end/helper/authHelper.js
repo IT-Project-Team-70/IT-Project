@@ -48,7 +48,7 @@ async function sendEmail(email, userId, token) {
     await transporter.sendMail(message)
     console.log('send email successfully')
   } catch (err) {
-    console.log(err, 'email not sent ')
+    throw new Error(err)
   }
 }
 
