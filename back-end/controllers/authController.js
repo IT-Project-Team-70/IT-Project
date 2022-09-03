@@ -1,24 +1,22 @@
 const passport = require('passport')
 require('../passport.js')
 const crypto = require('crypto')
-
-const authHelper = require('../helper/auth')
-const Token = require('../models/Token')
+const authHelper = require('../helper/authHelper')
+const Token = require('../models/token')
 const User = require('../models/user')
 
-const loginSuccess = (req, res, next) => {
-  console.log(req.session)
+function loginSuccess (req, res, next){
   //redirect to personal working space
   return res.status(200).send('You successfully logged in')
 }
 
-const loginFailure = (req, res, next) => {
+function loginFailure (req, res, next){
   return res.status(401).send('Either password or username is incorrect')
 }
 
-const registerHandler = async (req, res) => {
+async function registerHandler(req, res){
   try{
-    const password = req.body.password
+  const password = req.body.password
   const username = req.body.username
   const email = req.body.email
   //generate a hash and a salt from the given password
@@ -32,15 +30,15 @@ const registerHandler = async (req, res) => {
     username: username,
   })
   let user = await newUser.save()
-  res.status(200).send('Register successfully')
+  return res.status(200).send('Register successfully')
   }
   catch(err){
-    throw new Error(err)
     res.status(500).send('Errors while registering')
+    throw new Error(err)
   }
 }
 
-const logoutHandler = (req, res, next) => {
+function logoutHandler(req, res, next){
   req.logOut(function (err) {
     if (err) {
       return next(err)
@@ -57,8 +55,8 @@ const logoutHandler = (req, res, next) => {
   })
 }
 
-const resetPasswordHandler = async (req, res) => {
-  try {
+async function resetPasswordHandler(req, res){
+  try { 
     let token = await Token.findOne({ token: req.params.token })
     if (token == null) {
       req.flash('info', 'This token has been expired')
@@ -66,11 +64,12 @@ const resetPasswordHandler = async (req, res) => {
     }
     return res.status(200).send(token)
   } catch (err) {
-    return res.status(500).send('Errors while resetting password')
+    res.status(500).send('Errors while resetting password')
+    throw new Error(err)
   }
 }
 
-const updatePasswordHandler = async (req, res) => {
+async function updatePasswordHandler(req, res){
   try {
     const hashSalt = authHelper.genPassword(req.body.newPassword)
     const id = req.body.userId
@@ -79,11 +78,12 @@ const updatePasswordHandler = async (req, res) => {
     })
     return res.status(200).send(user)
   } catch (err) {
-    return res.status(500).send('Errors while updating password')
+    res.status(500).send('Errors while updating password')
+    throw new Error(err)
   }
 }
 
-const forgetPasswordHandler = async (req, res) => {
+async function forgetPasswordHandler(req, res){
   const email = req.body.email
   //find the email to check if it exists or not
   const user = await User.findOne({ email: email })

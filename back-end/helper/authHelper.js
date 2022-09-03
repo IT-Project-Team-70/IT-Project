@@ -41,7 +41,7 @@ async function sendEmail(email, userId, token) {
       to: email,
       subject: 'reset password',
       html:
-        '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br><a href = "https://localhost:8000/resetPasswordLink/' +
+        '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br><a href = "https://localhost:8000/resetPassword/' +
         authDetails +
         '">here</a>',
     }

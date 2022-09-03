@@ -7,7 +7,6 @@ async function getAllTags() {
     const result = await Tag.find()
     return result
   } catch (err) {
-    console.log(err)
     throw new Error(err)
   }
 }
@@ -17,7 +16,6 @@ async function getCourseTag() {
     const result = await Tag.findOne({ isCourse: true })
     return result
   } catch (err) {
-    console.log(err)
     throw new Error(err)
   }
 }
@@ -69,25 +67,24 @@ async function findTag(tag) {
     const result = await Tag.findOne({ name: tag.name })
     return result
   } catch (err) {
-    console.log(err)
     throw new Error(err)
   }
 }
 
 // Get all recipes
-async function getAllRecipes() {
+async function getAllRecipes(req, res) {
   try {
     const result = await Recipe.find()
-    return result
+    return res.status(200).send(result)
   } catch (err) {
-    console.log(err)
+    res.status(500).send("Get all Recipes unsuccessfully")
     throw new Error(err)
   }
 }
 
 async function tagRecipe(id, recipe) {}
 
-async function getRecipeById(id) {
+async function getRecipeById(req, res) {
   try {
     const result = await Recipe.findById(id)
     return result

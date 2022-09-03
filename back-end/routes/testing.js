@@ -4,7 +4,6 @@ const router = express.Router()
 // const { isAuthenticated, hasRole } = require('../helper/auth')
 
 // const pkController = require('../controllers/personalKitchenController')
-const recipeController = require('../controllers/recipeController')
 const userController = require('../controllers/userController')
 
 router.get('/getRecipes', (req, res) => {

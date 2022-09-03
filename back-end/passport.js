@@ -2,7 +2,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const User = require('./models/user')
-const authHelper = require('./helper/auth.js')
+const authHelper = require('./helper/authHelper.js')
 const session = require('express-session')
 const dotenv = require('dotenv')
 dotenv.config()

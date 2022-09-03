@@ -16,12 +16,12 @@ const MongoStore = require('connect-mongo')
 const cors = require('cors')
 
 // Routers
-const authRouter = require('./routes/auth.js')
+
 const landingRouter = require('./routes/landing.js')
 const personalKitchenRouter = require('./routes/personalKitchen.js')
 const everyoneKitchenRouter = require('./routes/everyoneKitchen.js')
 const testingRouter = require('./routes/testing.js')
-
+const authRouter = require('./routes/auth.js')
 // ******************************************************************************************** //
 // Initialize the app
 const app = express()

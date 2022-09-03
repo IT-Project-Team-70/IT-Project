@@ -7,18 +7,14 @@ async function registerNewUser(user) {
   //   throw new Error(error.details[0].message)
   //   return error
   // }
-
-  let existedUser = await UserModel.findOne({ email: user.email })
+  let existedUser = await User.findOne({ email: user.email })
   if (existedUser) {
     return err
   }
-
   try {
-    const newUser = new UserModel(user)
-    const result = await newUser.save()
-    return result
+    const newUser = new User(user).save()
+    return newUser
   } catch (err) {
-    console.log(err)
     throw new Error(err)
   }
 }
@@ -26,21 +22,20 @@ async function registerNewUser(user) {
 // retrieve user from database
 async function getUserByID(id) {
   try {
-    const user = await UserModel.findById(id)
+    const user = await User.findById(id)
     if (!user) {
       console.log('user not found')
       return null
     }
     return user
   } catch (err) {
-    console.log(err)
     // throw new Error(err)
   }
 }
 
 async function getUserByUsername(username) {
   try {
-    const user = await UserModel.findOne({ username: username })
+    const user = await User.findOne({ username: username })
     if (!user) {
       console.log('user not found')
       return null
@@ -56,7 +51,7 @@ async function getUserByUsername(username) {
 async function updateUser(id, user) {
   // validate user details here
   try {
-    const result = await UserModel.findByIdAndUpdate(id, user)
+    const result = await User.findByIdAndUpdate(id, user)
     return result
   } catch (err) {
     console.log(err)
