@@ -1,8 +1,8 @@
-import { handleBreakpoints } from '@mui/system';
+import React from 'react'
 import authAPI from '../../../api/def/auth'
 import { callApi } from '../../../api/util/callAPI'
-const testGoogle = ()=>{
-  const loginWithGoogle=()=>{
+const testGoogle = () => {
+  const loginWithGoogle = () => {
     callApi({
       apiConfig: authAPI.loginWithGoogle(),
       onStart: () => {},
@@ -13,6 +13,6 @@ const testGoogle = ()=>{
       onFinally: () => {},
     })
   }
-  return(<button onClick ={loginWithGoogle}>Log in with Google</button>)
+  return <button onClick={loginWithGoogle}>Log in with Google</button>
 }
-export default testGoogle;
+export default testGoogle

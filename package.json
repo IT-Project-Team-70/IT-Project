@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "npm start --prefix back-end",
-    "client": "npm start --prefix front-end",
+    "client": "yarn start --prefix front-end",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

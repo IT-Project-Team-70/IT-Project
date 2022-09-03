@@ -2,7 +2,6 @@ import { Button } from '@mui/material'
 import React, { Fragment } from 'react'
 import authAPI from '../../../api/def/auth'
 import { callApi } from '../../../api/util/callAPI'
-import LoadingSpinner from '../../../component/loadingSpinner'
 
 const Test2 = (props) => {
   const loginWithGoogle = () => {
