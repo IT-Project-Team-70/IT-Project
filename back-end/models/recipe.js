@@ -3,7 +3,7 @@ const validation = require('./validation')
 
 /* ***************************************************************************************** */
 const imageSchema = new mongoose.Schema({
-  url: { type: String, required: true },
+  data: { type: Buffer, required: true },
   alt: { type: String },
 })
 
@@ -41,7 +41,6 @@ const recipeSchema = new mongoose.Schema({
   courseList: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     required: true,
-    // default: [Tag.findOne({ name: 'all' })._id],
   },
 
   image: { type: imageSchema },
