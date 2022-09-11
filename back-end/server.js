@@ -1,51 +1,66 @@
-const express = require("express");
+const morgan = require('morgan')
+const dotenv = require('dotenv')
+const https = require('https')
 const path = require('path');
-const dotenv = require("dotenv");
-const morgan = require("morgan");
-const mongoose = require("mongoose");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const cors = require("cors");
-const authRouter = require("./route/auth.js");
-const passport = require("passport");
-const flash = require("express-flash");
 const http = require("http")
-const https = require("https")
-const fs = require("fs")
-const app = express();
-require("./passport");
-app.use(flash());
+const fs = require('fs')
 
+// Experss
+const express = require('express')
+const session = require('express-session')
+const flash = require('express-flash')
+const passport = require('passport')
+require('./passport')
+
+// Databse
+const mongoDB = require('./models')
+const MongoStore = require('connect-mongo')
+const cors = require('cors')
+
+// Routers
+
+const landingRouter = require('./routes/landing.js')
+const personalKitchenRouter = require('./routes/personalKitchen.js')
+const everyoneKitchenRouter = require('./routes/everyoneKitchen.js')
+const testingRouter = require('./routes/testing.js')
+const authRouter = require('./routes/auth.js')
+// ******************************************************************************************** //
+//get .env from the root folder
+dotenv.config({ path: '../.env' });
+// Initialize the app
+const app = express()
+dotenv.config()
+const env = process.env.ENVIRONMENT || app.get('env')
+if (env === 'development') {
+  app.use(morgan('tiny'))
+  console.log('Env: Develop Model -- Morgan is enabled ... ')
+}
+
+// Declare Middlewares for the app
+app.use(flash())
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ['https://localhost:3000'],
     credentials: true,
-    sameSite: "none",
+    sameSite: 'none',
   })
-);
-
-
-dotenv.config({ path: '../.env' });
-
-// Declare the middleware for the app
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+)
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname +'/../front-end/build')));
-
-
 //create a session
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
     credentials: true,
-    name: "sid",
+    name: 'sid',
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.DATABASE,
     }),
     cookie: {
-      secure: process.env.ENVIRONMENT === "production", //if secure is true => only transmit over HTTPS
+      secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
@@ -63,44 +78,30 @@ if (app.get("env") === "development") {
   console.log("Env: Develop Model -- Morgan is enabled ... ");
 }
 
-//loading environment variable
-const port = process.env.PORT;
-const database = process.env.DATABASE;
+// ******************************************************************************************** //
+// Add routers to the app
+app.use(authRouter)
+app.use('/', landingRouter)
+app.use('/home', landingRouter)
+app.use('/personalKitchen', personalKitchenRouter)
+app.use('/forum', everyoneKitchenRouter)
+app.use('/testing', testingRouter)
 
-
-
-
-//connect to mongo database from environment variable
-mongoose
-  .connect(database, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    // dbName: ''
-  })
-  .then(() => console.log("database is connected"));
-
-// Event handlers for the connection
-const db = mongoose.connection;
-db.on("error", (err) => {
-  console.log(err);
-  process.exit(1);
-});
-db.once("open", () => {
-  console.log(`Mongo connection started on ${db.host}: ${db.port}`);
-});
-
+// ******************************************************************************************** //
 // Start the server & listen for requests
+const port = process.env.PORT
 app.set("port", port);
 
-
+//if HEROKU_MODE=="on"(when deploying onto heroku and project config HEROKU_MODE=="on")
+const server = process.env.HEROKU_MODE=="ON"? http.createServer(app):
 //configure https
-const server = http.createServer(app);
-server.listen(port || 3000, () => {
+https.createServer({
+  key: fs.readFileSync('../security/DontForgetUrRecipe.key'),
+  cert: fs.readFileSync('../security/DontForgetUrRecipe.crt'),
+  rejectUnauthorized: false,
+  
+},app);
+
+server.listen(port || 8080, () => {
   console.log(`Ther server is running on ${port}`);
 });
-// :  https.createServer({
-//   key: fs.readFileSync(path.join(__dirname +'/../security/DontForgetUrRecipe.key')),
-//   cert: fs.readFileSync(path.join(__dirname +'/../security/DontForgetUrRecipe.crt')),
-//   rejectUnauthorized: false,
-// },
-// app)
