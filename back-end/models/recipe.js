@@ -3,8 +3,8 @@ const validation = require('./validation')
 
 /* ***************************************************************************************** */
 const imageSchema = new mongoose.Schema({
-  data: { type: Buffer, required: true },
-  alt: { type: String },
+  data: { type: String, required: true },
+  type: { type: String },
 })
 
 const sourceSchema = new mongoose.Schema({
