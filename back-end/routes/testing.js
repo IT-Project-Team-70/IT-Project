@@ -22,9 +22,11 @@ router.get('/getTags', (req, res) => {
 })
 
 router.get('/getCourses', (req, res) => {
-  console.log('reached testing route: getting all tags ...\n')
-  console.log(recipeHelper.getCourseTags())
-  return res.status(200).send('Hello World!') //send(req.passport.session.user)
+  console.log('reached testing route: getting all tags ...\n');
+  recipeHelper.getCourseTags().then(function (result){
+  return res.status(200).send(result) //send(req.passport.session.user)
+});
+  
 })
 
 router.post('/newRecipe', (req, res) => {

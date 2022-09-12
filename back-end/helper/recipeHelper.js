@@ -19,7 +19,7 @@ async function getAllRecipes(req, res) {
 
 async function tagRecipe(id, recipe) {}
 
-async function getRecipeById(req, res) {
+async function getRecipeById(id) {
   try {
     const result = await Recipe.findById(id)
     return result
@@ -34,44 +34,40 @@ async function getRecipeByTag(tag) {}
 // Create a new recipe
 async function createNewRecipe(recipe) {
   try {
-    // Check if the recipe has an image
-    // if (!recipe.image) {
-    // let data = await fs.readFileSync('./public/images/default.png')
-    // let base64 = data.toString('base64')
-    // let image = new Buffer.from(base64, 'base64')
-    // recipe.image.data = image
-    // recipe.image.alt = 'default image'
-    // }
+    //iterate through object, convert all value back to object
+    recipe=Object.keys(recipe).reduce((prev,curr)=>
+     { 
+      // console.log(curr,recipe[curr])
+      return {...prev, [curr]: JSON.parse(recipe[curr])}},{})
 
     // assign tags to the recipe
-    const tagList = []
-    for (let i = 0; i < recipe.tags.length; i++) {
-      const tag = await findTag(recipe.tags[i])
+    const newTagList = []
+    for (let i = 0; i < recipe.tagList.length; i++) {
+      const tag = await findTag(recipe.tagList[i])
       if (tag) {
-        tagList.push(tag)
+        newTagList.push(tag)
       } else {
-        const newTag = await createNewTag(recipe.tags[i])
-        tagList.push(newTag)
+        const newTag = await createNewTag(recipe.tagList[i])
+        newTagList.push(newTag)
       }
     }
-    recipe.tagList = tagList
-    delete recipe.tags
+    recipe.tagList = newTagList
 
     // assign course tag to the recipe
-    const courseList = []
-    for (let i = 0; i < recipe.courses.length; i++) {
-      const course = await findTag(recipe.courses[i])
+    const newCourseList = []
+    for (let i = 0; i < recipe.courseList.length; i++) {
+      const course = await findTag(recipe.courseList[i])
       if (course) {
-        courseList.push(course)
+        newCourseList.push(course)
       } else {
         throw new Error('Course tag is not found')
       }
     }
-    recipe.courseList = courseList
-    delete recipe.courses
+    recipe.courseList = newCourseList
 
     // create recipe and validate
     const newRecipe = new Recipe(recipe)
+
     const { error } = newRecipe.joiValidate(recipe)
     if (error) {
       throw new Error(error.details[0].message)
