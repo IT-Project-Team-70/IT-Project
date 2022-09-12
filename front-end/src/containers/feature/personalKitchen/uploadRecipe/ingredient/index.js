@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close'
 const Ingredient = ({ onChange = () => {} }) => {
   const [ingredients, setIngredients] = useState({
     0: {
-      qan: '',
+      quantity: '',
       unit: 'gram',
       name: '',
     },
@@ -18,7 +18,7 @@ const Ingredient = ({ onChange = () => {} }) => {
   const [ingredientKeys, setIngredientKeys] = useState(Object.keys(ingredients))
 
   useEffect(() => {
-    onChange(ingredientKeys)
+    onChange(Object.values(ingredients))
 
     return () => {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,13 +72,13 @@ const Ingredient = ({ onChange = () => {} }) => {
                           type="number"
                           fullWidth
                           placeholder="Qan."
-                          value={ingredients[key].qan}
+                          value={ingredients[key].quantity}
                           onChange={(e) => {
                             setIngredients((prev) => ({
                               ...prev,
                               [key]: {
                                 ...prev[key],
-                                qan: e.target.value,
+                                quantity: e.target.value,
                               },
                             }))
                           }}
@@ -166,7 +166,7 @@ const Ingredient = ({ onChange = () => {} }) => {
                         [parseInt(
                           Object.keys(prev)[Object.keys(prev).length - 1]
                         ) + 1]: {
-                          qan: '',
+                          quantity: '',
                           unit: 'gram',
                           name: '',
                         },
@@ -189,6 +189,6 @@ const Ingredient = ({ onChange = () => {} }) => {
 
 export default Ingredient
 Ingredient.propTypes = {
-  /**return indegrients */
+  /**return Ingredients */
   onChange: PropTypes.func,
 }

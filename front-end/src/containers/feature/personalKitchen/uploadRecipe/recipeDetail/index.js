@@ -6,11 +6,25 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
-import { MenuItem, Input, Typography, ButtonGroup } from '@mui/material'
+import {
+  MenuItem,
+  Input,
+  Typography,
+  ButtonGroup,
+  Autocomplete,
+} from '@mui/material'
 import { useDropzone } from 'react-dropzone'
+import CourseField from './courseField'
+import UploadFileIcon from '@mui/icons-material/UploadFile'
 
-const RecipeDetail = ({ onChange = () => {} }) => {
+const RecipeDetail = ({
+  onChange = () => {},
+  fileError,
+  status,
+  personalKitchenData,
+}) => {
   const [files, setFiles] = React.useState([])
+  const [tagList, setTagList] = React.useState([])
   const [source, setSource] = React.useState('')
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -35,12 +49,11 @@ const RecipeDetail = ({ onChange = () => {} }) => {
   useEffect(() => {
     if (files.length > 0 && files[0].path && files[0].path !== '') {
       onChange({ cover: files, source: source })
-    } else {
-      onChange({ source: source })
     }
+    onChange({ source: source, tagList: tagList })
     return () => {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files, source])
+  }, [files, source, tagList])
 
   return (
     <Fragment>
@@ -62,22 +75,18 @@ const RecipeDetail = ({ onChange = () => {} }) => {
             <Box
               {...getRootProps({ className: 'dropzone' })}
               sx={{
-                height: '15vh',
+                height: '20vh',
                 borderRadius: '10px',
                 borderStyle: 'dashed',
-                borderColor: 'rgb(0 0 0 / 23%)',
+                borderColor:
+                  fileError &&
+                  !(files.length > 0 && files[0].path && files[0].path !== '')
+                    ? 'red'
+                    : 'rgb(0 0 0 / 10%)',
               }}
             >
               <Input {...getInputProps()} />
-              <Typography
-                variant="body1"
-                sx={{
-                  display: files.length === 0 ? 'block' : 'none',
-                }}
-              >
-                {`Drag 'n' drop some files here, or click to select files`}
-              </Typography>
-              {files.length > 0 &&
+              {files.length > 0 ? (
                 files.map((file, index) => (
                   <Fragment key={index}>
                     <Box
@@ -98,7 +107,45 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                     </Box>
                     <Typography variant="subtitle1">{file.path}</Typography>
                   </Fragment>
-                ))}
+                ))
+              ) : (
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  height="inherit"
+                >
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    p={2}
+                  >
+                    <UploadFileIcon color="secondary" />
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: files.length === 0 ? 'block' : 'none',
+                        paddingTop: '16px',
+                        paddingLeft: '12px',
+                        paddingRight: '12px',
+                      }}
+                    >
+                      {`Drag and drop some files here, or click to select files`}
+                    </Typography>
+                    {fileError && (
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: 'red',
+                        }}
+                      >
+                        Please fill in this field
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+              )}
             </Box>
           </Grid>
           <Divider sx={{ marginTop: '8px', marginBottom: '8px' }} />
@@ -106,8 +153,8 @@ const RecipeDetail = ({ onChange = () => {} }) => {
             <Grid item xs={12}>
               <Typography variant="body1">Recipe Title*</Typography>
               <TextField
-                id="recipeTitle"
-                name="recipeTitle"
+                id="title"
+                name="title"
                 variant="outlined"
                 size="medium"
                 fullWidth
@@ -117,20 +164,14 @@ const RecipeDetail = ({ onChange = () => {} }) => {
             <Grid item xs={12}>
               <Typography variant="body1">Serving Size*</Typography>
               <TextField
-                name="servingSize"
-                id="servingSize"
+                name="serveSize"
+                id="serveSize"
                 //   required
                 size="medium"
                 fullWidth
-                select
-                defaultValue={'1-2'}
-              >
-                <MenuItem value={'1-2'}>1-2</MenuItem>
-                <MenuItem value={'3-4'}>3-4</MenuItem>
-                <MenuItem value={'5-6'}>5-6</MenuItem>
-                <MenuItem value={'7-8'}>7-8</MenuItem>
-                <MenuItem value={'8 and more'}>8 or more</MenuItem>
-              </TextField>
+                type="number"
+                defaultValue={1}
+              />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body1">Prepare Time*</Typography>
@@ -143,19 +184,19 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                 }}
               >
                 <TextField
-                  id="PrepareTimeHour"
-                  name="PrepareTimeHour"
+                  id="prepTimeHour"
+                  name="prepTimeHour"
                   //   required
                   size="medium"
                   select
                   fullWidth
-                  defaultValue={'0'}
+                  defaultValue={0}
                 >
-                  <MenuItem value={'0'}>0</MenuItem>
-                  <MenuItem value={'1'}>1</MenuItem>
-                  <MenuItem value={'2'}>2</MenuItem>
-                  <MenuItem value={'3'}>3</MenuItem>
-                  <MenuItem value={'4'}>4 or more</MenuItem>
+                  <MenuItem value={0}>0</MenuItem>
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4 or more</MenuItem>
                 </TextField>
                 <Typography
                   sx={{ paddingLeft: '16px', paddingRight: '16px' }}
@@ -164,17 +205,17 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                   hr
                 </Typography>
                 <TextField
-                  id="PrepareTimeMinute"
-                  name="PrepareTimeMinute"
+                  id="prepTimeMinute"
+                  name="prepTimeMinute"
                   select
                   fullWidth
                   //   required
-                  defaultValue={'0'}
+                  defaultValue={0}
                 >
-                  <MenuItem value={'0'}>0</MenuItem>
-                  <MenuItem value={'15'}>15</MenuItem>
-                  <MenuItem value={'30'}>30</MenuItem>
-                  <MenuItem value={'45'}>45</MenuItem>
+                  <MenuItem value={0}>0</MenuItem>
+                  <MenuItem value={15}>15</MenuItem>
+                  <MenuItem value={30}>30</MenuItem>
+                  <MenuItem value={45}>45</MenuItem>
                 </TextField>
                 <Typography sx={{ paddingLeft: '16px' }} variant="subtitle1">
                   min
@@ -182,32 +223,34 @@ const RecipeDetail = ({ onChange = () => {} }) => {
               </Box>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1">Courses*</Typography>
-              <TextField
-                id="Courses"
-                name="Courses"
-                fullWidth
-                select
-                defaultValue={'breakfast'}
-                //   required
-              >
-                <MenuItem value={'breakfast'}>Breakfast</MenuItem>
-                <MenuItem value={'lunch'}>Lunch</MenuItem>
-                <MenuItem value={'dinner'}>Dinner</MenuItem>
-                <MenuItem value={'desert'}>Desert</MenuItem>
-                <MenuItem value={'drinks'}>Drinks</MenuItem>
-                <MenuItem value={'snacks'}>Snacks</MenuItem>
-              </TextField>
+              <CourseField
+                status={status}
+                options={
+                  status === 'success' ? personalKitchenData.courses : []
+                }
+              />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body1">Other Categories</Typography>
-              <TextField
-                fullWidth
-                // multiline
-                // rows={3}
-                variant="outlined"
-                color="primary"
-                size="medium"
+              <Autocomplete
+                multiple
+                freeSolo
+                loading={false}
+                options={
+                  status === 'success'
+                    ? personalKitchenData.tags.map((tag) => tag.name)
+                    : []
+                }
+                onChange={(e, value, reason) => {
+                  setTagList(value)
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    placeholder="add more..."
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
@@ -241,25 +284,36 @@ const RecipeDetail = ({ onChange = () => {} }) => {
                 </Button>
               </ButtonGroup>
             </Grid>
-            {(source === 'URL' || source === 'Book') && (
-              <Grid item xs={12}>
-                <TextField
-                  id="sourceTitle"
-                  name="sourceTitle"
-                  variant="outlined"
-                  size="medium"
-                  fullWidth
-                  //   required
-                  placeholder={
-                    source === 'URL'
-                      ? 'URL'
-                      : source === 'Book'
-                      ? 'Book Title'
-                      : ''
-                  }
-                />
-              </Grid>
-            )}
+            <Grid
+              item
+              xs={12}
+              sx={
+                source === 'URL' || source === 'Book'
+                  ? {}
+                  : {
+                      opacity: '0',
+                      height: '0px',
+                      marginTop: '-72px',
+                      zIndex: '-1',
+                    }
+              }
+            >
+              <TextField
+                id="sourceContent"
+                name="sourceContent"
+                variant="outlined"
+                size="medium"
+                fullWidth
+                // required
+                placeholder={
+                  source === 'URL'
+                    ? 'URL'
+                    : source === 'Book'
+                    ? 'Book Title'
+                    : ''
+                }
+              />
+            </Grid>
             <Grid item xs={12}>
               <Typography variant="body1">Description</Typography>
               <TextField
@@ -285,4 +339,7 @@ export default RecipeDetail
 RecipeDetail.propTypes = {
   /**for none input fields */
   onChange: PropTypes.func,
+  fileError: PropTypes.bool,
+  status: PropTypes.string,
+  personalKitchenData: PropTypes.object,
 }

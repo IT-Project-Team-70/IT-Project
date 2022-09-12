@@ -28,9 +28,7 @@ const Procedure = ({ onChange = () => {}, error }) => {
               <HtmlEditor
                 onBlur={(value) => {
                   console.log(value)
-                  onChange({
-                    procedure: value,
-                  })
+                  onChange(value)
                 }}
                 height="500px"
                 // error={true}

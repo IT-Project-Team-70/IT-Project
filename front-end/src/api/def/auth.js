@@ -1,10 +1,3 @@
-//const https = require('https')
-/*const agent = new https.agent({
-  rejectUnauthorized: false,
-})
-const httpsAgent = {
-  httpsAgent: agent,
-}*/
 const authAPI = {
   login: (data) => ({
     method: 'post',
