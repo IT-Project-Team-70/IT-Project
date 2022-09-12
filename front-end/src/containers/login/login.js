@@ -19,6 +19,7 @@ import LoadingSpinner from '../../component/loadingSpinner'
 import { Fragment } from 'react'
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
 import ForgotPassword from '../forgotPassword'
+import { Context } from '../../stores/userStore'
 
 export default function LoginPanel({
   onChange = () => {},
@@ -31,6 +32,7 @@ export default function LoginPanel({
     success: false,
     successMessage: '',
   })
+  const [userState, dispatch] = React.useContext(Context)
   const theme = useTheme()
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -40,20 +42,23 @@ export default function LoginPanel({
       password: data.get('password'),
     })
   }
+  let userInfo = null
   const handleLoginOnClick = (data) => {
     setIsLoading(true)
     callApi({
       apiConfig: authAPI.login(data),
       onStart: () => {},
       onSuccess: (res) => {
-        setSuccess({ success: true, successMessage: res.data })
+        userInfo = res.data
         console.log(res)
+        setSuccess({ success: true, successMessage: 'login successfully' })
+        dispatch({ type: 'loginSuccess', payload: res.data })
       },
       onError: (err) => {
         console.log(err)
-
         if (err.response.status === 401) {
           setError({ error: true, errorMeessage: err.response.data })
+          dispatch({ type: 'loginFailure' })
         }
       },
       onFinally: () => {},
@@ -70,7 +75,6 @@ export default function LoginPanel({
         return <></>
     }
   }
-
   return toPage.toPage ? (
     toComponent()
   ) : (
@@ -169,12 +173,11 @@ export default function LoginPanel({
                   <Button
                     type="submit"
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{ mt: 3, mb: 2, width: 1 }}
                   >
                     login
                   </Button>
                 </Box>
-
                 <Grid container flexDirection="column">
                   <Grid item>
                     <Link

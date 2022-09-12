@@ -3,8 +3,10 @@ import React, { Fragment } from 'react'
 import authAPI from '../../../api/def/auth'
 import { callApi } from '../../../api/util/callAPI'
 import LoadingSpinner from '../../../component/loadingSpinner'
+import { Context } from '../../../stores/userStore'
 
 const Test1 = (props) => {
+  const [userState, dispatch] = React.useContext(Context)
   const handleLoginOnClick = () => {
     callApi({
       apiConfig: authAPI.login({
@@ -25,8 +27,11 @@ const Test1 = (props) => {
       onStart: () => {},
       onSuccess: (data) => {
         console.log(data)
+        dispatch({type: "logoutSuccess"})
       },
-      onError: (err) => {},
+      onError: (err) => {
+        dispatch({type: "logoutFailure"})
+      },
       onFinally: () => {},
     })
   }

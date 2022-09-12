@@ -19,7 +19,6 @@ async function getCourseTag() {
     throw new Error(err)
   }
 }
-
 // create a new tag, store in database and return the tag
 async function createNewTag(tag) {
   try {
@@ -72,12 +71,11 @@ async function findTag(tag) {
 }
 
 // Get all recipes
-async function getAllRecipes(req, res) {
+async function getAllRecipes() {
   try {
     const result = await Recipe.find()
-    return res.status(200).send(result)
+    return result
   } catch (err) {
-    res.status(500).send("Get all Recipes unsuccessfully")
     throw new Error(err)
   }
 }

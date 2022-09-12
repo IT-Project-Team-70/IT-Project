@@ -1,10 +1,10 @@
 const recipeHelper = require('../helper/recipeHelper')
 
-function getPersonalKitchen(req, res) {
+async function getPersonalKitchen(req, res) {
   try{
-    const allRecipes = recipeHelper.getAllRecipes()
-    const allTags = recipeHelper.getAllTags()
-    const courseTag = recipeHelper.getCourseTag()
+    const allRecipes = await recipeHelper.getAllRecipes()
+    const allTags = await recipeHelper.getAllTags()
+    const courseTag = await recipeHelper.getCourseTag()
     const result = { recipes: allRecipes, tags: allTags, courses: courseTag }
     return res.status(200).send(result)
   }
@@ -14,7 +14,7 @@ function getPersonalKitchen(req, res) {
   }
 }
 
-function getOneRecipeById(req, res){
+async function getOneRecipeById(req, res){
   try{
     const id = req.body.id
     const recipe = recipeHelper.getRecipeById(id)
@@ -29,10 +29,10 @@ function getOneRecipeById(req, res){
   }
 }
 
-function registerNewRecipe(req, res){
+async function registerNewRecipe(req, res){
   try{
     const recipe = req.body.recipe
-    const newRecipe = recipeHelper.createNewRecipe(recipe)
+    const newRecipe = await recipeHelper.createNewRecipe(recipe)
     return res.status(200).send(newRecipe)
   }
   catch(err){
@@ -41,11 +41,11 @@ function registerNewRecipe(req, res){
   }
 }
 
-function editOldRecipe(req, res) {
+async function editOldRecipe(req, res) {
   try{
     const id = req.body.id
     const recipe = req.body.recipe
-    const updatedRecipe = recipeHelper.updateRecipe(id, recipe)
+    const updatedRecipe = await recipeHelper.updateRecipe(id, recipe)
     if (updatedRecipe === null) {
       return res.status(404).send('Recipe not found')
     }
@@ -57,11 +57,11 @@ function editOldRecipe(req, res) {
   }
 }
 
-function tagOldRecipe(req, res) {
+async function tagOldRecipe(req, res) {
   try{
     const id = req.body.id
     const recipe = req.body.recipe
-    const taggedRecipe = recipeHelper.tagRecipe(id, recipe)
+    const taggedRecipe = await recipeHelper.tagRecipe(id, recipe)
     return res.status(200).send(taggedRecipe)
   }
   catch(err){
@@ -70,10 +70,10 @@ function tagOldRecipe(req, res) {
   }
 }
 
-function deleteOldRecipe(req, res) {
+async function deleteOldRecipe(req, res) {
   try{
     const id = req.body.id
-    const recipe = recipeHelper.deleteRecipe(id)
+    const recipe = await recipeHelper.deleteRecipe(id)
     if (recipe === null) {
       return res.status(404).send('Recipe not found')
     }

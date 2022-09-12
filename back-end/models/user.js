@@ -14,20 +14,16 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true,
+
     required: true,
     minlength: 5,
     maxlength: 255,
   },
   // gmail: { type: "string", unique: true },
-
   salt: { type: String },
   hash: { type: String },
-  google: {
-    id: { type: String },
-    name: { type: String },
-    email: { type: String },
-  },
+  googleId: {type: String},
+
   // salt: "string",
   // hash: "string",
 
