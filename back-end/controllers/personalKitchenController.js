@@ -1,4 +1,6 @@
 const recipeHelper = require('../helper/recipeHelper')
+var formidable = require('formidable');
+const form = new formidable.IncomingForm();
 
 async function getPersonalKitchen(req, res) {
   try {
@@ -15,7 +17,8 @@ async function getPersonalKitchen(req, res) {
 
 async function getOneRecipeById(req, res) {
   try {
-    const id = req.body.id
+    const id = req.params.id
+    console.log(id)
     const recipe = await recipeHelper.getRecipeById(id)
     if (recipe === null) {
       return res.status(404).send('Recipe not found')
@@ -29,9 +32,18 @@ async function getOneRecipeById(req, res) {
 
 async function registerNewRecipe(req, res) {
   try {
-    const recipe = req.body.recipe
-    const newRecipe = await recipeHelper.createNewRecipe(recipe)
-    return res.status(200).send(newRecipe)
+     form
+    .parse(req, (err, fields ) => {
+        if(err){
+      res.status(500).send('Register the new recipe unsuccessfully')
+        }
+        // console.log(typeof fields);
+
+      recipeHelper.createNewRecipe(fields).then((value)=>{
+        return res.status(200).send(value)
+      })
+    })
+
   } catch (err) {
     res.status(500).send('Register the new recipe unsuccessfully')
     throw new Error(err)
