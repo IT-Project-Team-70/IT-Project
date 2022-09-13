@@ -21,19 +21,31 @@ const PersonalKitchen = (props) => {
   const theme = useTheme()
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', height: 'inherit' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          height: '105%',
+          backgroundColor: '#FFF4CE',
+        }}
+      >
         <Box>
           <List sx={{ width: '240px' }}>
-            {['My Recipes', 'Favourites'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <MenuBookIcon /> : <FastfoodIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <MenuBookIcon />
+                </ListItemIcon>
+                <ListItemText primary={'My Recipes'} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <FastfoodIcon />
+                </ListItemIcon>
+                <ListItemText primary={'Favourites'} />
+              </ListItemButton>
+            </ListItem>
             <Divider />
             <ListItem disablePadding>
               <ListItemButton onClick={() => history.push(UPLOAD_RECIPE)}>
@@ -45,26 +57,24 @@ const PersonalKitchen = (props) => {
             </ListItem>
           </List>
         </Box>
-        <Box sx={{ height: 'inherit', overflowY: 'auto' }}>
-          <Box sx={{ height: '100%' }}>
-            <Grid container gap={1}>
-              <Grid>
-                <RecipeCard />
-              </Grid>
-              <Grid>
-                <RecipeCard />
-              </Grid>
-              <Grid>
-                <RecipeCard />
-              </Grid>
-              <Grid>
-                <RecipeCard />
-              </Grid>
-              <Grid>
-                <RecipeCard />
-              </Grid>
+        <Box sx={{ height: '100%', marginLeft: 1 }}>
+          <Grid container gap={1}>
+            <Grid>
+              <RecipeCard />
             </Grid>
-          </Box>
+            <Grid>
+              <RecipeCard />
+            </Grid>
+            <Grid>
+              <RecipeCard />
+            </Grid>
+            <Grid>
+              <RecipeCard />
+            </Grid>
+            <Grid>
+              <RecipeCard />
+            </Grid>
+          </Grid>
         </Box>
       </Box>
     </ThemeProvider>
