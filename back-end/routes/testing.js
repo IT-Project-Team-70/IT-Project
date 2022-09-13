@@ -1,20 +1,29 @@
 const express = require('express')
 const router = express.Router()
 
+const fs = require('fs')
+
 // const { isAuthenticated, hasRole } = require('../helper/auth')
 
 // const pkController = require('../controllers/personalKitchenController')
-const userController = require('../controllers/userController')
+// const userController = require('../controllers/userController')
+const recipeHelper = require('../helper/recipeHelper')
 
 router.get('/getRecipes', (req, res) => {
   console.log('reached testing route 1: getting all recipes ...\n')
-  console.log(recipeController.getAllRecipes())
+  console.log(recipeHelper.getAllRecipes())
   return res.status(200).send('Hello World!')
 })
 
 router.get('/getTags', (req, res) => {
   console.log('reached testing route: getting all tags ...\n')
-  console.log(recipeController.getAllTags())
+  console.log(recipeHelper.getAllTags())
+  return res.status(200).send('Hello World!') //send(req.passport.session.user)
+})
+
+router.get('/getCourses', (req, res) => {
+  console.log('reached testing route: getting all tags ...\n')
+  console.log(recipeHelper.getCourseTags())
   return res.status(200).send('Hello World!') //send(req.passport.session.user)
 })
 
@@ -22,17 +31,26 @@ router.post('/newRecipe', (req, res) => {
   console.log('reached testing route: creating a new recipes ...\n')
   console.log(req.body)
 
-  recipeController.createNewRecipe(req.body)
+  recipeHelper.createNewRecipe(req.body)
   // catch error
   return res.status(200).send('Hello World!')
 })
 
-router.post('/newTag/:isCourse', (req, res) => {
+router.post('/admi/newTag/:isCourse', (req, res) => {
   console.log('reached testing route: creating a new tag ...\n')
   console.log(req.body)
 
-  recipeController.createNewTagAdmi(req.body, req.params.isCourse)
+  recipeHelper.createNewTagAdmi(req.body, req.params.isCourse)
   return res.status(200).send('Hello World!')
+})
+
+router.get('/getImage/default', async (req, res) => {
+  // let data = await fs.readFileSync('./public/images/default.png')
+  // let base64 = data.toString('base64')
+  // console.log(base64.substr(0, 200))
+  // let image = new Buffer.from(base64, 'base64')
+  // console.log(image)
+  // return res.status(200)
 })
 
 module.exports = router

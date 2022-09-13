@@ -70,7 +70,7 @@ app.use(passport.authenticate("session"));
 app.use(authRouter);
 app.use("/", landingRouter);
 app.use("/home", landingRouter);
-app.use(personalKitchenRouter);
+app.use("/personalKitchen", personalKitchenRouter);
 app.use("/forum", everyoneKitchenRouter);
 app.use("/testing", testingRouter);
 

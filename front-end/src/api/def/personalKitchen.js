@@ -1,7 +1,7 @@
 const pkAPI = {
   personalKitchen: () => ({
     method: 'get',
-    url: '/personal_kitchen',
+    url: '/personalKitchen',
     headers: {},
   }),
 }

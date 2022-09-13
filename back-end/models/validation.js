@@ -23,8 +23,8 @@ let ingredientSchema = Joi.object().keys({
 let recipeSchema = Joi.object().keys({
   title: Joi.string().min(1).max(50).required(),
   source: Joi.object().required(),
-  tagList: Joi.array().items(Joi.objectId()).default([]),
-  courseList: Joi.array().items(Joi.objectId()).required(),
+  tagList: Joi.array().items(Joi.object()).default([]),
+  courseList: Joi.array().items(Joi.object()).required(),
   // image: Joi.object(),
   description: Joi.string().min(1).max(255).required(),
   notes: Joi.string().min(0).max(255),
@@ -39,6 +39,6 @@ let recipeSchema = Joi.object().keys({
 
 module.exports = {
   validateUser: (user) => userSchema.validate(user),
-  validateTage: (tag) => tagSchema.validate(tag),
+  validateTag: (tag) => tagSchema.validate(tag),
   validateRecipe: (recipe) => recipeSchema.validate(recipe),
 }
