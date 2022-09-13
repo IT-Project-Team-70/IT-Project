@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import useMediaQuery from '@mui/material/useMediaQuery'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -11,28 +11,114 @@ import { ThemeProvider } from '@mui/system'
 import useTheme from '../../../../css/muiTheme'
 import { useHistory } from 'react-router-dom'
 import AlertDialog from '../../../../component/alertDialog'
+import callApi from '../../../../api/util/callAPI'
+import personalKitchenAPI from '../../../../api/def/personalKitchen'
+import AxiosV1 from '../../../../api/axiosV1'
 
 const UploadRecipe = () => {
   const [noneInputData, setNoneInputData] = useState({})
   const [procedureError, setProcedureError] = useState(false)
+  const [fileError, setFileError] = useState(false)
   const initialAlertDialogState = {
     open: false,
     message: '',
   }
   const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
   const history = useHistory()
+  const [cancelToken] = useState(AxiosV1.CancelToken.source())
+  const [personalKitchenDataStatus, setStatus] = useState('initial')
+  const [personalKitchenData, setPersonalKitchenData] = useState({})
+
+  useEffect(() => {
+    if (personalKitchenDataStatus === 'initial') {
+      setStatus('loading')
+      callApi({
+        apiConfig: personalKitchenAPI.personalKitchen(),
+        onStart: () => {},
+        onSuccess: (res) => {
+          setStatus('success')
+          setPersonalKitchenData(res.data)
+        },
+        onError: (err) => {
+          console.log(err)
+          setStatus('error')
+        },
+        onFinally: () => {},
+      })
+    }
+    return () => {
+      cancelToken.cancel('Request cancel.')
+    }
+  }, [cancelToken, personalKitchenDataStatus])
+
   const handleSubmit = (event) => {
-    //check if procedure is empty
-    if (noneInputData.procedure && noneInputData.procedure !== '') {
-      setProcedureError(false)
-      const data = new FormData(event.currentTarget)
-      for (var pair of data.entries()) {
-        console.log(pair[0], pair[1])
+    event.preventDefault()
+    //check if procedure isn't empty
+    if (noneInputData.cover) {
+      //check if procedure isn't empty
+      setFileError(false)
+      if (noneInputData.procedure && noneInputData.procedure !== '') {
+        setProcedureError(false)
+        const data = new FormData(event.currentTarget)
+        const formDataObj = {}
+        data.forEach((value, key) => (formDataObj[key] = value))
+        //Ordering data into the required datastruct
+        const submitData = {
+          title: formDataObj.title,
+          source: {
+            type: noneInputData.source,
+            content:
+              noneInputData.source === 'Own'
+                ? 'Own'
+                : formDataObj.sourceContent,
+          },
+          tagList: noneInputData.tagList,
+          courseList: [formDataObj.courseList],
+          description: formDataObj.description,
+          prepTime: {
+            hours: formDataObj.prepTimeHour,
+            minutes: formDataObj.prepTimeMinute,
+          },
+          serveSize: formDataObj.serveSize,
+          ingredients: noneInputData.ingredients,
+          instructions: noneInputData.procedure,
+        }
+        let submitFormData = new FormData()
+
+        for (let i = 0; i < Object.keys(submitData).length; i++) {
+          submitFormData.set(
+            Object.keys(submitData)[i],
+            JSON.stringify(submitData[Object.keys(submitData)[i]])
+          )
+        }
+        let image
+        noneInputData.cover[0].file.arrayBuffer().then((value) => {
+          image = {
+            //store as Unit8array
+            data: `[${new Uint8Array(value).toString()}]`,
+            type: noneInputData.cover[0].file.type,
+          }
+          submitFormData.set('image', JSON.stringify(image))
+          callApi({
+            apiConfig: personalKitchenAPI.newRecipe(submitFormData),
+            onStart: () => {},
+            onSuccess: (res) => {
+              console.log('success', res)
+              //redirect to ? or show success?
+            },
+            onError: (err) => {
+              console.log(err)
+            },
+            onFinally: () => {},
+          })
+        })
+      } else {
+        //procedure is empty
+        setProcedureError(true)
       }
-      console.log(noneInputData)
     } else {
-      //procedure is empty
-      setProcedureError(true)
+      //image file is empty
+      setFileError(true)
     }
 
     event.preventDefault()
@@ -97,18 +183,22 @@ const UploadRecipe = () => {
                 onChange={(data) => {
                   setNoneInputData((prev) => ({ ...prev, ...data }))
                 }}
+                fileError={fileError}
+                status={personalKitchenDataStatus}
+                personalKitchenData={personalKitchenData}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
               <Ingredient
                 onChange={(data) => {
-                  setNoneInputData((prev) => ({ ...prev, indegrients: data }))
+                  setNoneInputData((prev) => ({ ...prev, ingredients: data }))
                 }}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
               <Procedure
                 onChange={(data) => {
+                  console.log(data)
                   setNoneInputData((prev) => ({ ...prev, procedure: data }))
                 }}
                 error={procedureError}
