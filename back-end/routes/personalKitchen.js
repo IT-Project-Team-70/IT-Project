@@ -11,7 +11,6 @@ function isAuthenticated(req, res, next){
     return res.status(401).send('Please login first')
   }
   else{
-    console.log(req.user)
    return next()
   }
 }
