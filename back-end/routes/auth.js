@@ -4,15 +4,26 @@ const app = express();
 const passport = require("passport");
 require("../passport.js");
 
+function isAuthenticated(req, res, next){
+  if(!req.isAuthenticated()){
+    return res.status(401).send('Please login first')
+  }
+  else{
+    console.log(req.user)
+   return next()
+  }
+}
+app.get('/checkCookie', isAuthenticated, authController.checkCookie)
+
+
 //handle the login request
 app.post(
   "/login",
   passport.authenticate("local", {
     failureRedirect: "/loginFailure",
-    successRedirect: "/loginSuccess",
   }),
-  (req, res, next) => {
-    if (err) next(err);
+  (req, res ) => {
+    authController.loginSuccess(req, res);
   }
 );
 

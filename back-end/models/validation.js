@@ -21,6 +21,7 @@ let ingredientSchema = Joi.object().keys({
 })
 
 let recipeSchema = Joi.object().keys({
+  userId:Joi.object().required(),
   title: Joi.string().min(1).max(50).required(),
   source: Joi.object().required(),
   tagList: Joi.array().items(Joi.object()).default([]),
@@ -31,7 +32,7 @@ let recipeSchema = Joi.object().keys({
   prepTime: Joi.object().required(),
   serveSize: Joi.number().required(),
   ingredients: Joi.array().items(ingredientSchema).required(),
-  instructions: Joi.string().min(1).max(255).required(),
+  instructions: Joi.string().min(1).required(),
   steps: Joi.array(),
 })
 

@@ -52,7 +52,7 @@ const recipeSchema = new mongoose.Schema({
   serveSize: { type: Number, required: true },
   ingredients: { type: [ingredientSchema], required: true },
 
-  instructions: { type: String, required: true, minlength: 1, maxlength: 255 },
+  instructions: { type: String, required: true, minlength: 1 },
   steps: { type: [stepsSchema], default: [] },
 })
 

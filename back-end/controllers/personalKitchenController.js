@@ -35,13 +35,18 @@ async function registerNewRecipe(req, res) {
      form
     .parse(req, (err, fields ) => {
         if(err){
-      res.status(500).send('Register the new recipe unsuccessfully')
+          res.status(500).send('Register the new recipe unsuccessfully')
         }
         // console.log(typeof fields);
-
-      recipeHelper.createNewRecipe(fields).then((value)=>{
-        return res.status(200).send(value)
-      })
+        //iterate through object, convert all value back to object
+        fields=Object.keys(fields).reduce((prev,curr)=>
+        { 
+           return {...prev, [curr]: JSON.parse(fields[curr])}
+        },{})
+        fields={...fields,userId : req.user._id }
+        recipeHelper.createNewRecipe(fields).then((value)=>{
+          return res.status(200).send(value)
+        })
     })
 
   } catch (err) {
