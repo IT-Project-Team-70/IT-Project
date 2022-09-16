@@ -5,6 +5,21 @@ const Token = require("../models/token");
 const User = require("../models/user");
 require("../passport");
 
+ function checkCookie(req, res) {
+  try {
+    const result = {
+      email: req.user.email,
+      username: req.user.username,
+      id: req.user._id
+    }
+    return res.status(200).send(result)
+  } catch (err) {
+    res.status(500).send('Get userInfo unsuccessfully')
+    throw new Error(err)
+  }
+}
+
+
 function loginSuccess(req, res, next) {
   //redirect to personal working space
   console.log(req.user)
@@ -40,7 +55,12 @@ async function registerHandler(req, res) {
       username: username,
     });
     let user = await newUser.save();
-    return res.status(200).send("Register successfully");
+    const result = {
+      email: email,
+      username: username,
+      id: user._id
+    }
+    return res.status(200).send(result);
   } catch (err) {
     res.status(500).send("Errors while registering");
     throw new Error(err);
@@ -124,4 +144,5 @@ module.exports = {
   resetPasswordHandler,
   updatePasswordHandler,
   forgetPasswordHandler,
+  checkCookie,
 };

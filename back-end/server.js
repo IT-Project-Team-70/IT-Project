@@ -37,7 +37,7 @@ if (env === 'development') {
 app.use(flash())
 app.use(
   cors({
-    origin: ['https://localhost:3000'],
+    origin: ['http://localhost:3000'],
     credentials: true,
     sameSite: 'none',
   })
@@ -57,8 +57,10 @@ app.use(
       mongoUrl: process.env.DATABASE,
     }),
     cookie: {
-      secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
+      // secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
       maxAge: 24 * 60 * 60 * 1000,
+      sameSite:'none',
+      secure:true
     },
   })
 )
