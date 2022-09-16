@@ -9,7 +9,7 @@ const Test1 = (props) => {
   const [cancelToken] = useState(AxiosV1.CancelToken.source())
   useEffect(() => {
     callApi({
-      apiConfig: personalKitchenAPI.getRecipe('631edf70dc39746019247c04'),
+      apiConfig: personalKitchenAPI.getRecipe('631ee28c0b1b2a63ae1dfdb4'),
       onStart: () => {},
       onSuccess: (res) => {
         setImage(

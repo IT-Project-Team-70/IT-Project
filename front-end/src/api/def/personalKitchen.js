@@ -1,7 +1,7 @@
 const personalKitchenAPI = {
   personalKitchen: (data) => ({
     method: 'get',
-    url: '/personalKitchen',
+    url: '/personalKitchen/personal_kitchen',
     headers: {},
   }),
   newRecipe: (data) => ({
