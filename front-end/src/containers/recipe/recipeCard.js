@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
@@ -8,11 +8,39 @@ import Typography from '@mui/material/Typography'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import Rating from '@mui/material/Rating'
 import PropTypes from 'prop-types'
-import placeholderImage from './PlaceholderImage.png'
+import AxiosV1 from '../../api/axiosV1'
+import personalKitchenAPI from '../../api/def/personalKitchen'
+import { callApi } from '../../api/util/callAPI'
 
 export default function RecipeCard(props) {
-  return (
-    <Card sx={{ width: 335, flexShrink: 0 }}>
+  const GetRecipeImage = () => {
+    const [image, setImage] = useState('')
+    const [cancelToken] = useState(AxiosV1.CancelToken.source())
+    useEffect(() => {
+      callApi({
+        apiConfig: personalKitchenAPI.getRecipe(props.recipeID),
+        onStart: () => {},
+        onSuccess: (res) => {
+          setImage(
+            URL.createObjectURL(
+              new Blob([new Uint8Array(JSON.parse(res.data.image.data))], {
+                type: 'image/png',
+              })
+            )
+          )
+          // console.log(new Blob(res.data.image.data))
+        },
+        onError: (err) => {
+          console.log(err)
+        },
+        onFinally: () => {},
+      })
+      return () => {
+        cancelToken.cancel('Request cancel.')
+      }
+    }, [cancelToken])
+    // console.log(image)
+    return (
       <CardMedia
         component="img"
         sx={{
@@ -21,8 +49,13 @@ export default function RecipeCard(props) {
           width: 320,
         }}
         alt="Food Image"
-        src={placeholderImage}
+        src={image}
       />
+    )
+  }
+  return (
+    <Card id={props.recipeID} sx={{ width: 335, flexShrink: 0 }}>
+      {GetRecipeImage(props.recipeID)}
       <CardContent sx={{ p: 0.5, paddingLeft: 1.5 }}>
         <Typography variant="body1" color="text.primary">
           {props.name}
@@ -47,6 +80,7 @@ export default function RecipeCard(props) {
 }
 
 RecipeCard.propTypes = {
+  recipeID: PropTypes.string,
   name: PropTypes.string,
   description: PropTypes.string,
   rating: PropTypes.number,
