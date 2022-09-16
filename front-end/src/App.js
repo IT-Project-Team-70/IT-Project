@@ -19,7 +19,6 @@ function App() {
         return response
       },
       function (err) {
-        // check if http status response
         if (err.response) {
           if (err.response.status === 401) {
             // console.error(err)

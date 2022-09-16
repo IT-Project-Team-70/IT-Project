@@ -9,7 +9,7 @@ const Test1 = (props) => {
   const [cancelToken] = useState(AxiosV1.CancelToken.source())
   useEffect(() => {
     callApi({
-      apiConfig: personalKitchenAPI.getRecipe('631ee28c0b1b2a63ae1dfdb4'),
+      apiConfig: personalKitchenAPI.getRecipe('6324f0f51ef531cc96d52703'),
       onStart: () => {},
       onSuccess: (res) => {
         setImage(
@@ -37,6 +37,7 @@ const Test1 = (props) => {
       <Box
         sx={{
           objectFit: 'cover',
+          height: '20vh',
         }}
         component="img"
         alt="uploaded image"
