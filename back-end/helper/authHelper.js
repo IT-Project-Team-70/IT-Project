@@ -35,13 +35,13 @@ async function sendEmail(email, userId, token) {
       from: process.env.EMAIL_USER,
     })
     const authDetails = `${userId}/${token}`
-    //http://localhost:8000/resetPassword/' + authDetails + '
+    //https://localhost:8000/resetPassword/' + authDetails + '
     const message = {
-      from: process.env.EMAIL_USER,
+      from: `Dont Forget Your Recipe <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'reset password',
       html:
-        '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br><a href = "https://localhost:8000/resetPassword/' +
+        '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br><a href = https://dont-recipe-frontback.herokuapp.com/resetPassword' +
         authDetails +
         '">here</a>',
     }

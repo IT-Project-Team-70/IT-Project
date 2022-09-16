@@ -1,3 +1,4 @@
+
 const morgan = require('morgan')
 const dotenv = require('dotenv')
 const https = require('https')
@@ -36,7 +37,7 @@ if (env === 'development') {
 app.use(flash())
 app.use(
   cors({
-    origin: ['http://localhost:3000'],
+    origin: ['https://localhost:3000'],
     credentials: true,
     sameSite: 'none',
   })

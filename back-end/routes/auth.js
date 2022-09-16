@@ -22,14 +22,12 @@ app.post("/logout", authController.logoutHandler)
 app.post("/register", authController.registerHandler)
 
 //this will take us to the google account sign in page
-app.get("/google", passport.authenticate("google", { scope: ["email"] }));
-app.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/loginSuccess",
-    failureRedirect: "/loginFailure",
-  })
-);
+app.get("/google", passport.authenticate("google", {scope: ["email", "profile"]}))
+
+app.get("/google/callback", passport.authenticate("google", {
+  failureRedirect: "/loginFailure",
+  successRedirect: "/loginGoogleSuccess"
+}))
 
 //login unsuccessfully
 app.get("/loginFailure", authController.loginFailure)
@@ -37,6 +35,8 @@ app.get("/loginFailure", authController.loginFailure)
 //login successfully
 app.get("/loginSuccess", authController.loginSuccess)
 
+//login Google successfully 
+app.get("/loginGoogleSuccess", authController.loginGoogleSuccess)
 //reset password
 app.get("/resetPassword/:userId/:token",authController.resetPasswordHandler)
 

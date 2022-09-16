@@ -6,12 +6,15 @@ import { RouteItems } from '../../routes/routeItems'
 import useTheme from '../../css/muiTheme'
 import LoginInButton from '../login/loginButton'
 import SignUpButton from '../signUp/signupButton'
+import LogoutButton from '../logout/logoutButton'
+import { Context } from '../../stores/userStore'
 
 const AppLayout = (props) => {
   const { children = <></> } = props
   const history = useHistory()
   const pathName = useLocation().pathname
   const theme = useTheme()
+  const [userState] = React.useContext(Context)
   return (
     <Fragment>
       <Box
@@ -39,10 +42,6 @@ const AppLayout = (props) => {
                     flexShrink: 1,
                     maxWidth: index === 0 ? '150px' : '100px',
                     minWidth: index === 0 ? '150px' : '0px',
-                    // boxShadow:
-                    //   index !== 0 && pathName === routeItem.path
-                    //     ? '0px -5px 0px 0px #fff inset'
-                    //     : 'none',
                   }}
                 >
                   <Button
@@ -94,14 +93,22 @@ const AppLayout = (props) => {
         <Box
           sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
         >
-          <ThemeProvider theme={theme}>
-            <Box sx={{ paddingRight: '8px' }}>
-              <LoginInButton />
-            </Box>
-            <Box sx={{ paddingRight: '8px' }}>
-              <SignUpButton />
-            </Box>
-          </ThemeProvider>
+          {userState.login === false ? (
+            <ThemeProvider theme={theme}>
+              <Box sx={{ paddingRight: '8px' }}>
+                <LoginInButton />
+              </Box>
+              <Box sx={{ paddingRight: '8px' }}>
+                <SignUpButton />
+              </Box>
+            </ThemeProvider>
+          ) : (
+            <ThemeProvider theme={theme}>
+              <Box sx={{ paddingRight: '8px' }}>
+                <LogoutButton />
+              </Box>
+            </ThemeProvider>
+          )}
         </Box>
       </Box>
       <Divider

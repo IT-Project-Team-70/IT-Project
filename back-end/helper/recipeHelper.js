@@ -6,7 +6,7 @@ const Tag = require('../models/tag')
 /* ***************************************************************************************** */
 
 // Get all recipes
-async function getAllRecipes(req, res) {
+async function getAllRecipes() {
   try {
     const result = await Recipe.find()
     return result

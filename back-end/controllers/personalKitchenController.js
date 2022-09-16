@@ -4,7 +4,7 @@ const form = new formidable.IncomingForm();
 
 async function getPersonalKitchen(req, res) {
   try {
-    const allRecipes = await recipeHelper.getAllRecipes(req, res)
+    const allRecipes = await recipeHelper.getAllRecipes()
     const allTags = await recipeHelper.getAllTags()
     const courseTags = await recipeHelper.getCourseTags()
     const result = { recipes: allRecipes, tags: allTags, courses: courseTags }
