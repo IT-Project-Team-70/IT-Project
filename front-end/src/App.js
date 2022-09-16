@@ -1,32 +1,38 @@
-import React, { useReducer } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import './App.css'
 import { RouteItems } from './routes/routeItems'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import AppLayout from './containers/appLayout/index'
-import AxiosV1 from './api/axiosV1'
 import '../src/css/index.scss'
 import { Context, initialState, reducer } from './stores/userStore'
+import personalKitchenAPI from './api/def/personalKitchen'
+import AxiosV1 from './api/axiosV1'
+import callApi from './api/util/callAPI'
 function App() {
   const [userState, dispatch] = useReducer(reducer, initialState)
-  console.log('NODE_ENV', process.env)
-  // AxiosV1 setting
-  AxiosV1.interceptors.response
-    .use
-    // function (response) {
-    //   return response
-    // }
-    // function (err) {
-    //   // check if http status response
-    //   if (err.response) {
-    //     if (err.response.status === 401) {
-    //       console.error(err)
-    //     } else if (err.response.status === 502) {
-    //       // setServer502(true)
-    //     }
-    //   }
-    //   return Promise.reject(err)
-    // }
-    ()
+  const [personalKitchenDataStatus, setStatus] = useState('initial')
+  const [cancelToken] = useState(AxiosV1.CancelToken.source())
+  //check login status
+  useEffect(() => {
+    if (personalKitchenDataStatus === 'initial') {
+      setStatus('loading')
+      callApi({
+        apiConfig: personalKitchenAPI.personalKitchen(),
+        onStart: () => {},
+        onSuccess: (res) => {
+          setStatus('success')
+        },
+        onError: (err) => {
+          console.log(err)
+          setStatus('error')
+        },
+        onFinally: () => {},
+      })
+    }
+    return () => {
+      cancelToken.cancel('Request cancel.')
+    }
+  }, [cancelToken, personalKitchenDataStatus])
 
   return (
     <Context.Provider value={[userState, dispatch]}>

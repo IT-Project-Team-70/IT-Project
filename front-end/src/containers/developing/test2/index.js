@@ -15,7 +15,7 @@ const Test2 = (props) => {
       onFinally: () => {},
     })
   }
-  const testProtectedRoutes = () => { 
+  const testProtectedRoutes = () => {
     callApi({
       apiConfig: pkAPI.personalKitchen(),
       onStart: () => {},
