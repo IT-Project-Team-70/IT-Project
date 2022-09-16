@@ -32,7 +32,7 @@ export default function LoginPanel({
     success: false,
     successMessage: '',
   })
-  const [userState, dispatch] = React.useContext(Context)
+  const [userContext] = React.useContext(Context)
   const theme = useTheme()
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -42,23 +42,20 @@ export default function LoginPanel({
       password: data.get('password'),
     })
   }
-  let userInfo = null
   const handleLoginOnClick = (data) => {
     setIsLoading(true)
     callApi({
       apiConfig: authAPI.login(data),
       onStart: () => {},
       onSuccess: (res) => {
-        userInfo = res.data
-        console.log(res)
         setSuccess({ success: true, successMessage: 'login successfully' })
-        dispatch({ type: 'loginSuccess', payload: res.data })
+        userContext.dispatch({ type: 'loginSuccess', payload: res.data })
       },
       onError: (err) => {
         console.log(err)
         if (err.response.status === 401) {
           setError({ error: true, errorMeessage: err.response.data })
-          dispatch({ type: 'loginFailure' })
+          userContext.dispatch({ type: 'loginFailure' })
         }
       },
       onFinally: () => {},

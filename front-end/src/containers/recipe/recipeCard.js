@@ -1,58 +1,78 @@
-import * as React from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect, useState } from 'react'
 import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
-import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import { red } from '@mui/material/colors'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import ShareIcon from '@mui/icons-material/Share'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import placeholderImage from './PlaceholderImage.png'
+import Rating from '@mui/material/Rating'
+import PropTypes from 'prop-types'
+import AxiosV1 from '../../api/axiosV1'
+import personalKitchenAPI from '../../api/def/personalKitchen'
+import { callApi } from '../../api/util/callAPI'
 
 export default function RecipeCard(props) {
-  return (
-    <Card sx={{ maxWidth: 345, flexShrink: 0 }}>
-      {props.hideAuthor || (
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              A
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title="(Author Name)"
-          subheader="January 1, 2022"
-        />
-      )}
+  const GetRecipeImage = () => {
+    const [image, setImage] = useState('')
+    const [cancelToken] = useState(AxiosV1.CancelToken.source())
+    useEffect(() => {
+      callApi({
+        apiConfig: personalKitchenAPI.getRecipe(props.recipeID),
+        onStart: () => {},
+        onSuccess: (res) => {
+          setImage(
+            URL.createObjectURL(
+              new Blob([new Uint8Array(JSON.parse(res.data.image.data))], {
+                type: 'image/png',
+              })
+            )
+          )
+          // console.log(new Blob(res.data.image.data))
+        },
+        onError: (err) => {
+          console.log(err)
+        },
+        onFinally: () => {},
+      })
+      return () => {
+        cancelToken.cancel('Request cancel.')
+      }
+    }, [cancelToken])
+    // console.log(image)
+    return (
       <CardMedia
         component="img"
-        height="200"
-        image={placeholderImage}
+        sx={{
+          m: 1,
+          height: 210,
+          width: 320,
+        }}
         alt="Food Image"
+        src={image}
       />
-      <CardContent>
+    )
+  }
+  return (
+    <Card id={props.recipeID} sx={{ width: 335, flexShrink: 0 }}>
+      {GetRecipeImage(props.recipeID)}
+      <CardContent sx={{ p: 0.5, paddingLeft: 1.5 }}>
         <Typography variant="body1" color="text.primary">
-          (Food name here)
+          {props.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          (Short description of the recipe here)
+          {props.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <Rating
+          name="recipe-rating"
+          value={props.rating}
+          readOnly
+          sx={{ marginRight: 20.5 }}
+        />
+        <IconButton aria-label="add to favorites" align="right">
           <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
         </IconButton>
       </CardActions>
     </Card>
@@ -60,5 +80,8 @@ export default function RecipeCard(props) {
 }
 
 RecipeCard.propTypes = {
-  hideAuthor: PropTypes.bool,
+  recipeID: PropTypes.string,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  rating: PropTypes.number,
 }

@@ -37,5 +37,10 @@ const authAPI = {
     url: '/google',
     headers: {},
   }),
+  checkCookie: () => ({
+    method: 'get',
+    url: '/checkCookie',
+    headers: {},
+  }),
 }
 export default authAPI

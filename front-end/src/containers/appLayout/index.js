@@ -14,7 +14,7 @@ const AppLayout = (props) => {
   const history = useHistory()
   const pathName = useLocation().pathname
   const theme = useTheme()
-  const [userState, dispatch] = React.useContext(Context)
+  const [userContext] = React.useContext(Context)
   return (
     <Fragment>
       <Box
@@ -42,10 +42,6 @@ const AppLayout = (props) => {
                     flexShrink: 1,
                     maxWidth: index === 0 ? '150px' : '100px',
                     minWidth: index === 0 ? '150px' : '0px',
-                    // boxShadow:
-                    //   index !== 0 && pathName === routeItem.path
-                    //     ? '0px -5px 0px 0px #fff inset'
-                    //     : 'none',
                   }}
                 >
                   <Button
@@ -97,7 +93,7 @@ const AppLayout = (props) => {
         <Box
           sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
         >
-          {userState.login === false ? (
+          {userContext.userState && !userContext.userState.login ? (
             <ThemeProvider theme={theme}>
               <Box sx={{ paddingRight: '8px' }}>
                 <LoginInButton />
@@ -105,7 +101,8 @@ const AppLayout = (props) => {
               <Box sx={{ paddingRight: '8px' }}>
                 <SignUpButton />
               </Box>
-            </ThemeProvider>) : (
+            </ThemeProvider>
+          ) : (
             <ThemeProvider theme={theme}>
               <Box sx={{ paddingRight: '8px' }}>
                 <LogoutButton />

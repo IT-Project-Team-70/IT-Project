@@ -12,7 +12,7 @@ const FrontPage = (props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box>
+      <Box backgroundColor="#FFF4CE">
         <Box sx={{ display: 'flex' }}>
           <Box
             component="img"
@@ -66,7 +66,12 @@ const FrontPage = (props) => {
             display="flex"
             justifyContent="center"
           >
-            <TextField id="search" label="Search" variant="outlined" />
+            <TextField
+              id="search"
+              label="Search"
+              variant="outlined"
+              sx={{ bgcolor: '#FFFFFF' }}
+            />
           </Box>
         </Box>
         <Box
@@ -75,16 +80,18 @@ const FrontPage = (props) => {
           display="flex"
           alignContent="center"
         >
-          <RecipeCard hideAuthor />
-          <RecipeCard hideAuthor />
-          <RecipeCard hideAuthor />
-          <RecipeCard hideAuthor />
-          <RecipeCard hideAuthor />
-          <RecipeCard hideAuthor />
-          <RecipeCard hideAuthor />
-          <RecipeCard hideAuthor />
-          <RecipeCard hideAuthor />
-          <RecipeCard hideAuthor />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
+          <RecipeCard />
         </Box>
       </Box>
     </ThemeProvider>

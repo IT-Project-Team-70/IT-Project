@@ -18,6 +18,7 @@ import { Fragment } from 'react'
 import Paper from '@mui/material/Paper'
 import CookImage from './cook.png'
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
+import { Context } from '../../stores/userStore'
 
 export default function SignUpPanel({
   onChange = () => {},
@@ -30,6 +31,7 @@ export default function SignUpPanel({
     success: false,
     successMessage: '',
   })
+  const [userContext] = React.useContext(Context)
   const theme = useTheme()
   const validatePassword = () => {
     let password = document.getElementById('password')
@@ -59,6 +61,7 @@ export default function SignUpPanel({
       onStart: () => {},
       onSuccess: (res) => {
         setSuccess({ success: true, successMessage: res.data })
+        userContext.dispatch({ type: 'loginSuccess', payload: res.data })
         console.log(res)
       },
       onError: (err) => {
