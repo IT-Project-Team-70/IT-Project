@@ -22,7 +22,7 @@ export const useTheme = () => {
       error: {
         main: '#ff2214',
       },
-    },
+  },
   })
   return theme
 }

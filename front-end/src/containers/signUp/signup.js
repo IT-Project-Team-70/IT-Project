@@ -26,7 +26,7 @@ export default function SignUpPanel({
 }) {
   const [toPage, setToPage] = React.useState({ toPage: false, to: '' })
   const [isloading, setIsLoading] = React.useState(false)
-  const [error, setError] = React.useState({ error: false, errorMeessage: '' })
+  const [error, setError] = React.useState({ error: false, errorMessage: '' })
   const [success, setSuccess] = React.useState({
     success: false,
     successMessage: '',
@@ -42,7 +42,6 @@ export default function SignUpPanel({
       confirm_password.setCustomValidity('')
     }
   }
-
   const handleSubmit = (event) => {
     event.preventDefault()
     validatePassword()
@@ -53,7 +52,6 @@ export default function SignUpPanel({
       email: data.get('email'),
     })
   }
-
   const handleSignUpOnClick = (data) => {
     setIsLoading(true)
     callApi({
@@ -69,6 +67,9 @@ export default function SignUpPanel({
         if (err.response.status === 500) {
           setError({ error: true, errorMeessage: err.response.data })
         }
+        if (err.response.status === 403){
+          setError({error: true, errorMessage: err.response.data})
+        }
       },
       onFinally: () => {},
     })
@@ -83,7 +84,6 @@ export default function SignUpPanel({
         return <></>
     }
   }
-
   return toPage.toPage ? (
     toComponent()
   ) : (
@@ -149,7 +149,7 @@ export default function SignUpPanel({
                   color="primary"
                   sx={{ textAlign: 'center' }}
                 >
-                  {error.errorMeessage}
+                  {error.errorMessage}
                 </Typography>
                 <Box
                   component="form"

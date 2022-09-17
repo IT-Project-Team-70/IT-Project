@@ -1,9 +1,11 @@
 const passport = require("passport");
 const crypto = require("crypto");
+const dotenv = require('dotenv')
 const authHelper = require("../helper/authHelper");
 const Token = require("../models/token");
 const User = require("../models/user");
 require("../passport");
+dotenv.config()
 
  function checkCookie(req, res) {
   try {
@@ -27,7 +29,8 @@ function loginSuccess(req, res, next) {
   const result = {
     email: req.user.email,
     username: req.user.username,
-    id: req.user._id
+    id: req.user._id,
+    role: req.user.role
   }
   return res.status(200).send(result)
 }
@@ -35,18 +38,20 @@ function loginFailure(req, res, next) {
   return res.status(401).send("Either password or username is incorrect");
 }
 function loginGoogleSuccess(req, res, next){
-  console.log(req.user)
-  return res.status(200).send(req.user)
-  return res.redirect("https://localhost:3000")
+  return res.redirect(process.env.BASE_URL_FRONT_END)
 }
 async function registerHandler(req, res) {
   try {
     const password = req.body.password;
     const username = req.body.username;
     const email = req.body.email;
+    // check if there are duplicate usernames in the database
+    let duplicate = await User.findOne({username})
+    if (duplicate != null){
+      return res.status(403).send('This username has been taken. Please choose another one!')
+    }
     //generate a hash and a salt from the given password
     const saltHash = authHelper.genPassword(password);
-    // verify your email to log in successfully
     //register a new user account
     let newUser = new User({
       email: email,
@@ -73,6 +78,7 @@ function logoutHandler(req, res, next) {
       return next(err);
     }
     if (req.session) {
+      console.log(req.session)
       req.session.destroy(function (err) {
         if (err) {
           return next(err);
@@ -84,25 +90,25 @@ function logoutHandler(req, res, next) {
   });
 }
 
-async function resetPasswordHandler(req, res) {
+async function checkToken(req, res) {
   try {
     let token = await Token.findOne({ token: req.params.token });
     if (token == null) {
-      req.flash("info", "This token has been expired");
-      return res.status(404).send(null);
+      return res.redirect(`${process.env.BASE_URL_FRONT_END}/resetPassword/failure`)
+    
     }
-    return res.status(200).send(token);
+    return res.redirect(`${process.env.BASE_URL_FRONT_END}/resetPassword/${req.params.userId}`)
   } catch (err) {
     res.status(500).send("Errors while resetting password");
     throw new Error(err);
   }
 }
 
-async function updatePasswordHandler(req, res) {
+async function resetPassword(req, res) {
   try {
     const hashSalt = authHelper.genPassword(req.body.newPassword);
     const id = req.body.userId;
-    const user = await User.findByIdAndUpdate(id, {
+    const user = await User.findByIdAndUpdate({_id: id}, {
       $set: { hash: hashSalt.hash, salt: hashSalt.salt },
     });
     return res.status(200).send(user);
@@ -141,8 +147,8 @@ module.exports = {
   loginSuccess,
   loginFailure,
   loginGoogleSuccess,
-  resetPasswordHandler,
-  updatePasswordHandler,
+  checkToken,
+  resetPassword,
   forgetPasswordHandler,
   checkCookie,
 };

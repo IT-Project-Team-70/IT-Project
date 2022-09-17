@@ -6,7 +6,8 @@ import {
   TEST_2,
   TEST_3,
   UPLOAD_RECIPE,
-  // RESET_PASSWORD,
+  RESET_PASSWORD,
+  RESET_PASSWORD_FAILURE,
 } from './routeConstant'
 
 import {
@@ -17,8 +18,10 @@ import {
 
 import { Test1, Test2, Test3 } from '../containers/developing'
 import UploadRecipe from '../containers/feature/personalKitchen/uploadRecipe'
+import ResetPassword from '../containers/resetPassword'
+import { modalUnstyledClasses } from '@mui/material'
 
-const RouteItems = [
+export const RouteItems = [
   {
     name: `Don't Forget Your Recipe`,
     path: FRONTPAGE,
@@ -47,13 +50,6 @@ const RouteItems = [
     exact: true,
     authority: false,
   },
-  // {
-  //   name: 'ResetPassword',
-  //   path: RESET_PASSWORD,
-  //   component: null,
-  //   exact: true,
-  //   authority: true,
-  // },
   {
     name: 'Test 1',
     path: TEST_1,
@@ -80,4 +76,20 @@ const RouteItems = [
   },
 ]
 
-export { RouteItems }
+export const notNavRouteItems = [
+  {
+    name: 'ResetPassword',
+    path: RESET_PASSWORD,
+    component: ResetPassword,
+    exact: true,
+    authority: true,
+  },
+  {
+    name: 'ResetPassword',
+    path: RESET_PASSWORD_FAILURE,
+    component: ResetPassword,
+    exact: true,
+    authority: true
+  }
+]
+

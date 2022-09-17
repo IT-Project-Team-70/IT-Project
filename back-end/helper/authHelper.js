@@ -36,22 +36,21 @@ async function sendEmail(email, userId, token) {
     })
     const authDetails = `${userId}/${token}`
     //https://localhost:8000/resetPassword/' + authDetails + '
+    //https://dont-recipe-frontback.herokuapp.com/resetPassword'
     const message = {
       from: `Dont Forget Your Recipe <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'reset password',
       html:
-        '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br><a href = https://dont-recipe-frontback.herokuapp.com/resetPassword' +
+        `<b>Hey there! </b><br> Please click onto the link below to reset your password<br><a href =  ${process.env.BASE_URL}/resetPassword/` +
         authDetails +
-        '">here</a>',
+        '>here</a>',
     }
     await transporter.sendMail(message)
-    console.log('send email successfully')
   } catch (err) {
     throw new Error(err)
   }
 }
-
 module.exports = {
   genPassword,
   sendEmail,
