@@ -28,7 +28,7 @@ const AppLayout = (props) => {
       >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {RouteItems.reduce(
-            (acc, curr) => (curr.authority ? [...acc, curr] : acc),
+            (acc, curr) => (curr.show ? [...acc, curr] : acc),
             []
           ).map((routeItem, index) => {
             return (
