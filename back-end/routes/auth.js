@@ -48,11 +48,12 @@ app.get("/loginSuccess", authController.loginSuccess)
 
 //login Google successfully 
 app.get("/loginGoogleSuccess", authController.loginGoogleSuccess)
-//reset password
-app.get("/resetPassword/:userId/:token",authController.resetPasswordHandler)
+
+//check token before resetting user's password
+app.get("/resetPassword/:userId/:token",authController.checkToken)
 
 //update password handler 
-app.post("/updatePassword", authController.updatePasswordHandler)
+app.post("/resetPassword", authController.resetPassword)
 
 //forget password
 app.post("/forgetPassword", authController.forgetPasswordHandler)

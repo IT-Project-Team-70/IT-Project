@@ -271,11 +271,13 @@ const Test1 = ({ match, ...props }) => {
                         Category
                       </Typography>
                       {recipeData && recipeData.courseList && (
-                        <Typography
-                          variant="body1"
-                          sx={{ paddingBottom: '8px' }}
-                        >
-                          Course:
+                        <Box>
+                          <Typography
+                            variant="body1"
+                            sx={{ paddingBottom: '8px' }}
+                          >
+                            Course:
+                          </Typography>
                           {recipeData.courseList.map((course, index) => (
                             <Chip
                               key={course}
@@ -283,11 +285,11 @@ const Test1 = ({ match, ...props }) => {
                               sx={{ marginLeft: '8px' }}
                             ></Chip>
                           ))}
-                        </Typography>
+                        </Box>
                       )}
                       {recipeData && recipeData.tagList && (
-                        <Typography variant="body1">
-                          Categories:
+                        <Box>
+                          <Typography variant="body1">Categories:</Typography>
                           {recipeData.tagList.map((tag, index) => (
                             <Chip
                               key={tag}
@@ -295,7 +297,7 @@ const Test1 = ({ match, ...props }) => {
                               sx={{ marginLeft: '8px' }}
                             ></Chip>
                           ))}
-                        </Typography>
+                        </Box>
                       )}
                     </Box>
                   </Box>

@@ -8,17 +8,13 @@ const pkController = require('../controllers/personalKitchenController')
 /* ********************************************************************************************* */
 function isAuthenticated(req, res, next){
   if(!req.isAuthenticated()){
+    console.log(req.user)
     return res.status(401).send('Please login first')
   }
   else{
    return next()
   }
 }
-router.get('/personal_kitchen', isAuthenticated, pkController.getPersonalKitchen)
-
-router.get('/personal_kitchen/home', isAuthenticated, (req, res) => {
-  res.redirect('/')
-})
 router.get('/', (req, res) => {
   pkController.getPersonalKitchen(req, res)
   // return res.status(200).send(pageData)

@@ -20,6 +20,7 @@ const Test2 = (props) => {
       apiConfig: pkAPI.personalKitchen(),
       onStart: () => {},
       onSuccess: (data) => {
+        console.log(1)
         console.log(data)
       },
       onError: (err) => {},
