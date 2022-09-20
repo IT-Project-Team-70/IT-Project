@@ -48,6 +48,7 @@ export default function LoginPanel({
       apiConfig: authAPI.login(data),
       onStart: () => {},
       onSuccess: (res) => {
+        console.log(res.data)
         setSuccess({ success: true, successMessage: 'login successfully' })
         userContext.dispatch({ type: 'loginSuccess', payload: res.data })
       },
