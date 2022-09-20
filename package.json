@@ -6,7 +6,9 @@
   "scripts": {
     "server": "npm start --prefix back-end",
     "client": "cd front-end && yarn start",
+    "client:windows": "cd front-end && yarn start:windows",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev:windows": "concurrently \"npm run server\" \"npm run client:windows\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
