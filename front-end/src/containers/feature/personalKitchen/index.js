@@ -15,17 +15,30 @@ import useTheme from '../../../css/muiTheme/index'
 import RecipeCard from '../../recipe/recipeCard'
 import { useHistory } from 'react-router-dom'
 import { UPLOAD_RECIPE } from '../../../routes/routeConstant'
+import { callApi } from '../../../api/util/callAPI'
+import personalKitchenAPI from '../../../api/def/auth'
 
 const PersonalKitchen = (props) => {
   const history = useHistory()
   const theme = useTheme()
+
+  const data = new FormData()
+  const getRecipes = (data) => {
+    callApi({
+      apiConfig: personalKitchenAPI.personalKitchen(),
+      onStart: () => {},
+      onSuccess: (res) => {},
+      onError: (err) => {},
+      onFinally: () => {},
+    })
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Box
         sx={{
           display: 'flex',
-          height: '105%',
-          backgroundColor: '#FFF4CE',
+          backgroundColor: '#FBEEDB',
         }}
       >
         <Box>
