@@ -1,64 +1,62 @@
-const authController = require("../controllers/authController")
-const express = require("express");
-const app = express();
-const passport = require("passport");
-require("../passport.js");
+const authController = require('../controllers/authController')
+const express = require('express')
+const app = express()
+const passport = require('passport')
+require('../passport.js')
 
-function isAuthenticated(req, res, next){
-  if(!req.isAuthenticated()){
-    return res.status(401).send('Please login first')
-  }
-  else{
-    console.log(req.user)
-   return next()
-  }
-}
+const { isAuthenticated, hasRole } = require('../helper/authHelper')
+
 app.get('/checkCookie', isAuthenticated, authController.checkCookie)
-
 
 //handle the login request
 app.post(
-  "/login",
-  passport.authenticate("local", {
-    failureRedirect: "/loginFailure",
+  '/login',
+  passport.authenticate('local', {
+    failureRedirect: '/loginFailure',
   }),
-  (req, res ) => {
-    authController.loginSuccess(req, res);
+  (req, res) => {
+    authController.loginSuccess(req, res)
   }
-);
+)
 
 //handle user's logout
-app.post("/logout", authController.logoutHandler)
+app.post('/logout', authController.logoutHandler)
 //define the register page
-app.post("/register", authController.registerHandler)
+app.post('/register', authController.registerHandler)
 
 //this will take us to the google account sign in page
-app.get("/google", passport.authenticate("google", {scope: ["email", "profile"]}))
+app.get(
+  '/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+)
 
-app.get("/google/callback", passport.authenticate("google", {
-  failureRedirect: "/loginFailure",
-  successRedirect: "/loginGoogleSuccess"
-}))
+app.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/loginFailure',
+    successRedirect: '/loginGoogleSuccess',
+  })
+)
 
 //login unsuccessfully
-app.get("/loginFailure", authController.loginFailure)
+app.get('/loginFailure', authController.loginFailure)
 
 //login successfully
-app.get("/loginSuccess", authController.loginSuccess)
+app.get('/loginSuccess', authController.loginSuccess)
 
-//login Google successfully 
-app.get("/loginGoogleSuccess", authController.loginGoogleSuccess)
+//login Google successfully
+app.get('/loginGoogleSuccess', authController.loginGoogleSuccess)
 
 //check token before resetting user's password
-app.get("/resetPassword/:userId/:token",authController.checkToken)
+app.get('/resetPassword/:userId/:token', authController.checkToken)
 
-//update password handler 
-app.post("/resetPassword", authController.resetPassword)
+//update password handler
+app.post('/resetPassword', authController.resetPassword)
 
 //forget password
-app.post("/forgetPassword", authController.forgetPasswordHandler)
+app.post('/forgetPassword', authController.forgetPasswordHandler)
 
 //when visit the protected routes, the server checks the req to see if the req.session.passport.user exists
 //the req.session.passport.user = userId
 //app.get('protected-routes', )
-module.exports = app;
+module.exports = app
