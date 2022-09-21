@@ -73,7 +73,7 @@ const UploadRecipe = () => {
                 : formDataObj.sourceContent,
           },
           tagList: noneInputData.tagList,
-          courseList: [formDataObj.courseList],
+          courseList: noneInputData.courseList,
           description: formDataObj.description,
           prepTime: {
             hours: formDataObj.prepTimeHour,

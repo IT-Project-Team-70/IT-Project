@@ -32,7 +32,7 @@ const ForgotPassword = ({ onChange = () => {}, onClose = () => {} }) => {
       apiConfig: authAPI.forgetPassword(submitData),
       onStart: () => {},
       onSuccess: (res) => {
-        // setSuccess({ success: true, successMessage: res.data })
+        //setSuccess({ success: true, successMessage: res.data })
         console.log(res)
       },
       onError: (err) => {

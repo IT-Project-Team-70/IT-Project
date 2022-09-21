@@ -14,7 +14,6 @@ import {
   Autocomplete,
 } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
-import CourseField from './courseField'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 
 const RecipeDetail = ({
@@ -25,6 +24,7 @@ const RecipeDetail = ({
 }) => {
   const [files, setFiles] = React.useState([])
   const [tagList, setTagList] = React.useState([])
+  const [courseList, setCourseList] = React.useState([])
   const [source, setSource] = React.useState('')
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -50,7 +50,7 @@ const RecipeDetail = ({
     if (files.length > 0 && files[0].path && files[0].path !== '') {
       onChange({ cover: files, source: source })
     }
-    onChange({ source: source, tagList: tagList })
+    onChange({ source: source, tagList: tagList, courseList: courseList })
     return () => {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files, source, tagList])
@@ -158,7 +158,7 @@ const RecipeDetail = ({
                 variant="outlined"
                 size="medium"
                 fullWidth
-                //   required
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -166,7 +166,7 @@ const RecipeDetail = ({
               <TextField
                 name="serveSize"
                 id="serveSize"
-                //   required
+                required
                 size="medium"
                 fullWidth
                 type="number"
@@ -186,7 +186,7 @@ const RecipeDetail = ({
                 <TextField
                   id="prepTimeHour"
                   name="prepTimeHour"
-                  //   required
+                  required
                   size="medium"
                   select
                   fullWidth
@@ -209,7 +209,7 @@ const RecipeDetail = ({
                   name="prepTimeMinute"
                   select
                   fullWidth
-                  //   required
+                  required
                   defaultValue={0}
                 >
                   <MenuItem value={0}>0</MenuItem>
@@ -223,11 +223,30 @@ const RecipeDetail = ({
               </Box>
             </Grid>
             <Grid item xs={12}>
-              <CourseField
-                status={status}
+              <Typography variant="body1">Courses</Typography>
+              {status === 'error' && (
+                <Typography sx={{ color: 'red' }} variant="body2">
+                  Oops! There is something wrong
+                </Typography>
+              )}
+              <Autocomplete
+                multiple
+                loading={false}
                 options={
-                  status === 'success' ? personalKitchenData.courses : []
+                  status === 'success'
+                    ? personalKitchenData.courses.map((tag) => tag.name)
+                    : []
                 }
+                onChange={(e, value, reason) => {
+                  setCourseList(value)
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    placeholder="add more..."
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
@@ -304,7 +323,7 @@ const RecipeDetail = ({
                 variant="outlined"
                 size="medium"
                 fullWidth
-                // required
+                required
                 placeholder={
                   source === 'URL'
                     ? 'URL'
@@ -321,7 +340,8 @@ const RecipeDetail = ({
                 name="description"
                 multiline
                 rows={6}
-                //   required
+                required
+                placeholder="Tell us more: allergens, descriptions, tastes, etc."
                 variant="outlined"
                 color="primary"
                 size="medium"

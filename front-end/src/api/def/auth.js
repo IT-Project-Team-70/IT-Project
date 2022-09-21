@@ -32,9 +32,22 @@ const authAPI = {
       ...data,
     },
   }),
+  resetPassword: (data) => ({
+    method: 'post',
+    url: '/resetPassword',
+    headers: {},
+    data: {
+      ...data,
+    },
+  }),
   loginWithGoogle: () => ({
     method: 'get',
     url: '/google',
+    headers: {},
+  }),
+  checkCookie: () => ({
+    method: 'get',
+    url: '/checkCookie',
     headers: {},
   }),
 }

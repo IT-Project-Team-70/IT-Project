@@ -87,7 +87,7 @@ const Ingredient = ({ onChange = () => {} }) => {
                           sx={{
                             paddingRight: '8px',
                             paddingLeft: '8px',
-                            flexShrink: '7',
+                            flexShrink: '5',
                             '.MuiInputBase-root': { height: '40px' },
                           }}
                           id="unit"
@@ -109,6 +109,7 @@ const Ingredient = ({ onChange = () => {} }) => {
                           <MenuItem value={'gram'}>g</MenuItem>
                           <MenuItem value={'pound'}>lb</MenuItem>
                           <MenuItem value={'ounce'}>oz</MenuItem>
+                          <MenuItem value={'tbsp'}>tbsp</MenuItem>
                           <MenuItem value={'unit'}>unit</MenuItem>
                         </TextField>
                       </Box>

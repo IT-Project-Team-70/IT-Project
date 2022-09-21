@@ -14,7 +14,7 @@ const AppLayout = (props) => {
   const history = useHistory()
   const pathName = useLocation().pathname
   const theme = useTheme()
-  const [userState] = React.useContext(Context)
+  const [userContext] = React.useContext(Context)
   return (
     <Fragment>
       <Box
@@ -28,7 +28,7 @@ const AppLayout = (props) => {
       >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {RouteItems.reduce(
-            (acc, curr) => (curr.authority ? [...acc, curr] : acc),
+            (acc, curr) => (curr.show ? [...acc, curr] : acc),
             []
           ).map((routeItem, index) => {
             return (
@@ -93,7 +93,7 @@ const AppLayout = (props) => {
         <Box
           sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
         >
-          {userState.login === false ? (
+          {userContext.userState && !userContext.userState.login ? (
             <ThemeProvider theme={theme}>
               <Box sx={{ paddingRight: '8px' }}>
                 <LoginInButton />

@@ -1,8 +1,10 @@
 export const FRONTPAGE = '/'
 export const EVERYONES_KITCHEN = `/everyones_kitchen`
 export const PERSONAL_KITCHEN = '/personal_kitchen'
-export const RESET_PASSWORD = '/resetPassword'
+export const RESET_PASSWORD = '/resetPassword/:userId'
+export const RESET_PASSWORD_FAILURE = '/resetPassword/failure'
 export const UPLOAD_RECIPE = '/upload_recipe'
+export const RECIPE = '/recipe/:id'
 // Developing
 export const DEV = `/dev`
 export const TEST = `${DEV}/test`

@@ -34,7 +34,7 @@ const recipeSchema = new mongoose.Schema({
   userId:{type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
   title: { type: String, required: true, minlength: 1, maxlength: 50 },
   source: { type: sourceSchema, required: true },
-
+  rating: {type: Number},
   tagList: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     default: [],
@@ -43,15 +43,12 @@ const recipeSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     required: true,
   },
-
   image: { type: imageSchema },
   description: { type: String, required: true, minlength: 1, maxlength: 255 },
   notes: { type: String, minlength: 0, maxlength: 255, default: '' },
-
   prepTime: { type: prepTimeSchema, required: true },
   serveSize: { type: Number, required: true },
   ingredients: { type: [ingredientSchema], required: true },
-
   instructions: { type: String, required: true, minlength: 1, maxlength: 255 },
   steps: { type: [stepsSchema], default: [] },
 })

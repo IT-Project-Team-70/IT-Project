@@ -4,15 +4,26 @@ const app = express();
 const passport = require("passport");
 require("../passport.js");
 
+function isAuthenticated(req, res, next){
+  if(!req.isAuthenticated()){
+    return res.status(401).send('Please login first')
+  }
+  else{
+    console.log(req.user)
+   return next()
+  }
+}
+app.get('/checkCookie', isAuthenticated, authController.checkCookie)
+
+
 //handle the login request
 app.post(
   "/login",
   passport.authenticate("local", {
     failureRedirect: "/loginFailure",
-    successRedirect: "/loginSuccess",
   }),
-  (req, res, next) => {
-    if (err) next(err);
+  (req, res ) => {
+    authController.loginSuccess(req, res);
   }
 );
 
@@ -37,11 +48,12 @@ app.get("/loginSuccess", authController.loginSuccess)
 
 //login Google successfully 
 app.get("/loginGoogleSuccess", authController.loginGoogleSuccess)
-//reset password
-app.get("/resetPassword/:userId/:token",authController.resetPasswordHandler)
+
+//check token before resetting user's password
+app.get("/resetPassword/:userId/:token",authController.checkToken)
 
 //update password handler 
-app.post("/updatePassword", authController.updatePasswordHandler)
+app.post("/resetPassword", authController.resetPassword)
 
 //forget password
 app.post("/forgetPassword", authController.forgetPasswordHandler)

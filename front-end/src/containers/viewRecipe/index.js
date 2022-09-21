@@ -15,7 +15,7 @@ import HtmlEditor from '../../../component/htmlEditor'
 import useTheme from '../../../css/muiTheme'
 import PropTypes from 'prop-types'
 
-const Test1 = ({ match, ...props }) => {
+const ViewRecipe = ({ match, ...props }) => {
   const [image, setImage] = useState('')
   const [recipeData, setRecipeData] = useState(null)
   const [recipeStatus, setRecipeStatus] = useState('initial')
@@ -301,8 +301,16 @@ const Test1 = ({ match, ...props }) => {
                       )}
                     </Box>
                   </Box>
-
-                  <Box>
+                  <Box
+                    component={Paper}
+                    p={3}
+                    sx={{
+                      backgroundColor: '#fcfcfc',
+                      marginTop: '8px',
+                      alignSelf: 'center',
+                      width: 'calc(100% - 48px)',
+                    }}
+                  >
                     <Typography
                       variant="h6"
                       sx={{ paddingBottom: '8px', paddingLeft: '24px' }}
@@ -330,8 +338,8 @@ const Test1 = ({ match, ...props }) => {
   )
 }
 
-Test1.propTypes = {
+ViewRecipe.propTypes = {
   match: PropTypes.object,
 }
 
-export default Test1
+export default ViewRecipe

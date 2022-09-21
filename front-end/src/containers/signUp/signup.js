@@ -18,6 +18,7 @@ import { Fragment } from 'react'
 import Paper from '@mui/material/Paper'
 import CookImage from './cook.png'
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
+import { Context } from '../../stores/userStore'
 
 export default function SignUpPanel({
   onChange = () => {},
@@ -25,11 +26,12 @@ export default function SignUpPanel({
 }) {
   const [toPage, setToPage] = React.useState({ toPage: false, to: '' })
   const [isloading, setIsLoading] = React.useState(false)
-  const [error, setError] = React.useState({ error: false, errorMeessage: '' })
+  const [error, setError] = React.useState({ error: false, errorMessage: '' })
   const [success, setSuccess] = React.useState({
     success: false,
     successMessage: '',
   })
+  const [userContext] = React.useContext(Context)
   const theme = useTheme()
   const validatePassword = () => {
     let password = document.getElementById('password')
@@ -40,7 +42,6 @@ export default function SignUpPanel({
       confirm_password.setCustomValidity('')
     }
   }
-
   const handleSubmit = (event) => {
     event.preventDefault()
     validatePassword()
@@ -51,7 +52,6 @@ export default function SignUpPanel({
       email: data.get('email'),
     })
   }
-
   const handleSignUpOnClick = (data) => {
     setIsLoading(true)
     callApi({
@@ -59,12 +59,16 @@ export default function SignUpPanel({
       onStart: () => {},
       onSuccess: (res) => {
         setSuccess({ success: true, successMessage: res.data })
+        userContext.dispatch({ type: 'loginSuccess', payload: res.data })
         console.log(res)
       },
       onError: (err) => {
         console.log(err)
         if (err.response.status === 500) {
           setError({ error: true, errorMeessage: err.response.data })
+        }
+        if (err.response.status === 403) {
+          setError({ error: true, errorMessage: err.response.data })
         }
       },
       onFinally: () => {},
@@ -80,7 +84,6 @@ export default function SignUpPanel({
         return <></>
     }
   }
-
   return toPage.toPage ? (
     toComponent()
   ) : (
@@ -146,7 +149,7 @@ export default function SignUpPanel({
                   color="primary"
                   sx={{ textAlign: 'center' }}
                 >
-                  {error.errorMeessage}
+                  {error.errorMessage}
                 </Typography>
                 <Box
                   component="form"

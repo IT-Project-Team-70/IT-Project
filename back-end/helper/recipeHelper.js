@@ -34,11 +34,7 @@ async function getRecipeByTag(tag) {}
 // Create a new recipe
 async function createNewRecipe(recipe) {
   try {
-    //iterate through object, convert all value back to object
-    recipe=Object.keys(recipe).reduce((prev,curr)=>
-     { 
-      // console.log(curr,recipe[curr])
-      return {...prev, [curr]: JSON.parse(recipe[curr])}},{})
+   
 
     // assign tags to the recipe
     const newTagList = []
@@ -67,7 +63,6 @@ async function createNewRecipe(recipe) {
 
     // create recipe and validate
     const newRecipe = new Recipe(recipe)
-
     const { error } = newRecipe.joiValidate(recipe)
     if (error) {
       throw new Error(error.details[0].message)
