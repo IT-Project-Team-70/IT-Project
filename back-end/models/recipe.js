@@ -24,17 +24,17 @@ const prepTimeSchema = new mongoose.Schema({
 })
 
 const stepsSchema = new mongoose.Schema({
-  step: { type: Number, required: true, min: 1, max: 30 },
-  description: { type: String, required: true, minlength: 1, maxlength: 255 },
+  step: { type: Number, required: true, min: 1},
+  description: { type: String, required: true, minlength: 1},
   ingredients: [ingredientSchema],
   image: { type: imageSchema },
 })
 
 const recipeSchema = new mongoose.Schema({
   userId:{type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
-  title: { type: String, required: true, minlength: 1, maxlength: 50 },
+  title: { type: String, required: true, minlength: 1},
   source: { type: sourceSchema, required: true },
-  rating: {type: Number},
+  rating: {type: Number, default: 0},
   tagList: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     default: [],
@@ -43,13 +43,16 @@ const recipeSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     required: true,
   },
+  tagNames: {
+    type: [String], default: [] //filter recipes 
+  },
   image: { type: imageSchema },
-  description: { type: String, required: true, minlength: 1, maxlength: 255 },
-  notes: { type: String, minlength: 0, maxlength: 255, default: '' },
+  description: { type: String, required: true, minlength: 1},
+  notes: { type: String, minlength: 0, default: '' },
   prepTime: { type: prepTimeSchema, required: true },
   serveSize: { type: Number, required: true },
   ingredients: { type: [ingredientSchema], required: true },
-  instructions: { type: String, required: true, minlength: 1, maxlength: 255 },
+  instructions: { type: String, required: true, minlength: 1},
   steps: { type: [stepsSchema], default: [] },
 })
 
