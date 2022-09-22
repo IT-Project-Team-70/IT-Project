@@ -14,7 +14,7 @@ import { ThemeProvider } from '@mui/material'
 import useTheme from '../../../css/muiTheme/index'
 import RecipeCard from '../../recipe/recipeCard'
 import { useHistory } from 'react-router-dom'
-import { UPLOAD_RECIPE } from '../../../routes/routeConstant'
+import { UPLOAD_RECIPE, RECIPE } from '../../../routes/routeConstant'
 import AxiosV1 from '../../../api/axiosV1'
 import personalKitchenAPI from '../../../api/def/personalKitchen'
 import { callApi } from '../../../api/util/callAPI'
@@ -42,7 +42,10 @@ const PersonalKitchen = (props) => {
     }, [cancelToken])
     return recipeList.map((recipe) => {
       return (
-        <Grid key={recipe._id}>
+        <Grid
+          key={recipe._id}
+          onClick={() => history.push(RECIPE.replace(':id', recipe._id))}
+        >
           <RecipeCard
             recipeID={recipe._id}
             title={recipe.title}
