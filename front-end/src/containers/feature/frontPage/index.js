@@ -6,9 +6,12 @@ import { ThemeProvider } from '@mui/material'
 import useTheme from '../../../css/muiTheme'
 import RecipeCard from '../../recipe/recipeCard'
 import foodImage from './FoodImage.webp'
+import { useHistory } from 'react-router-dom'
+import { RECIPE } from '../../../routes/routeConstant'
 
 const FrontPage = (props) => {
   const theme = useTheme()
+  const history = useHistory()
 
   return (
     <Box
@@ -90,12 +93,78 @@ const FrontPage = (props) => {
             display="flex"
             alignContent="center"
           >
-            <RecipeCard
-              recipeID="6329a694613c6d5270842507"
-              title="Noodles"
-              description="Yum"
-              rating={4}
-            />
+            <Box
+              onClick={() =>
+                history.push(RECIPE.replace(':id', '6329a694613c6d5270842507'))
+              }
+            >
+              <RecipeCard
+                recipeID="6329a694613c6d5270842507"
+                title="Noodles"
+                description="Yum"
+                rating={4}
+              />
+            </Box>
+            <Box
+              onClick={() =>
+                history.push(RECIPE.replace(':id', '6329a694613c6d5270842507'))
+              }
+            >
+              <RecipeCard
+                recipeID="6329a694613c6d5270842507"
+                title="Noodles"
+                description="Yum"
+                rating={4}
+              />
+            </Box>
+            <Box
+              onClick={() =>
+                history.push(RECIPE.replace(':id', '6329a694613c6d5270842507'))
+              }
+            >
+              <RecipeCard
+                recipeID="6329a694613c6d5270842507"
+                title="Noodles"
+                description="Yum"
+                rating={4}
+              />
+            </Box>
+            <Box
+              onClick={() =>
+                history.push(RECIPE.replace(':id', '6329a694613c6d5270842507'))
+              }
+            >
+              <RecipeCard
+                recipeID="6329a694613c6d5270842507"
+                title="Noodles"
+                description="Yum"
+                rating={4}
+              />
+            </Box>
+            <Box
+              onClick={() =>
+                history.push(RECIPE.replace(':id', '6329a694613c6d5270842507'))
+              }
+            >
+              <RecipeCard
+                recipeID="6329a694613c6d5270842507"
+                title="Noodles"
+                description="Yum"
+                rating={4}
+              />
+            </Box>
+            <Box
+              onClick={() =>
+                history.push(RECIPE.replace(':id', '6329a694613c6d5270842507'))
+              }
+            >
+              <RecipeCard
+                recipeID="6329a694613c6d5270842507"
+                title="Noodles"
+                description="Yum"
+                rating={4}
+              />
+            </Box>
           </Box>
         </Box>
       </ThemeProvider>

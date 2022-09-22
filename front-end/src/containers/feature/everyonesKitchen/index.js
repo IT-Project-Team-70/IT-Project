@@ -10,9 +10,12 @@ import CheckboxList from './CheckboxList'
 import AxiosV1 from '../../../api/axiosV1'
 import personalKitchenAPI from '../../../api/def/personalKitchen'
 import { callApi } from '../../../api/util/callAPI'
+import { useHistory } from 'react-router-dom'
+import { RECIPE } from '../../../routes/routeConstant'
 
 const EveryonesKitchen = (props) => {
   const theme = useTheme()
+  const history = useHistory()
 
   const GetKitchen = () => {
     const [recipeList, setRecipeList] = useState([])
@@ -33,7 +36,10 @@ const EveryonesKitchen = (props) => {
     }, [cancelToken])
     return recipeList.map((recipe) => {
       return (
-        <Grid key={recipe._id}>
+        <Grid
+          key={recipe._id}
+          onClick={() => history.push(RECIPE.replace(':id', recipe._id))}
+        >
           <RecipeCard
             recipeID={recipe._id}
             title={recipe.title}
