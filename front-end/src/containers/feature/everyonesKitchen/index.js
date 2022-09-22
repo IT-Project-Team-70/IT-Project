@@ -72,14 +72,6 @@ const EveryonesKitchen = (props) => {
                 By Courses:
               </Typography>
               <CheckboxList />
-              <Typography
-                variant="body1"
-                fontWeight="bold"
-                sx={{ marginTop: 3 }}
-              >
-                By Categories:
-              </Typography>
-              <CheckboxList />
             </List>
           </Box>
           <Box sx={{ height: '100%', marginLeft: 1 }}>

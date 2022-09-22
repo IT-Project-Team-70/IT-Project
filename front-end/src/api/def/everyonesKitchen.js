@@ -4,11 +4,5 @@ const everyonesKitchenAPI = {
     url: '/everyonesKitchen',
     headers: {},
   }),
-  getRecipe: (id) => ({
-    method: 'get',
-    url: `/everyonesKitchen/${id}`,
-    headers: {},
-    // responseType: 'blob',
-  }),
 }
 export default everyonesKitchenAPI

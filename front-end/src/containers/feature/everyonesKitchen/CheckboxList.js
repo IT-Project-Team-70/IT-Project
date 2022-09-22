@@ -24,7 +24,7 @@ export default function CheckboxList() {
 
   return (
     <List sx={{ width: '90%', bgcolor: 'white', borderRadius: '5%' }}>
-      {[0, 1, 2, 3].map((value) => {
+      {['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack'].map((value) => {
         const labelId = `checkbox-list-label-${value}`
 
         return (
@@ -43,7 +43,7 @@ export default function CheckboxList() {
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+              <ListItemText id={labelId} primary={value} />
             </ListItemButton>
           </ListItem>
         )
