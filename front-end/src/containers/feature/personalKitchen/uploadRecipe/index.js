@@ -14,6 +14,9 @@ import AlertDialog from '../../../../component/alertDialog'
 import callApi from '../../../../api/util/callAPI'
 import personalKitchenAPI from '../../../../api/def/personalKitchen'
 import AxiosV1 from '../../../../api/axiosV1'
+import LoadingSpinner from '../../../../component/loadingSpinner'
+import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import { Typography } from '@mui/material'
 
 const UploadRecipe = () => {
   const [noneInputData, setNoneInputData] = useState({})
@@ -24,10 +27,12 @@ const UploadRecipe = () => {
     message: '',
   }
   const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
-  const history = useHistory()
   const [cancelToken] = useState(AxiosV1.CancelToken.source())
   const [personalKitchenDataStatus, setStatus] = useState('initial')
   const [personalKitchenData, setPersonalKitchenData] = useState({})
+  const [submitStatus, setSubmitStatus] = useState('initial')
+  const [error, setError] = useState({ error: false, message: '' })
+  const history = useHistory()
 
   useEffect(() => {
     if (personalKitchenDataStatus === 'initial') {
@@ -59,6 +64,7 @@ const UploadRecipe = () => {
       setFileError(false)
       if (noneInputData.procedure && noneInputData.procedure !== '') {
         setProcedureError(false)
+        setSubmitStatus('loading')
         const data = new FormData(event.currentTarget)
         const formDataObj = {}
         data.forEach((value, key) => (formDataObj[key] = value))
@@ -104,10 +110,12 @@ const UploadRecipe = () => {
             onStart: () => {},
             onSuccess: (res) => {
               console.log('success', res)
-              //redirect to ? or show success?
+              history.push(`/recipe/${res.data._id}`)
             },
             onError: (err) => {
               console.log(err)
+              setSubmitStatus('fail')
+              setError({ error: true, message: err.response.data })
             },
             onFinally: () => {},
           })
@@ -132,80 +140,100 @@ const UploadRecipe = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box height="inherit" sx={{ backgroundColor: '#FFF4CE' }}>
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          autoComplete="off"
-          style={{ height: '100%' }}
-        >
+        {error.error ? (
           <Box
-            padding={1}
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-            }}
+            display="flex"
+            flexDirection={'column'}
+            alignItems="center"
+            height="inherit"
+            justifyContent="center"
           >
-            <Box paddingRight={2}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="medium"
-                type="submit"
-              >
-                Save New Recipe
-              </Button>
-            </Box>
-            <Box>
-              <Button
-                variant="text"
-                color="primary"
-                size="medium"
-                onClick={() =>
-                  setAlertDialog({
-                    open: true,
-                    message:
-                      'You will be redirect to the previous page. Your change will be gone, do you still wich to proceed?',
-                  })
-                }
-              >
-                Cancel
-              </Button>
-            </Box>
+            <ReportProblemIcon fontSize="large" />
+            Oops something went wrong!
+            <Typography
+              variant="body"
+              color="primary"
+              sx={{ textAlign: 'center' }}
+            >
+              {error.message}
+            </Typography>
           </Box>
-          <Grid
-            container
-            height="calc(100% - 52.5px)"
-            sx={{ paddingLeft: '8px' }}
+        ) : (
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            autoComplete="off"
+            style={{ height: '100%' }}
           >
-            <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
-              <RecipeDetail
-                onChange={(data) => {
-                  setNoneInputData((prev) => ({ ...prev, ...data }))
-                }}
-                fileError={fileError}
-                status={personalKitchenDataStatus}
-                personalKitchenData={personalKitchenData}
-              />
+            <Box
+              padding={1}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Box paddingRight={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="medium"
+                  type="submit"
+                >
+                  Save New Recipe
+                </Button>
+              </Box>
+              <Box>
+                <Button
+                  variant="text"
+                  color="primary"
+                  size="medium"
+                  onClick={() =>
+                    setAlertDialog({
+                      open: true,
+                      message:
+                        'You will be redirect to the previous page. Your change will be gone, do you still wich to proceed?',
+                    })
+                  }
+                >
+                  Cancel
+                </Button>
+              </Box>
+            </Box>
+            <Grid
+              container
+              height="calc(100% - 52.5px)"
+              sx={{ paddingLeft: '8px' }}
+            >
+              <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
+                <RecipeDetail
+                  onChange={(data) => {
+                    setNoneInputData((prev) => ({ ...prev, ...data }))
+                  }}
+                  fileError={fileError}
+                  status={personalKitchenDataStatus}
+                  personalKitchenData={personalKitchenData}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
+                <Ingredient
+                  onChange={(data) => {
+                    setNoneInputData((prev) => ({ ...prev, ingredients: data }))
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
+                <Procedure
+                  onChange={(data) => {
+                    console.log(data)
+                    setNoneInputData((prev) => ({ ...prev, procedure: data }))
+                  }}
+                  error={procedureError}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
-              <Ingredient
-                onChange={(data) => {
-                  setNoneInputData((prev) => ({ ...prev, ingredients: data }))
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} md={4} lg={4} height="inherit">
-              <Procedure
-                onChange={(data) => {
-                  console.log(data)
-                  setNoneInputData((prev) => ({ ...prev, procedure: data }))
-                }}
-                error={procedureError}
-              />
-            </Grid>
-          </Grid>
-        </Box>
+          </Box>
+        )}
       </Box>
       <AlertDialog
         open={alertDialog.open}
@@ -216,6 +244,7 @@ const UploadRecipe = () => {
         onCancel={() => {}}
         alertText={alertDialog.message}
       />
+      <LoadingSpinner isLoading={submitStatus === 'loading'} />
     </ThemeProvider>
   )
 }

@@ -67,7 +67,6 @@ export default function ResetPassword(props) {
   }
   return (
     <div style={{ backgroundColor: '#FFF4CE' }}>
-      <AppLayout />
       <ThemeProvider theme={theme}>
         {!tokenExpired ? (
           !resetSuccess ? (

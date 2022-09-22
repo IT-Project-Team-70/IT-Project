@@ -5,6 +5,7 @@ export const RESET_PASSWORD = '/resetPassword/:userId'
 export const RESET_PASSWORD_FAILURE = '/resetPassword/failure'
 export const UPLOAD_RECIPE = '/upload_recipe'
 export const RECIPE = '/recipe/:id'
+export const LOGIN = '/login'
 // Developing
 export const DEV = `/dev`
 export const TEST = `${DEV}/test`

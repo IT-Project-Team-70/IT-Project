@@ -16,7 +16,7 @@ export default function RecipeCard(props) {
   const GetRecipeImage = () => {
     const [image, setImage] = useState('')
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
-    useEffect(() => {
+    /*useEffect(() => {
       callApi({
         apiConfig: personalKitchenAPI.getRecipe(props.recipeID),
         onStart: () => {},
@@ -36,7 +36,7 @@ export default function RecipeCard(props) {
       return () => {
         cancelToken.cancel('Request cancel.')
       }
-    }, [cancelToken])
+    }, [cancelToken])*/
     // console.log(image)
     return (
       <CardMedia
