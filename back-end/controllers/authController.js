@@ -63,7 +63,8 @@ async function registerHandler(req, res) {
     const result = {
       email: email,
       username: username,
-      id: user._id
+      id: user._id,
+      role: user.role
     }
     return res.status(200).send(result);
   } catch (err) {

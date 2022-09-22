@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha 'test/**/*.js' --timeout 15000",
     "start": "nodemon server.js"
   },
   "author": "",
@@ -38,8 +38,12 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
     "debug": "^4.3.4",
     "jshint": "^2.13.5",
-    "prettier": "^2.7.1"
+    "mocha": "^10.0.0",
+    "prettier": "^2.7.1",
+    "sinon": "^14.0.0"
   }
 }

@@ -51,8 +51,20 @@ async function sendEmail(email, userId, token) {
     throw new Error(err)
   }
 }
+
+function isAuthenticated(req, res, next){
+  if(!req.isAuthenticated()){
+    console.log(req.user)
+    return res.status(401).send('Please login first')
+  }
+  else{
+   return next()
+  }
+}
+
 module.exports = {
   genPassword,
   sendEmail,
   isValidPassword,
+  isAuthenticated
 }
