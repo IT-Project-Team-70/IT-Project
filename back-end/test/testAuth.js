@@ -23,13 +23,9 @@ describe('POST /login', ()=>{
                     expect(body).to.have.property('email')
                     expect(body).to.have.property('id')
                     expect(body).to.have.property('role')
-                    return agent.get('/personalKitchen').then(function(res){
-                      expect(res).to.have.status(200)
-                      done()
-                    })
-                  })
-  })
-})
+                    done()
+                })
+})})
 
 //TEST THE LOGOUT POST REQUEST
 //Status 200
@@ -66,7 +62,7 @@ describe('POST /login', ()=>{
 
 //TEST THE REGISTER POST REQUEST - no duplicate usernames
 //Status 200 
-describe('POST /register', ()=>{
+/*describe('POST /register', ()=>{
   it("should return status 200", (done)=>{
     const res = agent.post('/register').type('form')
                   .send({username: process.env.TEST_UNIQUE_USERNAME, password: process.env.TEST_PASSWORD, email: process.env.TEST_EMAIL})
@@ -77,11 +73,11 @@ describe('POST /register', ()=>{
                     done()
                   })
   })
-})
+})*/
 
 //TEST THE REGISTER POST REQUEST - duplicate usernames
 //Status 403
-/*describe('POST /register', ()=>{
+describe('POST /register', ()=>{
   it("should return status 403", (done)=>{
     const res = agent.post('/register').type('form')
                     .send({username: process.env.TEST_USERNAME, password: process.env.TEST_PASSWORD, email: process.env.TEST_EMAIL})
@@ -92,5 +88,5 @@ describe('POST /register', ()=>{
                       done()
                     })
   })
-})*/
+})
 
