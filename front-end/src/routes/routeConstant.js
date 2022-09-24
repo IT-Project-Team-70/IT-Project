@@ -1,4 +1,4 @@
-export const FRONTPAGE = '/'
+export const FRONT0PAGE = '/'
 export const EVERYONES_KITCHEN = `/everyones_kitchen`
 export const PERSONAL_KITCHEN = '/personal_kitchen'
 export const RESET_PASSWORD = '/resetPassword/:userId'

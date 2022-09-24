@@ -103,3 +103,4 @@ https.createServer({
 server.listen(port || 8080, () => {
   console.log(`Ther server is running on ${port}`);
 });
+module.exports = server

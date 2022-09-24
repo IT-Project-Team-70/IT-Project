@@ -210,7 +210,6 @@ function sortRating(){
   quickSort(arr, start, index - 1);
   quickSort(arr, index + 1, end);
 }
-
 /* ***************************************************************************************** */
 
 module.exports = {
