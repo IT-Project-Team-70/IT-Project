@@ -159,7 +159,6 @@ async function createNewTag(tag) {
     throw new Error(err)
   }
 }
-
 async function createNewTagAdmi(tag, isCourse) {
   try {
     const existedTag = await Tag.findOne({ name: tag }) // tag.name
@@ -227,5 +226,5 @@ module.exports = {
   findTag,
   createNewTag,
   createNewTagAdmi,
-  sortRating
+  sortRating,
 }
