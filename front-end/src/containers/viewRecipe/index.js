@@ -300,13 +300,31 @@ const ViewRecipe = ({ match, ...props }) => {
                         <Typography variant="h6" sx={{ paddingBottom: '8px' }}>
                           Category
                         </Typography>
+                        {recipeData && recipeData.courseNameList && (
+                          <Box>
+                            <Typography
+                              variant="body1"
+                              sx={{ paddingBottom: '8px' }}
+                            >
+                              Course:
+                            </Typography>
+                            {recipeData.courseNameList.map((course, index) => (
+                              <Chip
+                                key={course}
+                                label={course}
+                                sx={{ marginLeft: '8px', marginBottom: '8px' }}
+                              ></Chip>
+                            ))}
+                          </Box>
+                        )}
                         {recipeData && recipeData.tagNameList && (
                           <Box>
+                            <Typography variant="body1">Categories:</Typography>
                             {recipeData.tagNameList.map((tag, index) => (
                               <Chip
                                 key={tag}
                                 label={tag}
-                                sx={{ marginLeft: '8px' }}
+                                sx={{ marginLeft: '8px', marginBottom: '8px' }}
                               ></Chip>
                             ))}
                           </Box>
