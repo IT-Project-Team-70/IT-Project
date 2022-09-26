@@ -300,33 +300,58 @@ const ViewRecipe = ({ match, ...props }) => {
                         <Typography variant="h6" sx={{ paddingBottom: '8px' }}>
                           Category
                         </Typography>
-                        {recipeData && recipeData.courseList && (
+                        {recipeData && recipeData.tagNameList && (
                           <Box>
-                            <Typography
-                              variant="body1"
-                              sx={{ paddingBottom: '8px' }}
-                            >
-                              Course:
-                            </Typography>
-                            {recipeData.courseList.map((course, index) => (
-                              <Chip
-                                key={course}
-                                label={course}
-                                sx={{ marginLeft: '8px' }}
-                              ></Chip>
-                            ))}
-                          </Box>
-                        )}
-                        {recipeData && recipeData.tagList && (
-                          <Box>
-                            <Typography variant="body1">Categories:</Typography>
-                            {recipeData.tagList.map((tag, index) => (
+                            {recipeData.tagNameList.map((tag, index) => (
                               <Chip
                                 key={tag}
                                 label={tag}
                                 sx={{ marginLeft: '8px' }}
                               ></Chip>
                             ))}
+                          </Box>
+                        )}
+                      </Box>
+                      <Box
+                        component={Paper}
+                        p={3}
+                        sx={{
+                          backgroundColor: '#fcfcfc',
+                          marginTop: '8px',
+                          alignSelf: 'center',
+                          width: 'calc(100% - 48px)',
+                        }}
+                      >
+                        <Typography variant="h6" sx={{ paddingBottom: '8px' }}>
+                          Source
+                        </Typography>
+                        {recipeData && recipeData.source && (
+                          <Box>
+                            {recipeData.source.type === 'Own' && (
+                              <Typography
+                                variant="body1"
+                                sx={{ paddingBottom: '8px' }}
+                              >
+                                My own recipe
+                              </Typography>
+                            )}
+                            {recipeData.source.type === 'URL' && (
+                              <a
+                                rel="noopener noreferrer"
+                                href={recipeData.source.content}
+                                target="_blank"
+                              >
+                                {recipeData.source.content}
+                              </a>
+                            )}
+                            {recipeData.source.type === 'Book' && (
+                              <Typography
+                                variant="body1"
+                                sx={{ paddingBottom: '8px' }}
+                              >
+                                {recipeData.source.content}
+                              </Typography>
+                            )}
                           </Box>
                         )}
                       </Box>
@@ -354,6 +379,7 @@ const ViewRecipe = ({ match, ...props }) => {
                           config={{
                             allowResizeX: false,
                             allowResizeY: false,
+                            height: 'auto',
                           }}
                         />
                       )}
