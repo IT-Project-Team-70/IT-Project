@@ -5,4 +5,10 @@ const router = express.Router()
 
 const landingController = require('../controllers/landingController')
 
+/* ********************************************************************************************* */
+
+router.get('/', (req, res) => {
+  landingController.getLandingPage(req, res)
+})
+
 module.exports = router

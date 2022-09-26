@@ -43,8 +43,8 @@ const recipeSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     required: true,
   },
-  tagNames: {
-    type: [String], default: [] //filter recipes 
+  tagNameList: {
+    type: [String], default: [], required: true, 
   },
   image: { type: imageSchema },
   description: { type: String, required: true, minlength: 1},

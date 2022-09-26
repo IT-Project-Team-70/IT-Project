@@ -52,19 +52,21 @@ async function sendEmail(email, userId, token) {
   }
 }
 
-function isAuthenticated(req, res, next){
-  if(!req.isAuthenticated()){
+function isAuthenticated(req, res, next) {
+  if (!req.isAuthenticated()) {
     console.log(req.user)
     return res.status(401).send('Please login first')
-  }
-  else{
-   return next()
+  } else {
+    return next()
   }
 }
+
+function hasRole() {}
 
 module.exports = {
   genPassword,
   sendEmail,
   isValidPassword,
-  isAuthenticated
+  isAuthenticated,
+  hasRole,
 }

@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express()
 
-// const { hasRole } = require('../helper/auth')
+const { hasRole, isAuthenticated } = require('../helper/authHelper')
 
 const pkController = require('../controllers/personalKitchenController')
 const authHelper = require('../helper/authHelper')
 /* ********************************************************************************************* */
 
-router.get('/', authHelper.isAuthenticated, (req, res) => {
+router.get('/', isAuthenticated, (req, res) => {
   pkController.getPersonalKitchen(req, res)
   // return res.status(200).send(pageData)
   // return res.status(200).send(req.passport.session.user)

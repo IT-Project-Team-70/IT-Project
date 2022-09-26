@@ -12,6 +12,7 @@ const agent = chai.request.agent(server)
 //TEST THE LOGIN POST REQUEST - The user logs in successfully and get access to the personal kitchen route
 //Status 200
 describe('POST /login', ()=>{
+  //valid password
   it("should return status 200 along with user's information and user can visit /personalKitchen", (done)=>{
     const res = agent.post('/login').type('form')
                   .send({username: process.env.TEST_USERNAME, password: process.env.TEST_PASSWORD})

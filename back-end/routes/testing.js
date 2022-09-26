@@ -3,10 +3,8 @@ const router = express.Router()
 
 const fs = require('fs')
 
-// const { isAuthenticated, hasRole } = require('../helper/auth')
+// const { isAuthenticated, hasRole } = require('../helper/authHelper')
 
-// const pkController = require('../controllers/personalKitchenController')
-// const userController = require('../controllers/userController')
 const recipeHelper = require('../helper/recipeHelper')
 
 router.get('/getRecipes', (req, res) => {
@@ -22,11 +20,10 @@ router.get('/getTags', (req, res) => {
 })
 
 router.get('/getCourses', (req, res) => {
-  console.log('reached testing route: getting all tags ...\n');
-  recipeHelper.getCourseTags().then(function (result){
-  return res.status(200).send(result) //send(req.passport.session.user)
-});
-  
+  console.log('reached testing route: getting all tags ...\n')
+  recipeHelper.getCourseTags().then(function (result) {
+    return res.status(200).send(result) //send(req.passport.session.user)
+  })
 })
 
 router.post('/newRecipe', (req, res) => {
@@ -44,15 +41,6 @@ router.post('/admi/newTag/:isCourse', (req, res) => {
 
   recipeHelper.createNewTagAdmi(req.body, req.params.isCourse)
   return res.status(200).send('Hello World!')
-})
-
-router.get('/getImage/default', async (req, res) => {
-  // let data = await fs.readFileSync('./public/images/default.png')
-  // let base64 = data.toString('base64')
-  // console.log(base64.substr(0, 200))
-  // let image = new Buffer.from(base64, 'base64')
-  // console.log(image)
-  // return res.status(200)
 })
 
 module.exports = router
