@@ -53,13 +53,14 @@ app.use(express.static(path.join(__dirname +'/../front-end/build')));
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
-    credentials: true,
+    //credentials: true,
     name: 'sid',
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: process.env.DATABASE,
     }),
+    proxy: process.env.NODE_ENV === 'production',
     cookie: {
       secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
       maxAge: 24 * 60 * 60 * 1000,
