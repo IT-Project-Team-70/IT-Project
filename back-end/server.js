@@ -41,7 +41,7 @@ if (env === 'development') {
 app.use(flash())
 app.use(
   cors({
-    origin: ['http://localhost:3000'],
+    origin: [process.env.BASE_URL_FRONT_END],
     credentials: true,
     sameSite: 'none',
   })
