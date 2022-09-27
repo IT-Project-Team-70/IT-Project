@@ -39,13 +39,13 @@ if (env === 'development') {
 
 // Declare Middlewares for the app
 app.use(flash())
-app.use(
+/*app.use(
   cors({
     origin: [process.env.BASE_URL_FRONT_END],
     credentials: true,
-    sameSite: 'strict',
+    sameSite: 'none'
   })
-)
+)*/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname +'/../front-end/build')));
@@ -62,10 +62,11 @@ app.use(
     }),
     //proxy: process.env.NODE_ENV === 'production',
     cookie: {
-      //secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
+      secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
       maxAge: 24 * 60 * 60 * 1000,
-      sameSite:'none',
-      secure:true
+      //sameSite:'none',
+      //secure:true
+      sameSite: 'strict'
     },
   })
 )
