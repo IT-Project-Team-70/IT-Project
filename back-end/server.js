@@ -43,7 +43,7 @@ app.use(
   cors({
     origin: [process.env.BASE_URL_FRONT_END],
     credentials: true,
-    sameSite: 'none',
+    sameSite: 'strict',
   })
 )
 app.use(express.json())
@@ -60,12 +60,12 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.DATABASE,
     }),
-    proxy: process.env.NODE_ENV === 'production',
+    //proxy: process.env.NODE_ENV === 'production',
     cookie: {
-      secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
+      //secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
       maxAge: 24 * 60 * 60 * 1000,
       sameSite:'none',
-      //secure:true
+      secure:true
     },
   })
 )
