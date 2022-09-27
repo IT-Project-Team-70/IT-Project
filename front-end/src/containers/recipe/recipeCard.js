@@ -30,9 +30,7 @@ export default function RecipeCard(props) {
           )
           // console.log(new Blob(res.data.image.data))
         },
-        onError: (err) => {
-          console.log(err)
-        },
+        onError: (err) => {},
         onFinally: () => {},
       })
       return () => {
@@ -58,7 +56,7 @@ export default function RecipeCard(props) {
       {GetRecipeImage(props.recipeID)}
       <CardContent sx={{ p: 0.5, paddingLeft: 1.5 }}>
         <Typography variant="body1" color="text.primary">
-          {props.name}
+          {props.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {props.description}
@@ -81,7 +79,7 @@ export default function RecipeCard(props) {
 
 RecipeCard.propTypes = {
   recipeID: PropTypes.string,
-  name: PropTypes.string,
+  title: PropTypes.string,
   description: PropTypes.string,
   rating: PropTypes.number,
 }

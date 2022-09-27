@@ -6,8 +6,10 @@ import {
   TEST_2,
   TEST_3,
   UPLOAD_RECIPE,
+  RECIPE,
   RESET_PASSWORD,
   RESET_PASSWORD_FAILURE,
+  LOGIN,
 } from './routeConstant'
 
 import {
@@ -19,7 +21,8 @@ import {
 import { Test1, Test2, Test3 } from '../containers/developing'
 import UploadRecipe from '../containers/feature/personalKitchen/uploadRecipe'
 import ResetPassword from '../containers/resetPassword'
-import { modalUnstyledClasses } from '@mui/material'
+import ViewRecipe from '../containers/viewRecipe'
+import LoginPanel from '../containers/login/login'
 
 export const RouteItems = [
   {
@@ -27,34 +30,62 @@ export const RouteItems = [
     path: FRONTPAGE,
     component: FrontPage,
     exact: true,
-    authority: true,
+    show: true,
   },
   {
     name: `Everyone's Kitchen`,
     path: EVERYONES_KITCHEN,
     component: EveryonesKitchen,
     exact: true,
-    authority: true,
+    show: true,
   },
   {
     name: 'Personal Kitchen',
     path: PERSONAL_KITCHEN,
     component: PersonalKitchen,
     exact: true,
-    authority: true,
+    show: true,
   },
   {
     name: 'Upload Recipe',
     path: UPLOAD_RECIPE,
     component: UploadRecipe,
     exact: true,
-    authority: false,
+    show: false,
+  },
+  {
+    name: 'Recipe',
+    path: RECIPE,
+    component: ViewRecipe,
+    exact: true,
+    show: false,
+  },
+  {
+    name: 'ResetPassword',
+    path: RESET_PASSWORD,
+    component: ResetPassword,
+    exact: true,
+    show: false,
+  },
+  {
+    name: 'ResetPassword',
+    path: RESET_PASSWORD_FAILURE,
+    component: ResetPassword,
+    exact: true,
+    show: false,
+  },
+  {
+    name: 'Login',
+    path: LOGIN,
+    component: LoginPanel,
+    exact: true,
+    show: false,
   },
   {
     name: 'Test 1',
     path: TEST_1,
     component: Test1,
-    authority:
+    show:
       process.env.NODE_ENV === 'development' &&
       process.env.REACT_APP_TEST_MODE === 'ON',
   },
@@ -62,7 +93,7 @@ export const RouteItems = [
     name: 'Test 2',
     path: TEST_2,
     component: Test2,
-    authority:
+    show:
       process.env.NODE_ENV === 'development' &&
       process.env.REACT_APP_TEST_MODE === 'ON',
   },
@@ -70,7 +101,7 @@ export const RouteItems = [
     name: 'Test 3',
     path: TEST_3,
     component: Test3,
-    authority:
+    show:
       process.env.NODE_ENV === 'development' &&
       process.env.REACT_APP_TEST_MODE === 'ON',
   },
@@ -89,7 +120,6 @@ export const notNavRouteItems = [
     path: RESET_PASSWORD_FAILURE,
     component: ResetPassword,
     exact: true,
-    authority: true
-  }
+    authority: true,
+  },
 ]
-

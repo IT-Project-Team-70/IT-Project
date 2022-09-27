@@ -67,8 +67,8 @@ export default function SignUpPanel({
         if (err.response.status === 500) {
           setError({ error: true, errorMeessage: err.response.data })
         }
-        if (err.response.status === 403){
-          setError({error: true, errorMessage: err.response.data})
+        if (err.response.status === 403) {
+          setError({ error: true, errorMessage: err.response.data })
         }
       },
       onFinally: () => {},

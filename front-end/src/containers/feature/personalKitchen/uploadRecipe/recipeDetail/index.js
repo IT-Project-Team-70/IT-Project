@@ -223,7 +223,7 @@ const RecipeDetail = ({
               </Box>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1">Other Categories</Typography>
+              <Typography variant="body1">Courses</Typography>
               {status === 'error' && (
                 <Typography sx={{ color: 'red' }} variant="body2">
                   Oops! There is something wrong
@@ -323,7 +323,7 @@ const RecipeDetail = ({
                 variant="outlined"
                 size="medium"
                 fullWidth
-                // required
+                required
                 placeholder={
                   source === 'URL'
                     ? 'URL'

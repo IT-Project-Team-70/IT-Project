@@ -5,11 +5,17 @@
   "main": "index.js",
   "scripts": {
     "server": "npm start --prefix back-end",
+    "heruokuServer": "cd back-end && npm install  && npm start ",
+    "heruokuClientBuild": "cd front-end && yarn herokuDeploy",
+    "clientBuild": "cd front-end && yarn build",
+    "clientTestBuild": "cd front-end && yarn testBuild",
     "client": "cd front-end && yarn start",
     "client:windows": "cd front-end && yarn start:windows",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "dev:windows": "concurrently \"npm run server\" \"npm run client:windows\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "npm run heruokuClientBuild",
+    "start": "npm run heruokuServer"
   },
   "repository": {
     "type": "git",
@@ -23,6 +29,8 @@
   "homepage": "https://github.com/Harry-Guanqin-Wang/IT-Project#readme",
   "dependencies": {
     "concurrently": "^7.3.0",
-    "heroku": "^7.63.0"
+    "express": "^4.18.1",
+    "heroku": "^7.63.0",
+    "path": "^0.12.7"
   }
 }

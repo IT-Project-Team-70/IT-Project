@@ -2,6 +2,8 @@
 const morgan = require('morgan')
 const dotenv = require('dotenv')
 const https = require('https')
+const path = require('path');
+const http = require("http")
 const fs = require('fs')
 
 // Experss
@@ -24,6 +26,8 @@ const everyoneKitchenRouter = require('./routes/everyoneKitchen.js')
 const testingRouter = require('./routes/testing.js')
 const authRouter = require('./routes/auth.js')
 // ******************************************************************************************** //
+//get .env from the root folder
+dotenv.config({ path: '../.env' });
 // Initialize the app
 const app = express()
 dotenv.config()
@@ -37,14 +41,14 @@ if (env === 'development') {
 app.use(flash())
 app.use(
   cors({
-    origin: ['https://localhost:3000'],
+    origin: ['http://localhost:3000'],
     credentials: true,
     sameSite: 'none',
   })
 )
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-// app.use(express.static(__dirname + '/public'))
+app.use(express.static(path.join(__dirname +'/../front-end/build')));
 //create a session
 app.use(
   session({
@@ -84,18 +88,19 @@ app.all('*', (req, res) => {
 // ******************************************************************************************** //
 // Start the server & listen for requests
 const port = process.env.PORT
-app.set('port', port)
+app.set("port", port);
 
+//if HEROKU_MODE=="on"(when deploying onto heroku and project config HEROKU_MODE=="on")
+const server = process.env.HEROKU_MODE=="ON"? http.createServer(app):
 //configure https
-https
-  .createServer(
-    {
-      key: fs.readFileSync('../security/DontForgetUrRecipe.key'),
-      cert: fs.readFileSync('../security/DontForgetUrRecipe.crt'),
-      rejectUnauthorized: false,
-    },
-    app
-  )
-  .listen(port || 8080, () => {
-    console.log(`Ther server is running on port ${port}`)
-  })
+https.createServer({
+  key: fs.readFileSync('../security/DontForgetUrRecipe.key'),
+  cert: fs.readFileSync('../security/DontForgetUrRecipe.crt'),
+  rejectUnauthorized: false,
+  
+},app);
+
+server.listen(port || 8080, () => {
+  console.log(`Ther server is running on ${port}`);
+});
+module.exports = server

@@ -37,7 +37,7 @@ const authAPI = {
     url: '/resetPassword',
     headers: {},
     data: {
-      ...data
+      ...data,
     },
   }),
   loginWithGoogle: () => ({

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import './App.css'
-import { RouteItems, notNavRouteItems} from './routes/routeItems'
+import { RouteItems } from './routes/routeItems'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import AppLayout from './containers/appLayout/index'
 import '../src/css/index.scss'
@@ -51,34 +51,26 @@ function App() {
   }, [cancelToken])
 
   return (
-      <BrowserRouter>
-        <Switch
-          path={RouteItems.reduce(
-            (acc, curr) => (curr.authority ? [...acc, curr.path] : acc),
-            []
-          )}
-          exact={true}
-        >
-           {notNavRouteItems.map((routeItem) =>(
-            <Route 
-              key={routeItem.path}
-              path={routeItem.path}
-              exact={routeItem.exact}
-              component = {routeItem.component}
-            />
-          ))}
-          {RouteItems.map((routeItem) => (
-            <Route
-              key={routeItem.path}
-              path={routeItem.path}
-              exact={routeItem.exact}
-              render={(routeProps) => (
-                <AppLayout>
-                  <routeItem.component {...routeProps} />{' '}
-                </AppLayout>
-              )}
-            />
-          ))}
+    <BrowserRouter>
+      <Switch
+        path={RouteItems.reduce(
+          (acc, curr) => (curr.authority ? [...acc, curr.path] : acc),
+          []
+        )}
+        exact={true}
+      >
+        {RouteItems.map((routeItem) => (
+          <Route
+            key={routeItem.path}
+            path={routeItem.path}
+            exact={routeItem.exact}
+            render={(routeProps) => (
+              <AppLayout>
+                <routeItem.component {...routeProps} />{' '}
+              </AppLayout>
+            )}
+          />
+        ))}
         <Route
           render={(routeProps) => (
             <div
@@ -102,4 +94,3 @@ function App() {
 }
 
 export default App
-

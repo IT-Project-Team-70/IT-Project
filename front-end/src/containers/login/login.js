@@ -20,6 +20,7 @@ import { Fragment } from 'react'
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
 import ForgotPassword from '../forgotPassword'
 import { Context } from '../../stores/userStore'
+import { useHistory } from 'react-router-dom'
 
 export default function LoginPanel({
   onChange = () => {},
@@ -27,12 +28,13 @@ export default function LoginPanel({
 }) {
   const [toPage, setToPage] = React.useState({ toPage: false, to: '' })
   const [isloading, setIsLoading] = React.useState(false)
-  const [error, setError] = React.useState({ error: false, errorMeessage: '' })
+  const [error, setError] = React.useState({ error: false, errorMessage: '' })
   const [success, setSuccess] = React.useState({
     success: false,
     successMessage: '',
   })
   const [userContext] = React.useContext(Context)
+  const history = useHistory()
   const theme = useTheme()
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -48,15 +50,16 @@ export default function LoginPanel({
       apiConfig: authAPI.login(data),
       onStart: () => {},
       onSuccess: (res) => {
+        console.log(res.data)
         setSuccess({ success: true, successMessage: 'login successfully' })
         userContext.dispatch({ type: 'loginSuccess', payload: res.data })
       },
       onError: (err) => {
         console.log(err)
         if (err.response.status === 401) {
-          setError({ error: true, errorMeessage: err.response.data })
           userContext.dispatch({ type: 'loginFailure' })
         }
+        setError({ error: true, errorMessage: err.response.data })
       },
       onFinally: () => {},
     })
@@ -124,7 +127,10 @@ export default function LoginPanel({
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={() => onClose()}
+                    onClick={() => {
+                      onClose()
+                      history.goBack()
+                    }}
                   >
                     close
                   </Button>
@@ -137,7 +143,7 @@ export default function LoginPanel({
                   color="primary"
                   sx={{ textAlign: 'center' }}
                 >
-                  {error.errorMeessage}
+                  {error.errorMessage}
                 </Typography>
                 <Box
                   component="form"
