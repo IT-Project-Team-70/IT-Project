@@ -39,13 +39,13 @@ if (env === 'development') {
 
 // Declare Middlewares for the app
 app.use(flash())
-/*app.use(
+app.use(
   cors({
     origin: [process.env.BASE_URL_FRONT_END],
     credentials: true,
-    sameSite: 'none'
+    
   })
-)*/
+)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname +'/../front-end/build')));
