@@ -50,7 +50,7 @@ const recipeSchema = new mongoose.Schema({
     type: [String], default: [], required: true,
   },
   categoryNameList: {
-    type: [String], default: [], required: true, 
+    type: [String], default: [], 
   },
   image: { type: imageSchema },
   description: { type: String, required: true, minlength: 1},

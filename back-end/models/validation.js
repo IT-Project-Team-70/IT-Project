@@ -28,7 +28,7 @@ let recipeSchema = Joi.object().keys({
   courseList: Joi.array().items(Joi.object()).required(),
   //tagNameList: Joi.array().items(Joi.string()).required(),
   courseNameList: Joi.array().items(Joi.string()).required(),
-  categoryNameList: Joi.array().items(Joi.string()).required(),
+  categoryNameList: Joi.array().items(Joi.string()),
   image: Joi.object(),
   description: Joi.string().min(1).required(),
   notes: Joi.string().min(0),
