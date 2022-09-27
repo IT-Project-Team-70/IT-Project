@@ -11,7 +11,9 @@
     "clientTestBuild": "cd front-end && yarn testBuild",
     "client": "cd front-end && yarn start:windows",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "npm run heruokuClientBuild",
+    "start": "npm run heruokuServer"
   },
   "repository": {
     "type": "git",

@@ -9,7 +9,6 @@ import { callApi } from '../../api/util/callAPI'
 import authAPI from '../../api/def/auth'
 import useTheme from '../../css/muiTheme'
 import { styled } from '@mui/material/styles'
-import AppLayout from '../appLayout'
 import Noti from './noti'
 const BoxShadowDiv = styled('div')(
   ({ theme }) => `
