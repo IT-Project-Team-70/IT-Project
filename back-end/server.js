@@ -61,10 +61,10 @@ app.use(
       mongoUrl: process.env.DATABASE,
     }),
     cookie: {
-      // secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
+      secure: process.env.ENVIRONMENT === 'production', //if secure is true => only transmit over HTTPS
       maxAge: 24 * 60 * 60 * 1000,
       sameSite:'none',
-      secure:true
+      //secure:true
     },
   })
 )
