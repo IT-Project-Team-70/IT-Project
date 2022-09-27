@@ -1,7 +1,20 @@
 const everyonesKitchenAPI = {
-  everyonesKitchen: (data) => ({
+  everyonesKitchen: (tags) => ({
     method: 'get',
-    url: '/everyonesKitchen',
+    url: '/forum/filterRecipes',
+    headers: {},
+    data: {
+      tags: tags,
+    },
+  }),
+  addFavorite: (id) => ({
+    method: 'post',
+    url: `/forum/addFavorite/${id}`,
+    headers: {},
+  }),
+  removeFavorite: (id) => ({
+    method: 'post',
+    url: `/forum/removeFavorite/${id}`,
     headers: {},
   }),
 }
