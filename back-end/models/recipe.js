@@ -43,7 +43,13 @@ const recipeSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     required: true,
   },
-  tagNameList: {
+  /*tagNameList: {
+    type: [String], default: [], required: true, 
+  },*/
+  courseNameList: {
+    type: [String], default: [], required: true,
+  },
+  categoryNameList: {
     type: [String], default: [], required: true, 
   },
   image: { type: imageSchema },
