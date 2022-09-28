@@ -11,7 +11,7 @@ const agent = chai.request.agent(server)
 
 describe('test user logins then logouts successfully. Then if they enter the wrong password => fail to login', ()=>{
   //valid password
-  it("should return status 200 along with user's information and user can visit /personalKitchen", (done)=>{
+  it("should return status 200 along with user's information", (done)=>{
     const res = agent.post('/login').type('form')
                   .send({username: process.env.TEST_USERNAME, password: process.env.TEST_PASSWORD})
                   .then(function(res){
@@ -35,19 +35,15 @@ describe('test user logins then logouts successfully. Then if they enter the wro
 
   })
   //invalid password
-  it("should return status 401 and user cannot visit /personalKitchen", (done)=>{
+  it("should return status 401", (done)=>{
     const res = agent.post('/login').type('form')
                 .send({username: process.env.TEST_USERNAME, password: process.env.TEST_INVALID_PASSWORD})
                 .then(function(res){
                   expect(res).to.have.status(401)
                   expect(res.text).to.be.a('string')
-                  return agent.get('/personalKitchen').then(function(res){
-                    console.log(res)
-                    expect(res).to.have.status(401)
-                    done()
-                  })
-                })
+                 done()
   })
+})
 })
 
 describe('test register successfully with unique username + unique email and login successfully', ()=>{
