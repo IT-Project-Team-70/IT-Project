@@ -1,17 +1,77 @@
-const Recipe = require('../models/recipe')
+const userHelper = require('../helpers/userHelper')
 const recipeHelper = require('../helper/recipeHelper')
+const generalHelper = require('../helper/generalHelper')
 
 const { isEmpty } = require('lodash')
 var formidable = require('formidable')
 const form = new formidable.IncomingForm()
 
-async function getEveryoneKitchen() {}
+async function getEveryoneKitchen(req, res) {
+  try {
+    const isPublic = true
+    const allRecipes = await recipeHelper.getAllRecipes(isPublic)
+    if (isEmpty(allRecipes)) {
+      return res.status(200).send(null)
+    }
+    return res.status(200).send(allRecipes)
+  } catch (err) {
+    res.status(500).send('errors while getting all recipes')
+    throw new Error(err)
+  }
+}
 
-async function getOneRecipeById(req, res) {}
+async function getOneRecipeById(req, res) {
+  try {
+    const id = req.params.id
+    if (!generalHelper.isValidObjectId(id)) {
+      return res.status(404).send('Invalid Recipe Id')
+    }
+    const recipe = await recipeHelper.getRecipeById(id)
+    if (recipe === null) {
+      return res.status(404).send('Recipe not found')
+    }
+    return res.status(200).send(recipe)
+  } catch (err) {
+    res.status(500).send('Get the recipe unsuccessfully')
+    throw new Error(err)
+  }
+}
 
-async function addFavorite(req, res) {}
+async function addFavorite(req, res) {
+  try {
+    const recipeId = req.params.id
+    if (!generalHelper.isValidObjectId(recipeId)) {
+      return res.status(404).send('Invalid Recipe Id')
+    }
+    const userId = req.passport.session.user._id
+    const user = await userHelper.getUserById(userId)
+    user.favorites.push(recipeId)
+    await user.save()
 
-async function removeFavorite(req, res) {}
+    return res.status(200).send('Add the recipe to favorite successfully')
+  } catch (err) {
+    res.status(500).send('Add the recipe to favorite unsuccessfully')
+    throw new Error(err)
+  }
+}
+
+async function removeFavorite(req, res) {
+  try {
+    const recipeId = req.params.id
+    if (!generalHelper.isValidObjectId(recipeId)) {
+      return res.status(404).send('Invalid Recipe Id')
+    }
+    const userId = req.passport.session.user._id
+    const user = await userHelper.getUserById(userId)
+    user.favorites.pull(recipeId)
+    await user.save()
+
+    return res.status(200).send('Remove the recipe from favorite successfully')
+  } catch (err) {
+    res.status(500).send('Remove the recipe from favorite unsuccessfully')
+    throw new Error(err)
+  }
+}
 
 async function rateRecipe(req, res) {}
 async function commentRecipe(req, res) {}

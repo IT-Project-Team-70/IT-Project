@@ -34,7 +34,8 @@ const recipeSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   title: { type: String, required: true, minlength: 1 },
   source: { type: sourceSchema, required: true },
-  rating: { type: Number, default: 0 },
+  rating: { type: [Number], default: [] },
+  isPublic: { type: Boolean, default: true },
 
   tagList: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],

@@ -7,12 +7,11 @@ const Tag = require('../models/tag')
 /* ***************************************************************************************** */
 
 // Get all recipes
-async function getAllRecipes() {
+async function getAllRecipes(isPublic) {
   try {
-    const result = await Recipe.find()
+    const result = await Recipe.find({ isPublic })
     return result
   } catch (err) {
-    // res.status(500).send('Get all Recipes unsuccessfully')
     console.log(err)
     throw new Error(err)
   }

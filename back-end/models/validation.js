@@ -21,11 +21,17 @@ let ingredientSchema = Joi.object().keys({
 })
 
 let recipeSchema = Joi.object().keys({
-  userId:Joi.object().required(),
+  userId: Joi.object().required(),
   title: Joi.string().min(1).max(50).required(),
   source: Joi.object().required(),
+  rating: Joi.array().items(Joi.number().min(1).max(5)),
+  isPublic: Joi.boolean(),
+
   tagList: Joi.array().items(Joi.object()).default([]),
+  tagNames: Joi.array().items(Joi.string()).default([]),
   courseList: Joi.array().items(Joi.object()).required(),
+  courseNames: Joi.array().items(Joi.string()).default([]),
+
   image: Joi.object(),
   description: Joi.string().min(1).max(255).required(),
   notes: Joi.string().min(0).max(255),
