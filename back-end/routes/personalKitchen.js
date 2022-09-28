@@ -7,27 +7,20 @@ const pkController = require('../controllers/personalKitchenController')
 
 /* ********************************************************************************************* */
 
-router.get('/', isAuthenticated, (req, res) => {
-  pkController.getPersonalKitchen(req, res)
-  // return res.status(200).send(pageData)
-  // return res.status(200).send(req.passport.session.user)
-})
-
+router.get('/', isAuthenticated, pkController.getPersonalKitchen)
 router.get('/:id', isAuthenticated, pkController.getOneRecipeById)
+router.get('/category/:tag', isAuthenticated, pkController.getRecipesByTag)
+router.get('/favorite', isAuthenticated, pkController.getUserFavorite)
+// router.get('/favorite/:id', isAuthenticated, (req, res) => {})
 
 // post a new recipe into the database
 router.post('/newRecipe', isAuthenticated, pkController.registerNewRecipe)
 // editing old recipes
-router.post('/oldRecipe/:id', isAuthenticated, pkController.editOldRecipe)
+router.post('/editOldRecipe/:id', isAuthenticated, pkController.editOldRecipe)
+// change recipe tags, move into another category
+router.post('/tagRecipe/:id', isAuthenticated, pkController.tagOldRecipe)
 
 // delete a recipe from the database
 router.delete('/:id', isAuthenticated, pkController.deleteOldRecipe)
-router.get('/category', isAuthenticated, (req, res) => {})
-router.get('/category/:id', isAuthenticated, (req, res) => {})
-router.get('/favorite', isAuthenticated, (req, res) => {})
-router.get('/favorite/:id', isAuthenticated, (req, res) => {})
-
-// change recipe tags, move into another category
-router.post('/tagRecipe/:id', isAuthenticated, (req, res) => {})
 
 module.exports = router

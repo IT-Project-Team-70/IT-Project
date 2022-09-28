@@ -1,8 +1,10 @@
 const recipeHelper = require('../helper/recipeHelper')
 const generalHelper = require('../helper/generalHelper')
+const userHelper = require('../helper/userHelper')
+
 var formidable = require('formidable')
-const { isObjectIdOrHexString } = require('mongoose')
 const form = new formidable.IncomingForm()
+const { isObjectIdOrHexString } = require('mongoose')
 
 /* ********************************************************************* */
 async function getPersonalKitchen(req, res) {
@@ -31,6 +33,30 @@ async function getOneRecipeById(req, res) {
     return res.status(200).send(recipe)
   } catch (err) {
     res.status(500).send('Get the recipe unsuccessfully')
+    throw new Error(err)
+  }
+}
+
+async function getRecipesByTag(req, res) {
+  try {
+    const tag = req.params.tag
+    const userId = req.passport.session.user._id
+    const recipes = await recipeHelper.getRecipesByTag(tag, userId)
+    return res.status(200).send(recipes)
+  } catch (err) {
+    res.status(500).send('Get the recipe by tag unsuccessfully')
+    throw new Error(err)
+  }
+}
+
+async function getUserFavorite(req, res) {
+  try {
+    const userId = req.passport.session.user._id
+    const user = await userHelper.getUserById(userId)
+    const favoriteRecipes = user.favorites
+    return res.status(200).send(favoriteRecipes)
+  } catch (err) {
+    res.status(500).send('Get the user favorite recipes unsuccessfully')
     throw new Error(err)
   }
 }
@@ -103,6 +129,8 @@ function deleteOldRecipe(req, res) {
 module.exports = {
   getPersonalKitchen,
   getOneRecipeById,
+  getRecipesByTag,
+  getUserFavorite,
   editOldRecipe,
   tagOldRecipe,
   registerNewRecipe,

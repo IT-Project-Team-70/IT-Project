@@ -45,7 +45,24 @@ async function getRecipeById(id) {
   }
 }
 
-async function getRecipeByTag(tag) {}
+async function getRecipesByTag(tag, userId) {
+  try {
+    const user = await User.findById(userId)
+    const recipes = user.recipes
+
+    const result = []
+    for (let i = 0; i < recipes.length; i++) {
+      const recipe = await Recipe.findById(recipes[i])
+      if (recipe.tagNames.includes(tag)) {
+        result.push(recipe)
+      }
+    }
+    return result
+  } catch (err) {
+    console.log(err)
+    throw new Error(err)
+  }
+}
 
 async function tagRecipe(id, recipe) {}
 // Create a new recipe
@@ -234,7 +251,7 @@ module.exports = {
   getAllRecipes,
   getUserRecipes,
   getRecipeById,
-  getRecipeByTag,
+  getRecipesByTag,
   createNewRecipe,
   tagRecipe,
   updateRecipe,
