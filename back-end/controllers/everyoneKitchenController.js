@@ -13,7 +13,7 @@ async function getEveryoneKitchen(req, res) {
     if (isEmpty(allRecipes)) {
       return res.status(200).send(null)
     }
-    const sortedRecipes = recipeHelper.sortRating(allRecipes)
+    const sortedRecipes = recipeHelper.sortRecipesByRating(allRecipes)
     return res.status(200).send(sortedRecipes)
   } catch (err) {
     res.status(500).send('errors while getting all recipes')
@@ -42,7 +42,7 @@ async function getAllSortedRecipes(req, res) {
   try {
     const isPublic = true
     const allRecipes = await recipeHelper.getAllRecipes(isPublic)
-    const sortedRecipes = recipeHelper.sortRating()
+    // const sortedRecipes = recipeHelper.sortRating()
   } catch (error) {
     throw new Error(error)
   }
@@ -121,7 +121,22 @@ async function removeFavorite(req, res) {
   }
 }
 
-async function rateRecipe(req, res) {}
+async function rateRecipe(req, res) {
+  try {
+    if (!generalHelper.isValidObjectId(req.params.id)) {
+      return res.status(404).send('invalid recipeId')
+    }
+    const userId = req.user._id
+    const recipeId = req.params.id
+    const rating = req.body.rating
+    const result = await recipeHelper.rateRecipe(recipeId, userId, rating)
+    return res.status(200).send(result)
+  } catch (err) {
+    res.status(500).send('Errors while rating recipe')
+    throw new Error(err)
+  }
+}
+
 async function commentRecipe(req, res) {}
 
 module.exports = {

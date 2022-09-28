@@ -30,11 +30,17 @@ const stepsSchema = new mongoose.Schema({
   image: { type: imageSchema },
 })
 
+const rateSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  rate: { type: Number, required: true, min: 0, max: 5 },
+})
+
 const recipeSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   title: { type: String, required: true, minlength: 1 },
   source: { type: sourceSchema, required: true },
-  rating: { type: [Number], default: [] },
+  ratingList: { type: [rateSchema], default: [] },
+  averageRating: { type: Number, default: 0 },
   isPublic: { type: Boolean, default: true },
 
   tagList: {

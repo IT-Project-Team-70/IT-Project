@@ -9,8 +9,7 @@ const { isObjectIdOrHexString } = require('mongoose')
 /* ********************************************************************* */
 async function getPersonalKitchen(req, res) {
   try {
-    const userId = req.passport.session.user._id
-    const allRecipes = await recipeHelper.getUserRecipes(userId)
+    const allRecipes = await recipeHelper.getUserRecipes(req.user._id)
     const allTags = await recipeHelper.getAllTags()
     const courseTags = await recipeHelper.getCourseTags()
     const result = { recipes: allRecipes, tags: allTags, courses: courseTags }
@@ -40,8 +39,7 @@ async function getOneRecipeById(req, res) {
 async function getRecipesByTag(req, res) {
   try {
     const tag = req.params.tag
-    const userId = req.passport.session.user._id
-    const recipes = await recipeHelper.getRecipesByTag(tag, userId)
+    const recipes = await recipeHelper.getRecipesByTag(tag, req.user._id)
     return res.status(200).send(recipes)
   } catch (err) {
     res.status(500).send('Get the recipe by tag unsuccessfully')
@@ -51,8 +49,7 @@ async function getRecipesByTag(req, res) {
 
 async function getUserFavorite(req, res) {
   try {
-    const userId = req.passport.session.user._id
-    const user = await userHelper.getUserById(userId)
+    const user = await userHelper.getUserById(req.user._id)
     const favoriteRecipes = user.favorites
     return res.status(200).send(favoriteRecipes)
   } catch (err) {

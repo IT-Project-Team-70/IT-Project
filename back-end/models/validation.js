@@ -24,7 +24,8 @@ let recipeSchema = Joi.object().keys({
   userId: Joi.object().required(),
   title: Joi.string().min(1).required(),
   source: Joi.object().required(),
-  rating: Joi.array().items(Joi.number().min(1).max(5)),
+  rating: Joi.array().items(Joi.object()),
+  averageRating: Joi.number().min(0).max(5),
   isPublic: Joi.boolean(),
 
   tagList: Joi.array().items(Joi.object()).default([]),

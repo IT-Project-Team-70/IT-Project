@@ -216,6 +216,30 @@ async function createNewTagAdmi(tag, isCourse) {
   }
 }
 
+/* ***************************************************************************************** */
+async function rateRecipe(recipeId, userId, rate) {
+  try {
+    const recipe = await Recipe.findById(recipeId)
+    if (!recipe) throw new Error('Recipe not found')
+
+    const rating = { user: userId, rate }
+    recipe.ratingList.push(rating)
+
+    // calculate the average rating
+    let sum = 0
+    for (let i = 0; i < recipe.ratingList.length; i++) {
+      sum += recipe.ratingList[i].rate
+    }
+    recipe.averageRating = sum / recipe.ratingList.length
+
+    const result = await recipe.save()
+    return result
+  } catch (err) {
+    console.log(err)
+    throw new Error(err)
+  }
+}
+
 function partition(arr, start, end) {
   // Taking the last element as the pivot
   const pivotValue = arr[end]
@@ -233,7 +257,7 @@ function partition(arr, start, end) {
   return pivotIndex
 }
 
-function sortRating() {
+function sortRating(recipes) {
   // Base case or terminating case
   if (start >= end) {
     return
@@ -243,6 +267,10 @@ function sortRating() {
   // Recursively apply the same logic to the left and right subarrays
   quickSort(arr, start, index - 1)
   quickSort(arr, index + 1, end)
+}
+
+function sortRecipesByRating(recipes) {
+  // const ratings =
 }
 /* ***************************************************************************************** */
 
@@ -261,5 +289,6 @@ module.exports = {
   findTag,
   createNewTag,
   createNewTagAdmi,
-  sortRating,
+  sortRecipesByRating,
+  rateRecipe,
 }
