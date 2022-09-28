@@ -23,7 +23,7 @@ async function filterRecipe(req, res) {
     const allRecipes = await recipeHelper.getAllRecipes();
     let result = [];
     for(let i = 0; i < allRecipes.length; i++){
-        const tagNames = allRecipes[i].tagNameList;
+        const tagNames = allRecipes[i].courseNameList.concat(allRecipes[i].categoryNameList)
         let count = 0;
       for (j in requiredTagNames){
         if (tagNames.includes(requiredTagNames[j])){
