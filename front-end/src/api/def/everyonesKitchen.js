@@ -1,6 +1,6 @@
 const everyonesKitchenAPI = {
   everyonesKitchen: (tags) => ({
-    method: 'get',
+    method: 'post',
     url: '/forum/filterRecipes',
     headers: {},
     data: {
