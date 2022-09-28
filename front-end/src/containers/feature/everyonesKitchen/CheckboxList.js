@@ -13,7 +13,7 @@ import everyonesKitchenAPI from '../../../api/def/everyonesKitchen'
 
 export default function CheckboxList(props) {
   const [checked, setChecked] = React.useState([0])
-  const tags = ['Asian']
+  const tags = ['Dinner']
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value)
