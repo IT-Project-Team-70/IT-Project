@@ -1,11 +1,14 @@
 const recipeHelper = require('../helper/recipeHelper')
-const generalHelper =require('../helper/generalHelper')
-var formidable = require('formidable');
-const { isObjectIdOrHexString } = require('mongoose');
-const form = new formidable.IncomingForm();
+const generalHelper = require('../helper/generalHelper')
+var formidable = require('formidable')
+const { isObjectIdOrHexString } = require('mongoose')
+const form = new formidable.IncomingForm()
+
+/* ********************************************************************* */
 async function getPersonalKitchen(req, res) {
   try {
-    const allRecipes = await recipeHelper.getAllRecipes()
+    const userId = req.passport.session.user._id
+    const allRecipes = await recipeHelper.getUserRecipes(userId)
     const allTags = await recipeHelper.getAllTags()
     const courseTags = await recipeHelper.getCourseTags()
     const result = { recipes: allRecipes, tags: allTags, courses: courseTags }
@@ -18,7 +21,7 @@ async function getPersonalKitchen(req, res) {
 async function getOneRecipeById(req, res) {
   try {
     const id = req.params.id
-    if(!generalHelper.isValidObjectId(id)){
+    if (!generalHelper.isValidObjectId(id)) {
       return res.status(404).send('Invalid Recipe Id')
     }
     const recipe = await recipeHelper.getRecipeById(id)
@@ -34,23 +37,21 @@ async function getOneRecipeById(req, res) {
 
 async function registerNewRecipe(req, res) {
   try {
-     form
-    .parse(req, (err, fields ) => {
-        if(err){
-          res.status(500).send('Register the new recipe unsuccessfully')
-        }
-        // console.log(typeof fields);
-        //iterate through object, convert all value back to object
-        fields=Object.keys(fields).reduce((prev,curr)=>
-        { 
-           return {...prev, [curr]: JSON.parse(fields[curr])}
-        },{})
-        fields={...fields,userId : req.user._id }
-        recipeHelper.createNewRecipe(fields).then((value)=>{
-          return res.status(200).send(value)
-        })
-    })
+    form.parse(req, (err, fields) => {
+      if (err) {
+        res.status(500).send('Register the new recipe unsuccessfully')
+      }
+      // console.log(typeof fields);
 
+      //iterate through object, convert all value back to object
+      fields = Object.keys(fields).reduce((prev, curr) => {
+        return { ...prev, [curr]: JSON.parse(fields[curr]) }
+      }, {})
+      fields = { ...fields, userId: req.user._id }
+      recipeHelper.createNewRecipe(fields).then((value) => {
+        return res.status(200).send(value)
+      })
+    })
   } catch (err) {
     res.status(500).send('Register the new recipe unsuccessfully')
     throw new Error(err)

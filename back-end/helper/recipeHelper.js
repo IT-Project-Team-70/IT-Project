@@ -88,8 +88,11 @@ async function createNewRecipe(recipe) {
     if (error) {
       throw new Error(error.details[0].message)
     }
-    // save the recipe into the database
+    // save the recipe into the recipe & user database
     const result = await newRecipe.save()
+    const user = await User.findById(recipe.userId)
+    user.recipes.push(result._id)
+    await user.save()
     return result
   } catch (err) {
     console.log(err)
@@ -165,9 +168,6 @@ async function createNewTag(tag) {
       return existedTag
     }
     const newTag = new Tag({ name: tag, userCreated: true, isCourse: false })
-    // tag.userCreated = true
-    // tag.isCourse = false
-    // const newTag = new Tag(tag)
     const { error } = newTag.joiValidate()
     if (error) {
       throw new Error(error.details[0].message)
@@ -188,9 +188,6 @@ async function createNewTagAdmi(tag, isCourse) {
     }
 
     const newTag = new Tag({ name: tag, userCreated: false, isCourse })
-    // tag.userCreated = false
-    // tag.isCourse = isCourse
-    // const newTag = new Tag(tag)
     const { error } = newTag.joiValidate()
     if (error) {
       throw new Error(error.details[0].message)
