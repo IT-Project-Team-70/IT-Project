@@ -147,6 +147,7 @@ const ViewRecipe = ({ match, ...props }) => {
                           padding: '16px',
                           marginLeft: '8px',
                           flexGrow: '1',
+                          maxHeight: 'calc(35vh - 32px)',
                         }}
                       >
                         <Typography
@@ -168,13 +169,17 @@ const ViewRecipe = ({ match, ...props }) => {
                             borderColor: '#fbeedb',
                           }}
                         />
-                        <Box width="50%" alignSelf="center" paddingTop="36px">
+                        <Box
+                          width="80%"
+                          alignSelf="center"
+                          sx={{ maxHeight: 'calc(100% - 184px)' }}
+                        >
                           {recipeData && (
                             <Typography
                               variant="body1"
                               sx={{ color: '#fbeedb', textAlign: 'center' }}
                             >
-                              {recipeData.description.toUpperCase()}
+                              {recipeData.description}
                             </Typography>
                           )}
                         </Box>
@@ -317,10 +322,10 @@ const ViewRecipe = ({ match, ...props }) => {
                             ))}
                           </Box>
                         )}
-                        {recipeData && recipeData.tagNameList && (
+                        {recipeData && recipeData.categoryNameList && (
                           <Box>
                             <Typography variant="body1">Categories:</Typography>
-                            {recipeData.tagNameList.map((tag, index) => (
+                            {recipeData.categoryNameList.map((tag, index) => (
                               <Chip
                                 key={tag}
                                 label={tag}
