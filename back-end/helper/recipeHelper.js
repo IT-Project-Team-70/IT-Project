@@ -36,32 +36,34 @@ async function createNewRecipe(recipe) {
   try {
     // assign tags to the recipe
     const newTagList = []
-    const tagNameList = []
+    const courseNameList = []
+    const categoryNameList = []
     for (let i = 0; i < recipe.tagList.length; i++) {
       const tag = await findTag(recipe.tagList[i])
       if (tag) {
         newTagList.push(tag)
-        tagNameList.push(tag.name)
+        categoryNameList.push(tag.name)
       } else {
         const newTag = await createNewTag(recipe.tagList[i])
         newTagList.push(newTag)
-        tagNameList.push(tag.Name)
+        categoryNameList.push(tag.name)
       }
     }
     recipe.tagList = newTagList
+    recipe.categoryNameList = categoryNameList 
     // assign course tag to the recipe
     const newCourseList = []
     for (let i = 0; i < recipe.courseList.length; i++) {
       const course = await findTag(recipe.courseList[i])
       if (course) {
         newCourseList.push(course)
-        tagNameList.push(course.name)
+        courseNameList.push(course.name)
       } else {
         throw new Error('Course tag is not found')
       }
     }
     recipe.courseList = newCourseList
-    recipe.tagNameList = tagNameList 
+    recipe.courseNameList = courseNameList
     // create recipe and validate
     const newRecipe = new Recipe(recipe)
     const { error } = newRecipe.joiValidate(recipe)
