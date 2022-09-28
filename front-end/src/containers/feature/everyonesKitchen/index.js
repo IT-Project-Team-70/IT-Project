@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -6,19 +7,16 @@ import Typography from '@mui/material/Typography'
 import { ThemeProvider } from '@mui/material'
 import useTheme from '../../../css/muiTheme/index'
 import RecipeCard from '../../recipe/recipeCard'
-import CheckboxList from './CheckboxList'
+import CheckboxList from './checkboxList'
 import AxiosV1 from '../../../api/axiosV1'
 import personalKitchenAPI from '../../../api/def/personalKitchen'
 import { callApi } from '../../../api/util/callAPI'
-import { useHistory } from 'react-router-dom'
-import { RECIPE } from '../../../routes/routeConstant'
 
 const EveryonesKitchen = (props) => {
   const theme = useTheme()
-  const history = useHistory()
+  const [recipeList, setRecipeList] = useState([])
 
   const GetKitchen = () => {
-    const [recipeList, setRecipeList] = useState([])
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
       callApi({
@@ -38,7 +36,6 @@ const EveryonesKitchen = (props) => {
       return (
         <Grid
           key={recipe._id}
-          onClick={() => history.push(RECIPE.replace(':id', recipe._id))}
         >
           <RecipeCard
             recipeID={recipe._id}
@@ -77,7 +74,7 @@ const EveryonesKitchen = (props) => {
               <Typography variant="body1" fontWeight="bold">
                 By Courses:
               </Typography>
-              <CheckboxList />
+              <CheckboxList setRecipes={setRecipeList} />
             </List>
           </Box>
           <Box sx={{ height: '100%', marginLeft: 1 }}>

@@ -3,8 +3,10 @@ const LocalStrategy = require('passport-local').Strategy
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const User = require('./models/user')
 const authHelper = require('./helper/authHelper.js')
+const path = require('path');
 const dotenv = require('dotenv')
-dotenv.config()
+//get .env from the root folder
+dotenv.config({ path: '../.env' })
 
 //configure Local Strategy for users to log in
 passport.use(
@@ -33,7 +35,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'https://localhost:8000/google/callback',
+      callbackURL: `${process.env.BASE_URL_FRONT_END}google/callback`,
       passReqToCallBack: true,
     },
     async function (request, accessToken, google, done) {

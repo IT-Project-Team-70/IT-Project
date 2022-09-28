@@ -13,7 +13,8 @@ async function getEveryoneKitchen(req, res) {
     if (isEmpty(allRecipes)) {
       return res.status(200).send(null)
     }
-    return res.status(200).send(allRecipes)
+    const sortedRecipes = recipeHelper.sortRating(allRecipes)
+    return res.status(200).send(sortedRecipes)
   } catch (err) {
     res.status(500).send('errors while getting all recipes')
     throw new Error(err)
@@ -37,38 +38,85 @@ async function getOneRecipeById(req, res) {
   }
 }
 
+async function getAllSortedRecipes(req, res) {
+  try {
+    const isPublic = true
+    const allRecipes = await recipeHelper.getAllRecipes(isPublic)
+    const sortedRecipes = recipeHelper.sortRating()
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+async function filterRecipe(req, res) {
+  try {
+    const requiredTagNames = req.body.tags
+    const isPublic = true
+    const allRecipes = await recipeHelper.getAllRecipes(isPublic)
+    let result = []
+    for (let i = 0; i < allRecipes.length; i++) {
+      const tagNames = allRecipes[i].courseNameList.concat(
+        allRecipes[i].categoryNameList
+      )
+      let count = 0
+      for (j in requiredTagNames) {
+        if (tagNames.includes(requiredTagNames[j])) {
+          count += 1
+        }
+      }
+      if (count == requiredTagNames.length) {
+        result.push(allRecipes[i])
+      }
+    }
+    return res.status(200).send(result)
+  } catch (err) {
+    res.status(500).send('errors while filtering recipes')
+    throw new Error(err)
+  }
+}
+
 async function addFavorite(req, res) {
   try {
-    const recipeId = req.params.id
-    if (!generalHelper.isValidObjectId(recipeId)) {
-      return res.status(404).send('Invalid Recipe Id')
+    if (!generalHelper.isValidObjectId(req.params.id)) {
+      return res.status(404).send('invalid recipeId')
     }
-    const userId = req.passport.session.user._id
-    const user = await userHelper.getUserById(userId)
-    user.favorites.push(recipeId)
+    const user = await userHelper.getUserByID(req.user._id)
+    const recipe = await recipeHelper.getRecipeById(req.params.id)
+    if (!recipe) {
+      return res.status(200).send('recipe not found')
+    }
+    const favorites = user.favorites
+    if (!favorites.includes(req.params.id)) {
+      favorites.push(recipe)
+    }
+    user.favorites = favorites
     await user.save()
-
-    return res.status(200).send('Add the recipe to favorite successfully')
+    return res.status(200).send(user)
   } catch (err) {
-    res.status(500).send('Add the recipe to favorite unsuccessfully')
+    res.status(500).send('Errors while adding favourite recipes')
     throw new Error(err)
   }
 }
 
 async function removeFavorite(req, res) {
   try {
-    const recipeId = req.params.id
-    if (!generalHelper.isValidObjectId(recipeId)) {
-      return res.status(404).send('Invalid Recipe Id')
+    if (!generalHelper.isValidObjectId(req.params.id)) {
+      return res.status(404).send('invalid recipeId')
     }
-    const userId = req.passport.session.user._id
-    const user = await userHelper.getUserById(userId)
-    user.favorites.pull(recipeId)
+    const user = await userHelper.getUserByID(req.user._id)
+    const recipe = await recipeHelper.getRecipeById(req.params.id)
+    if (!recipe) {
+      return res.status(200).send('recipe not found')
+    }
+    const favorites = user.favorites
+    if (favorites.includes(req.params.id)) {
+      favorites.remove(recipe)
+    }
+    user.favorites = favorites
     await user.save()
-
-    return res.status(200).send('Remove the recipe from favorite successfully')
+    return res.status(200).send(user)
   } catch (err) {
-    res.status(500).send('Remove the recipe from favorite unsuccessfully')
+    res.status(500).send('Errors while removing favourite recipes')
     throw new Error(err)
   }
 }
@@ -76,42 +124,13 @@ async function removeFavorite(req, res) {
 async function rateRecipe(req, res) {}
 async function commentRecipe(req, res) {}
 
-/*async function getAllSortedRecipes(req, res){
-  try{
-    const allRecipes = await recipeHelper.getAllRecipes()
-    const sortedRecipes = recipeHelper.sor
-  }
-  catch(error){
-  }
-}*/
-
-async function filterRecipe(req, res) {
-  try {
-    const requiredTagNames = req.body.tags
-    const allRecipes = await recipeHelper.getAllRecipes()
-    let result = []
-    for (i = 0; i < allRecipes.length; i++) {
-      const recipe = allRecipes[i]
-      const tagNames = recipe.tagNames
-      if (requiredTagNames in tagNames) {
-        result.push(recipe)
-      }
-    }
-    if (result.length == 0) {
-      return res.status(200).send(null)
-    }
-    return res.status(200).send(result)
-  } catch (err) {
-    res.status(500).send('errors while filtering recipes')
-  }
-}
-
 module.exports = {
   getEveryoneKitchen,
   getOneRecipeById,
+  filterRecipe,
   addFavorite,
   removeFavorite,
   rateRecipe,
   commentRecipe,
-  filterRecipe,
+  getAllSortedRecipes,
 }

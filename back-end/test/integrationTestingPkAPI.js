@@ -39,10 +39,11 @@ describe("test all APIS related to personal kitchen", ()=> {
     const res = agent.get(`/personalKitchen/${process.env.TEST_RECIPE_ID}`)
                      .then(function(res){
                       const body = res.body
+                      console.log(body)
                       expect(res).to.have.status(200)
                       //check if the data returned is a right recipe
                       expect(body).to.contain.keys('rating', 'tagNames', '_id','title', 
-                      'source', 'tagList', 'courseList', 'image', 'description', 'notes',
+                      'source', 'tagList', 'courseList', 'tagNameList', 'image', 'description', 'notes',
                       'prepTime', 'serveSize', 'ingredients', 'instructions', 'steps')
                       //check components of the recipe return 
                       //rating

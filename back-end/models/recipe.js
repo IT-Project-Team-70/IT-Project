@@ -41,17 +41,18 @@ const recipeSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     default: [],
   },
-  tagNames: {
-    type: [String],
-    default: [], //filter recipes
-  },
   courseList: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     required: true,
   },
-  courseNames: {
+  categoryNameList: {
     type: [String],
     default: [],
+  },
+  courseNameList: {
+    type: [String],
+    default: [],
+    required: true,
   },
 
   image: { type: imageSchema },
@@ -73,15 +74,3 @@ const RecipeModel = mongoose.model('Recipe', recipeSchema)
 /* ***************************************************************************************** */
 
 module.exports = RecipeModel
-
-// enum: [
-//   { name: 'Appetizer' },
-//   { name: 'Main' },
-//   { name: 'Side' },
-//   { name: 'Dessert' },
-//   { name: 'Other' },
-//   { name: 'Breakfast' },
-//   { name: 'Lunch' },
-//   { name: 'Dinner' },
-//   { name: 'All' },
-// ],

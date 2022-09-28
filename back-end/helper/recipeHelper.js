@@ -69,34 +69,35 @@ async function createNewRecipe(recipe) {
   try {
     // assign tags to the recipe
     const newTagList = []
-    const newTagNames = []
+    const categoryNameList = []
     for (let i = 0; i < recipe.tagList.length; i++) {
       const tag = await findTag(recipe.tagList[i])
       if (tag) {
         newTagList.push(tag)
+        categoryNameList.push(tag.name)
       } else {
         const newTag = await createNewTag(recipe.tagList[i])
         newTagList.push(newTag)
+        categoryNameList.push(tag.name)
       }
-      newTagNames.push(recipe.tagList[i])
     }
     recipe.tagList = newTagList
-    recipe.tagNames = newTagNames
+    recipe.categoryNameList = categoryNameList
 
     // assign course tag to the recipe
     const newCourseList = []
-    const newCourseNames = []
+    const courseNameList = []
     for (let i = 0; i < recipe.courseList.length; i++) {
       const course = await findTag(recipe.courseList[i])
       if (course) {
         newCourseList.push(course)
-        newCourseNames.push(course.name)
+        courseNameList.push(course.name)
       } else {
         throw new Error('Course tag is not found')
       }
     }
     recipe.courseList = newCourseList
-    recipe.courseNames = newCourseNames
+    recipe.courseNameList = courseNameList
 
     // create recipe and validate
     const newRecipe = new Recipe(recipe)
@@ -195,7 +196,6 @@ async function createNewTag(tag) {
     throw new Error(err)
   }
 }
-
 async function createNewTagAdmi(tag, isCourse) {
   try {
     const existedTag = await Tag.findOne({ name: tag }) // tag.name
@@ -261,4 +261,5 @@ module.exports = {
   findTag,
   createNewTag,
   createNewTagAdmi,
+  sortRating,
 }
