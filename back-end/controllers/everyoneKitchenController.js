@@ -1,4 +1,4 @@
-const userHelper = require('../helpers/userHelper')
+const userHelper = require('../helper/userHelper')
 const recipeHelper = require('../helper/recipeHelper')
 const generalHelper = require('../helper/generalHelper')
 
