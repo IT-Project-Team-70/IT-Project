@@ -1,22 +1,36 @@
 const pkController = require('../../controllers/personalKitchenController')
+const testData = require('../testingData')
 
 describe('start testing for backend personal kitchen controllers', () => {
   //
-  test('test for getting datas to render the page', async () => {
+  test('test for get personal kitchen', async () => {
     const req = {
       params: {
         id: 1,
       },
+      user: testData.user,
     }
     const res = {
       json: jest.fn(),
     }
-    await pkController.getAllPersonalKitchen(req, res)
+    await pkController.getPersonalKitchen(req, res)
     expect(res.json).toHaveBeenCalled()
   })
 
   //
-  test('test for getting one recipe by ID', async () => {})
+  test('test for getting one recipe by ID', async () => {
+    const req = {
+      params: {
+        id: 1,
+      },
+      user: testData.user,
+    }
+    const res = {
+      json: jest.fn(),
+    }
+    await pkController.getOneRecipe(req, res)
+    expect(res.json).toHaveBeenCalled()
+  })
 
   //
   test('test for registering a new recipe into DB', async () => {

@@ -1,7 +1,7 @@
-const ekController = require('../../controllers/everyoneKitchen')
+const recipeHelper = require('../../helper/recipeHelper')
 const testData = require('../testingData')
 
-describe('start testing for backend everyone kitchen controllers', () => {
+describe('start testing for backend recipe helper', () => {
   //
   test('test for getting all recipes', async () => {
     const req = {
@@ -13,7 +13,7 @@ describe('start testing for backend everyone kitchen controllers', () => {
     const res = {
       json: jest.fn(),
     }
-    await ekController.getAllRecipes(req, res)
+    await recipeHelper.getAllRecipes(req, res)
     expect(res.json).toHaveBeenCalled()
   }),
     //
@@ -27,7 +27,7 @@ describe('start testing for backend everyone kitchen controllers', () => {
       const res = {
         json: jest.fn(),
       }
-      await ekController.getOneRecipe(req, res)
+      await recipeHelper.getOneRecipe(req, res)
       expect(res.json).toHaveBeenCalled()
     })
 })

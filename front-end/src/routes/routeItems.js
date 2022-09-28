@@ -10,6 +10,7 @@ import {
   RESET_PASSWORD,
   RESET_PASSWORD_FAILURE,
   LOGIN,
+  EDIT_RECIPE,
 } from './routeConstant'
 
 import {
@@ -23,6 +24,7 @@ import UploadRecipe from '../containers/feature/personalKitchen/uploadRecipe'
 import ResetPassword from '../containers/resetPassword'
 import ViewRecipe from '../containers/viewRecipe'
 import LoginPanel from '../containers/login/login'
+import EditRecipe from '../containers/feature/personalKitchen/editRecipe'
 
 export const RouteItems = [
   {
@@ -57,6 +59,13 @@ export const RouteItems = [
     name: 'Recipe',
     path: RECIPE,
     component: ViewRecipe,
+    exact: true,
+    show: false,
+  },
+  {
+    name: 'Edit Recipe',
+    path: EDIT_RECIPE,
+    component: EditRecipe,
     exact: true,
     show: false,
   },
