@@ -3,15 +3,13 @@ const chaiHttp = require('chai-http')
 const chaiThings = require('chai-things')
 const dotenv = require('dotenv')
 const server = require('../server.js')
-const authHelper = require('../helper/authHelper')
-const bodyParser = require('body-parser')
 const expect = chai.expect
 chai.use(chaiHttp)
 chai.use(chaiThings)
 const agent =  chai.request.agent(server)
 dotenv.config()
 
-describe("test all APIS related to personal kitchen", ()=> {
+describe("test users login + get one recipe with valid ID / users login + get one recipe with invalid ID", ()=> {
   it("should return status 200 along with user's information", (done)=>{
     const res = agent.post('/login').type('form')
                      .send({username: process.env.TEST_USERNAME, password: process.env.TEST_PASSWORD})
@@ -25,7 +23,6 @@ describe("test all APIS related to personal kitchen", ()=> {
                       expect(body).to.have.property('role')
                       done()
   })})
-
   //TEST GET ONE RECIPE BY ID REQUEST - invalid ID
   it("should return status 404 with a message 'Recipe not found'", function(done){
     const res = agent.get(`/personalKitchen/${process.env.TEST_INVALID_RECIPE_ID}`)
@@ -42,25 +39,30 @@ describe("test all APIS related to personal kitchen", ()=> {
                       console.log(body)
                       expect(res).to.have.status(200)
                       //check if the data returned is a right recipe
-                      expect(body).to.contain.keys('rating', 'tagNames', '_id','title', 
-                      'source', 'tagList', 'courseList', 'tagNameList', 'image', 'description', 'notes',
+                      expect(body).to.contain.keys('rating', '_id','userId', 'title', 
+                      'source', 'tagList', 'courseList', 'courseNameList', 'categoryNameList',
+                      'image', 'description', 'notes',
                       'prepTime', 'serveSize', 'ingredients', 'instructions', 'steps')
                       //check components of the recipe return 
                       //rating
                       expect(body.rating).is.a('number').that.is.greaterThanOrEqual(0)
-                      //tagNames 
-                      expect(body.tagNames).is.an('array')
-                      //_id
-                      expect(body._id).is.a('string')
                       //title
                       expect(body.title).is.a('string').that.has.length.greaterThan(0)
                       //source
                       expect(body.source).to.contain.keys('type', 'content', '_id')
                       //tagList
-                      expect(body.tagList).is.an('array')
+                      expect(body.tagList).is.an('array').that.has.length.greaterThanOrEqual(0)
                       //courseList
                       courseList = body.courseList
                       expect(courseList).is.an('array').that.has.length.greaterThan(0)
+                      //courseNameList
+                      courseNameList = body.courseNameList
+                      expect(courseNameList).is.an('array').that.has.length.greaterThan(0)
+                      for(let i = 0; i < courseNameList.length; i++){
+                        expect(courseNameList[i]).is.a('string')
+                      }
+                      //categoryNameList
+                      expect(body.categoryNameList).is.an('array').that.has.length.greaterThanOrEqual(0)
                       //image 
                       expect(body.image).to.contain.keys('data', 'type', '_id')
                       expect(body.image.data).which.is.a('string').has.length.greaterThan(0)
