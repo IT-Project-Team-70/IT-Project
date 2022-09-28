@@ -13,6 +13,23 @@ Add badges from somewhere like: [shields.io](https://shields.io/)
 
 Team 70: dont-forget-ur-password
 
+## Contributors
+
+<a href="https://github.com/Harry-Guanqin-Wang/IT-Project/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Harry-Guanqin-Wang/IT-Project" />
+</a>
+
+
+| Name      | Email                             |
+| :-------- | :-------------------------------- |
+| [Terrance, Tianqi Wang](https://github.com/terrance2630) |  tww2@student.unimelb.edu.au |
+| [Kevin, Bowen Fan](https://github.com/bowenfan-unimelb) |    bffa@student.unimelb.edu.au  |
+| [Yung, Yung-Ching Lin](https://github.com/joycekyery) |   yungchingl@student.unimelb.edu.au |
+| [Jerry, Ngoc Bao Luong](https://github.com/Jerry2108) |  ngocbaol@student.unimelb.edu.au |
+| [Harry, Guanqin Wang](https://github.com/Harry-Guanqin-Wang) |   guanqinw@student.unimelb.edu.au |
+
+
+
 
 
 ## Product Requirement
