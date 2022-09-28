@@ -1,5 +1,6 @@
 // const fs = require('fs')
 
+const User = require('../models/user')
 const Recipe = require('../models/recipe')
 const Tag = require('../models/tag')
 
@@ -17,7 +18,22 @@ async function getAllRecipes() {
   }
 }
 
-async function tagRecipe(id, recipe) {}
+async function getUserRecipes(userId) {
+  try {
+    const user = await User.findById(userId)
+
+    const recipes = []
+    for (let i = 0; i < user.recipes.length; i++) {
+      const recipe = await Recipe.findById(user.recipes[i])
+      recipes.push(recipe)
+    }
+    return recipes
+  } catch (err) {
+    // res.status(500).send('Get all Recipes unsuccessfully')
+    console.log(err)
+    throw new Error(err)
+  }
+}
 
 async function getRecipeById(id) {
   try {
@@ -31,13 +47,13 @@ async function getRecipeById(id) {
 
 async function getRecipeByTag(tag) {}
 
+async function tagRecipe(id, recipe) {}
 // Create a new recipe
 async function createNewRecipe(recipe) {
   try {
-   
-
     // assign tags to the recipe
     const newTagList = []
+    const newTagNames = []
     for (let i = 0; i < recipe.tagList.length; i++) {
       const tag = await findTag(recipe.tagList[i])
       if (tag) {
@@ -46,20 +62,25 @@ async function createNewRecipe(recipe) {
         const newTag = await createNewTag(recipe.tagList[i])
         newTagList.push(newTag)
       }
+      newTagNames.push(recipe.tagList[i])
     }
     recipe.tagList = newTagList
+    recipe.tagNames = newTagNames
 
     // assign course tag to the recipe
     const newCourseList = []
+    const newCourseNames = []
     for (let i = 0; i < recipe.courseList.length; i++) {
       const course = await findTag(recipe.courseList[i])
       if (course) {
         newCourseList.push(course)
+        newCourseNames.push(course.name)
       } else {
         throw new Error('Course tag is not found')
       }
     }
     recipe.courseList = newCourseList
+    recipe.courseNames = newCourseNames
 
     // create recipe and validate
     const newRecipe = new Recipe(recipe)
@@ -182,42 +203,43 @@ async function createNewTagAdmi(tag, isCourse) {
   }
 }
 
-function partition(arr, start, end){
+function partition(arr, start, end) {
   // Taking the last element as the pivot
-  const pivotValue = arr[end];
-  let pivotIndex = start; 
+  const pivotValue = arr[end]
+  let pivotIndex = start
   for (let i = start; i < end; i++) {
-      if (arr[i] < pivotValue) {
+    if (arr[i] < pivotValue) {
       // Swapping elements
-      [arr[i], arr[pivotIndex]] = [arr[pivotIndex], arr[i]];
+      ;[arr[i], arr[pivotIndex]] = [arr[pivotIndex], arr[i]]
       // Moving to next element
-      pivotIndex++;
-      }
-  } 
+      pivotIndex++
+    }
+  }
   // Putting the pivot value in the middle
-  [arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]] 
-  return pivotIndex;
-};
+  ;[arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]]
+  return pivotIndex
+}
 
-function sortRating(){
-   // Base case or terminating case
-   if (start >= end) {
-    return;
+function sortRating() {
+  // Base case or terminating case
+  if (start >= end) {
+    return
   }
   // Returns pivotIndex
-  let index = partition(arr, start, end);
+  let index = partition(arr, start, end)
   // Recursively apply the same logic to the left and right subarrays
-  quickSort(arr, start, index - 1);
-  quickSort(arr, index + 1, end);
+  quickSort(arr, start, index - 1)
+  quickSort(arr, index + 1, end)
 }
 /* ***************************************************************************************** */
 
 module.exports = {
-  tagRecipe,
   getAllRecipes,
+  getUserRecipes,
   getRecipeById,
   getRecipeByTag,
   createNewRecipe,
+  tagRecipe,
   updateRecipe,
   deleteRecipe,
 
