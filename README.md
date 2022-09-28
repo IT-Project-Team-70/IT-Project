@@ -88,21 +88,24 @@ _This will start both frontend and backend concurrently_
 To run this project, you will need to add the following environment variables to your .env file
 
 ```bash
-PORT=8000
-DATABASE="mongodb+srv://Team70:<password>@cluster0.jebag76.mongodb.net/?retryWrites=true&w=majority"
-DATABASE_COMPASS="mongodb+srv://<username>:<password>@cluster0.jebag76.mongodb.net/test"
-ENVIRONMENT="dev"
-COOKIE_SECRET="JHTKY"
-EMAIL_USER="dontforgeturpassit@gmail.com"
-EMAIL_USER_2="dontforgeturpassitproject@gmail.com"
-EMAIL_PASS="cjgftypbhbsztldq"
-EMAIL_PASS_2="123456ITPROJECT"
-BASE_URL="https://localhost:8000/"
-BASE_URL_FRONT_END = "http://localhost:3000/"
+PORT=<server port>
+DATABASE= <mongoDB>
+DATABASE_COMPASS=<MongoDB>
+ENVIRONMENT=<process environment>
+COOKIE_SECRET=<Cookie secret>
+BASE_URL=<server base url>
+BASE_URL_FRONT_END= <frontend base url>
+
+
+#google service
+GOOGLE_CLIENT_ID=<google client ID>
+GOOGLE_CLIENT_SECRET= <google client secret>
+EMAIL_USER=<email sender>
+EMAIL_USER_2=<email sender 2>
+EMAIL_PASS=<email sender password >
+EMAIL_PASS_2=<email sender password 2>
 HOST=""
 SERVICE="gmail"
-GOOGLE_CLIENT_ID= "914962736427-uu26bqggursbbfg8kc381fpn60hu211b.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET= "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"
 ```
 
 **HTTPS & CA**
@@ -183,7 +186,7 @@ If you haven't already, log in to your Heroku account and follow the prompts to 
 `heroku login`
 
 Set up Heroku in your local repository, run:
-`heroku git:remote -a dont-recipe-frontback`
+`heroku git:remote -a <heroku name>`
 
 ### To Deploy:
 
