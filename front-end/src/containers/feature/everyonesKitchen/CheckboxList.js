@@ -12,8 +12,7 @@ import { callApi } from '../../../api/util/callAPI'
 import everyonesKitchenAPI from '../../../api/def/everyonesKitchen'
 
 export default function CheckboxList(props) {
-  const [checked, setChecked] = React.useState([0])
-  const tags = ['Dinner']
+  const [checked, setChecked] = React.useState([''])
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value)
@@ -30,10 +29,10 @@ export default function CheckboxList(props) {
 
   const updateKitchen = () => {
     callApi({
-      apiConfig: everyonesKitchenAPI.everyonesKitchen(tags),
+      apiConfig: everyonesKitchenAPI.everyonesKitchen(checked.slice(1)),
       onStart: () => {},
       onSuccess: (res) => {
-        props.setRecipes(res.data.recipes)
+        props.setRecipes(res.data)
       },
       onError: (err) => {},
       onFinally: () => {},
