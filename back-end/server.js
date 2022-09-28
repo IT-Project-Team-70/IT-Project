@@ -26,9 +26,7 @@ const authRouter = require('./routes/auth.js')
 dotenv.config({ path: '../.env' });
 // Initialize the app
 const app = express()
-dotenv.config()
-const env = process.env.ENVIRONMENT || app.get('env')
-if (env === 'development') {
+if (process.env.ENVIRONMENT === 'development') {
   app.use(morgan('tiny'))
   console.log('Env: Develop Model -- Morgan is enabled ... ')
 }
