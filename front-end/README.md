@@ -1,6 +1,6 @@
 # Getting Started with frontend
 
-## :bangbang: Prerequisite
+### :bangbang: Prerequisite
 
 This project is run by:
 
@@ -8,6 +8,7 @@ This project is run by:
 
 check if you have yarn installed by running:
 `yarn --version`
+
 
 Installing yarn through npm:
 `npm install --global yarn`
@@ -23,6 +24,9 @@ If you just cloned the repository, run:
 to install dependencies, no need to run it again until there is a change in dependecies.
 
 ### `yarn start`
+or 
+### `yarn start:windows`
+for windows environment
 
 Runs the app in the development mode.\
 Open [https://localhost:3000](https://localhost:3000) to view it in your browser.
@@ -38,10 +42,8 @@ To update, delete folder `/node_modules` completely and run `yarn install`to ins
 ## Deployment
 
 See the deploy on Heroku:
-https://it-project-your-password.herokuapp.com/
+https://dont-recipe-frontback.herokuapp.com/
 
-Buildpacks using:
-[subdir-heroku-buildpack](https://github.com/timanovsky/subdir-heroku-buildpack)
 
 ### Set up Heroku
 
@@ -51,7 +53,7 @@ If you haven't already, log in to your Heroku account and follow the prompts to 
 `heroku login`
 
 Set up Heroku in your local repository, run:
-`heroku git:remote -a it-project-your-password`
+`heroku git:remote -a dont-recipe-frontback`
 
 ### To Deploy:
 
@@ -61,7 +63,7 @@ run:
 ## Coding Style
 
 Enforced by Prettier and ESlint
-Make sure to use :vs: `VScode` and install extensions
+Make sure to use `VScode` and install extensions
 
 #### [`Prettier`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) [`ESlint`](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
@@ -73,3 +75,19 @@ Check at the bottom line of your VScode
 `git config core.autocrlf false`
 
 ### Using PropTypes
+import PropTypes with
+`import PropTypes from 'prop-types'`
+
+example:
+
+```
+const Component =({prop1='', prop2=()=>{})=>{
+
+}
+
+Component.propTypes = {
+    /** description of the prop**/
+    prop1=PropTypes.string,
+    prop2=PropTypes.func,
+}
+```
