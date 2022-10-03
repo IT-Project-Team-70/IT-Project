@@ -19,6 +19,7 @@ const cors = require('cors')
 const landingRouter = require('./routes/landing.js')
 const personalKitchenRouter = require('./routes/personalKitchen.js')
 const everyoneKitchenRouter = require('./routes/everyoneKitchen.js')
+const viewRecipeRouter = require('./routes/viewingRecipe.js')
 const testingRouter = require('./routes/testing.js')
 const authRouter = require('./routes/auth.js')
 // ******************************************************************************************** //
@@ -83,6 +84,7 @@ app.use('/', landingRouter)
 app.use('/home', landingRouter)
 app.use('/personalKitchen', personalKitchenRouter)
 app.use('/forum', everyoneKitchenRouter)
+app.use('/viewRecipe', viewRecipeRouter)
 app.use('/testing', testingRouter)
 app.all('*', (req, res) => {
   // render the 404 page

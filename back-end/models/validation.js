@@ -6,6 +6,8 @@ let userSchema = Joi.object().keys({
   username: Joi.string().min(1).max(50).required(),
   // password: Joi.string().min(1).max(255).required(),
   email: Joi.string().min(1).max(255).required(),
+  comments: Joi.array().items(Joi.object()).default([]),
+  likedComments: Joi.array().items(Joi.object()).default([])
 })
 
 let tagSchema = Joi.object().keys({
@@ -26,7 +28,6 @@ let recipeSchema = Joi.object().keys({
   source: Joi.object().required(),
   tagList: Joi.array().items(Joi.object()).default([]),
   courseList: Joi.array().items(Joi.object()).required(),
-  //tagNameList: Joi.array().items(Joi.string()).required(),
   courseNameList: Joi.array().items(Joi.string()).required(),
   categoryNameList: Joi.array().items(Joi.string()),
   image: Joi.object(),
@@ -37,6 +38,14 @@ let recipeSchema = Joi.object().keys({
   ingredients: Joi.array().items(ingredientSchema).required(),
   instructions: Joi.string().min(1).required(),
   steps: Joi.array(),
+  //comments: Joi.array().items(Joi.object()).default([]),
+})
+
+let commentSchema = Joi.object().keys({
+  content: Joi.string().min(1).required(), 
+  recipeId: Joi.object(), 
+  userId: Joi.object(),
+  likeUsers: Joi.array().items(Joi.object()).default([])
 })
 
 /* ***************************************************************************************** */
@@ -45,4 +54,5 @@ module.exports = {
   validateUser: (user) => userSchema.validate(user),
   validateTag: (tag) => tagSchema.validate(tag),
   validateRecipe: (recipe) => recipeSchema.validate(recipe),
+  validateComment: () => commentSchema.validate(comment)
 }
