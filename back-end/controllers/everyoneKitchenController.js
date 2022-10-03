@@ -93,8 +93,8 @@ async function removeFavorite(req, res) {
   }
 }
 
-async function rateRecipe(req, res) {}
-async function commentRecipe(req, res) {}
+async function rateRecipe(req, res) {
+}
 
 module.exports = {
   getEveryoneKitchen,
@@ -102,7 +102,6 @@ module.exports = {
   addFavorite,
   removeFavorite,
   rateRecipe,
-  commentRecipe,
   filterRecipe,
   getAllSortedRecipes
 }

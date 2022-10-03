@@ -22,9 +22,6 @@ router.post('/removeFavorite/:id', authHelper.isAuthenticated, (req, res) => {
 router.post('/rating/:id/:score', authHelper.isAuthenticated, (req, res) => {
   ekController.rateRecipe(req, res)
 })
-router.post('/comment/:id', authHelper.isAuthenticated, (req, res) => {
-  ekController.commentRecipe(req, res)
-})
 router.post('/filterRecipes', (req, res) =>{
   ekController.filterRecipe(req, res)
 })
