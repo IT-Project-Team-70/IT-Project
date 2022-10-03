@@ -249,7 +249,7 @@ const EditRecipe = ({ match, ...props }) => {
                       setAlertDialog({
                         open: true,
                         message:
-                          'You will be redirect to the previous page. Your change will be gone, do you still wich to proceed?',
+                          'You will be redirect to the previous page. Your change will be gone, do you still wish to proceed?',
                       })
                     }
                   >
