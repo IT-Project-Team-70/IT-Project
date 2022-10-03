@@ -1,10 +1,11 @@
 const recipeHelper = require('../helper/recipeHelper')
 const generalHelper = require('../helper/generalHelper')
 const userHelper = require('../helper/userHelper')
+const commentHelper = require('../helper/commentHelper')
 
 var formidable = require('formidable')
 const form = new formidable.IncomingForm()
-const { isObjectIdOrHexString } = require('mongoose')
+// const { isObjectIdOrHexString } = require('mongoose')
 
 /* ********************************************************************* */
 async function getPersonalKitchen(req, res) {
@@ -26,10 +27,11 @@ async function getOneRecipeById(req, res) {
       return res.status(404).send('Invalid Recipe Id')
     }
     const recipe = await recipeHelper.getRecipeById(id)
+    const comments = await commentHelper.getCommentsFromRecipe(id)
     if (recipe === null) {
       return res.status(404).send('Recipe not found')
     }
-    return res.status(200).send(recipe)
+    return res.status(200).send({ recipe, comments })
   } catch (err) {
     res.status(500).send('Get the recipe unsuccessfully')
     throw new Error(err)

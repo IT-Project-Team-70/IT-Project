@@ -1,5 +1,7 @@
+const UserModel = require('../models/user')
 const User = require('../models/user')
-
+const Comment = require('../models/comment')
+const generalHelper = require('../helper/generalHelper')
 // Create a new user
 async function registerNewUser(user) {
   // const { error } = user.joiValidate()

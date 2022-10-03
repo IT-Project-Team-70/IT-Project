@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema({
 
   recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
-
   friends: [
     {
       details: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -36,6 +35,8 @@ const userSchema = new mongoose.Schema({
       // conversation: [{type: mongoose.Schema.Types.ObjectId, ref: 'Message'}]
     },
   ],
+  //comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
+  //likedComments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]
 })
 
 userSchema.methods.joiValidate = function (user) {

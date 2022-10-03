@@ -33,10 +33,12 @@ const ViewRecipe = ({ match, ...props }) => {
         apiConfig: personalKitchenAPI.getRecipe(recipeId),
         onStart: () => {},
         onSuccess: (res) => {
-          setRecipeData(res.data)
+          const data = res.data
+          const recipe = data.recipe
+          setRecipeData(recipe)
           setImage(
             URL.createObjectURL(
-              new Blob([new Uint8Array(JSON.parse(res.data.image.data))], {
+              new Blob([new Uint8Array(JSON.parse(recipe.image.data))], {
                 type: 'image/png',
               })
             )
