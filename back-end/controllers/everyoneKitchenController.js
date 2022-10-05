@@ -9,12 +9,13 @@ const form = new formidable.IncomingForm()
 async function getEveryoneKitchen(req, res) {
   try {
     const isPublic = true
-    const allRecipes = await recipeHelper.getAllRecipes(isPublic)
+    const allRecipes = await recipeHelper.getAllRecipes(isPublic) 
     if (isEmpty(allRecipes)) {
       return res.status(200).send(null)
     }
-    const sortedRecipes = recipeHelper.sortRecipesByRating(allRecipes)
-    return res.status(200).send(sortedRecipes)
+    return res.status(200).send(allRecipes)
+    //const sortedRecipes = recipeHelper.sortRecipesByRating(allRecipes)
+    //return res.status(200).send(sortedRecipes)
   } catch (err) {
     res.status(500).send('errors while getting all recipes')
     throw new Error(err)

@@ -9,8 +9,8 @@ import useTheme from '../../../css/muiTheme/index'
 import RecipeCard from '../../recipe/recipeCard'
 import CheckboxList from './checkboxList'
 import AxiosV1 from '../../../api/axiosV1'
-import personalKitchenAPI from '../../../api/def/personalKitchen'
 import { callApi } from '../../../api/util/callAPI'
+import everyonesKitchenAPI from '../../../api/def/everyonesKitchen'
 
 const EveryonesKitchen = (props) => {
   const theme = useTheme()
@@ -20,10 +20,10 @@ const EveryonesKitchen = (props) => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
       callApi({
-        apiConfig: personalKitchenAPI.personalKitchen(),
+        apiConfig: everyonesKitchenAPI.getEveryonesKitchen(),
         onStart: () => {},
         onSuccess: (res) => {
-          setRecipeList(res.data.recipes)
+          setRecipeList(res.data)
         },
         onError: (err) => {},
         onFinally: () => {},
