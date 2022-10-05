@@ -65,6 +65,15 @@ export default function LoginPanel({
     })
     setIsLoading(false)
   }
+
+  React.useEffect(() => {
+    if (userContext.userState && userContext.userState.login) {
+      onClose()
+      history.goBack()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userContext.userState])
+
   const toComponent = () => {
     switch (toPage.to) {
       case 'Sign up':

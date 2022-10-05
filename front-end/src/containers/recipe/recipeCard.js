@@ -96,7 +96,7 @@ export default function RecipeCard(props) {
         <Typography variant="body1" color="text.primary">
           {props.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" noWrap>
           {props.description}
         </Typography>
       </CardContent>
