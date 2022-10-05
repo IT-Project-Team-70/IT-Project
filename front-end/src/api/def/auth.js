@@ -40,6 +40,14 @@ const authAPI = {
       ...data,
     },
   }),
+  verifyEmail: (data) => ({
+    method: 'post',
+    url: '/verifyEmail',
+    headers: {},
+    data: {
+      ...data
+    }
+  }),
   loginWithGoogle: () => ({
     method: 'get',
     url: '/google',

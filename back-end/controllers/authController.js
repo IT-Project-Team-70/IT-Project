@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const authHelper = require('../helper/authHelper')
 const Token = require('../models/token')
 const User = require('../models/user')
+const { createBrotliCompress } = require('zlib')
 require('../passport')
 dotenv.config()
 
@@ -51,29 +52,38 @@ async function registerHandler(req, res) {
         .status(403)
         .send('This username has been taken. Please choose another one!')
     }
-    //generate a hash and a salt from the given password
-    const saltHash = authHelper.genPassword(password)
-    //register a new user account
-    let newUser = new User({
-      email: email,
-      salt: saltHash.salt,
-      hash: saltHash.hash,
-      username: username,
-    })
-    let user = await newUser.save()
-    const result = {
-      email: email,
-      username: username,
-      id: user._id,
-      role: user.role,
+     //generate a hash and a salt from the given password
+     const saltHash = authHelper.genPassword(password)
+     //register a new user account
+     let newUser = new User({
+       email: email,
+       salt: saltHash.salt,
+       hash: saltHash.hash,
+       username: username,
+     })
+     let user = await newUser.save()
+    //verify email 
+    if(authHelper.verifyEmail(email)){
+      return res.status(200).send('Please check your email to verify your account')
     }
-    return res.status(200).send(result)
+    else{
+      res.status(500).send('Errors while sending email verification')
+    }
   } catch (err) {
     res.status(500).send('Errors while registering')
     throw new Error(err)
   }
 }
-
+async function completeRegistration(req, res){
+  try{
+    //redirect to the home page
+    res.redirect(process.env.BASE_URL_FRONT_END)
+  }
+  catch(err){
+    res.status(500).send('Errors while redirecting back to the homepage')
+    throw new Error(err)
+  }
+}
 function logoutHandler(req, res, next) {
   req.logOut(function (err) {
     if (err) {
@@ -94,7 +104,7 @@ function logoutHandler(req, res, next) {
 
 async function checkToken(req, res) {
   try {
-    let token = await Token.findOne({ token: req.params.token })
+    let token = await Token.findOne({ token: req.params.tokenId })
     if (token == null) {
       return res.redirect(
         `${process.env.BASE_URL_FRONT_END}/resetPassword/failure`
