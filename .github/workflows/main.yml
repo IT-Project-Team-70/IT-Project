@@ -10,13 +10,14 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
 
-    runs-on: [windows-2019, windows-latest, ubuntu-22.04, ubuntu-latest, macos-12, macos-11, macos-10.15]
+  build:
     strategy:
       matrix:
+        os: [windows-2019, windows-latest, ubuntu-22.04, ubuntu-latest, macos-12, macos-11, macos-10.15]
         node-version: [14.x, 16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
@@ -29,8 +30,8 @@ jobs:
     - run: npm test
     
   deploy:
-    runs-on: [windows-2019, windows-latest, ubuntu-22.04, ubuntu-latest, macos-12, macos-11, macos-10.15]
     needs: [build]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action

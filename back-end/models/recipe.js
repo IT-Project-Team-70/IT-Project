@@ -24,17 +24,25 @@ const prepTimeSchema = new mongoose.Schema({
 })
 
 const stepsSchema = new mongoose.Schema({
-  step: { type: Number, required: true, min: 1},
-  description: { type: String, required: true, minlength: 1},
+  step: { type: Number, required: true, min: 1 },
+  description: { type: String, required: true, minlength: 1 },
   ingredients: [ingredientSchema],
   image: { type: imageSchema },
 })
 
+const rateSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  rate: { type: Number, required: true, min: 0, max: 5 },
+})
+
 const recipeSchema = new mongoose.Schema({
-  userId:{type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
-  title: { type: String, required: true, minlength: 1},
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  title: { type: String, required: true, minlength: 1 },
   source: { type: sourceSchema, required: true },
-  rating: {type: Number, default: 0},
+  ratingList: { type: [rateSchema], default: [] },
+  averageRating: { type: Number, default: 0 },
+  isPublic: { type: Boolean, default: true },
+
   tagList: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     default: [],
@@ -43,22 +51,23 @@ const recipeSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     required: true,
   },
-  /*tagNameList: {
-    type: [String], default: [], required: true, 
-  },*/
-  courseNameList: {
-    type: [String], default: [], required: true,
-  },
   categoryNameList: {
-    type: [String], default: [], 
+    type: [String],
+    default: [],
   },
+  courseNameList: {
+    type: [String],
+    default: [],
+    required: true,
+  },
+
   image: { type: imageSchema },
-  description: { type: String, required: true, minlength: 1},
+  description: { type: String, required: true, minlength: 1 },
   notes: { type: String, minlength: 0, default: '' },
   prepTime: { type: prepTimeSchema, required: true },
   serveSize: { type: Number, required: true },
   ingredients: { type: [ingredientSchema], required: true },
-  instructions: { type: String, required: true, minlength: 1},
+  instructions: { type: String, required: true, minlength: 1 },
   steps: { type: [stepsSchema], default: [] },
 })
 
@@ -71,15 +80,3 @@ const RecipeModel = mongoose.model('Recipe', recipeSchema)
 /* ***************************************************************************************** */
 
 module.exports = RecipeModel
-
-// enum: [
-//   { name: 'Appetizer' },
-//   { name: 'Main' },
-//   { name: 'Side' },
-//   { name: 'Dessert' },
-//   { name: 'Other' },
-//   { name: 'Breakfast' },
-//   { name: 'Lunch' },
-//   { name: 'Dinner' },
-//   { name: 'All' },
-// ],

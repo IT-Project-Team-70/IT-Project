@@ -4,33 +4,23 @@ const router = express()
 const { hasRole, isAuthenticated } = require('../helper/authHelper')
 
 const pkController = require('../controllers/personalKitchenController')
-const authHelper = require('../helper/authHelper')
+
 /* ********************************************************************************************* */
 
-router.get('/', isAuthenticated, (req, res) => {
-  pkController.getPersonalKitchen(req, res)
-  // return res.status(200).send(pageData)
-  // return res.status(200).send(req.passport.session.user)
-})
-
-router.get('/:id', authHelper.isAuthenticated, pkController.getOneRecipeById)
+router.get('/', isAuthenticated, pkController.getPersonalKitchen)
+router.get('/:id', isAuthenticated, pkController.getOneRecipeById)
+router.get('/category/:tag', isAuthenticated, pkController.getRecipesByTag)
+router.get('/favorite', isAuthenticated, pkController.getUserFavorite)
+// router.get('/favorite/:id', isAuthenticated, (req, res) => {})
 
 // post a new recipe into the database
-router.post('/newRecipe', authHelper.isAuthenticated, pkController.registerNewRecipe)
+router.post('/newRecipe', isAuthenticated, pkController.registerNewRecipe)
 // editing old recipes
-router.post('/oldRecipe/:id', authHelper.isAuthenticated, pkController.editOldRecipe)
+router.post('/editOldRecipe/:id', isAuthenticated, pkController.editOldRecipe)
+// change recipe tags, move into another category
+router.post('/tagRecipe/:id', isAuthenticated, pkController.tagOldRecipe)
 
 // delete a recipe from the database
-router.delete('/:id', authHelper.isAuthenticated, pkController.deleteOldRecipe)
-router.get('/category', authHelper.isAuthenticated, (req, res) => {})
-router.get('/category/:id', authHelper.isAuthenticated, (req, res) => {})
-router.get('/favorite', authHelper.isAuthenticated, (req, res) => {})
-router.get('/favorite/:id', authHelper.isAuthenticated, (req, res) => {})
+router.delete('/:id', isAuthenticated, pkController.deleteOldRecipe)
 
-// change recipe tags, move into another category
-router.post(
-  '/tagRecipe/:id',
-  authHelper.isAuthenticated,
-  (req, res) => {}
-)
-module.exports = router 
+module.exports = router

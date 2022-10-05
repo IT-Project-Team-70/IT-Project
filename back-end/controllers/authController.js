@@ -65,7 +65,7 @@ async function registerHandler(req, res) {
       email: email,
       username: username,
       id: user._id,
-      role: user.role
+      role: user.role,
     }
     return res.status(200).send(result)
   } catch (err) {
