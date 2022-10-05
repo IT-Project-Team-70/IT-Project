@@ -30,9 +30,12 @@ export default function RecipeCard(props) {
         onSuccess: (res) => {
           setImage(
             URL.createObjectURL(
-              new Blob([new Uint8Array(JSON.parse(res.data.image.data))], {
-                type: 'image/png',
-              })
+              new Blob(
+                [new Uint8Array(JSON.parse(res.data.recipe.image.data))],
+                {
+                  type: 'image/png',
+                }
+              )
             )
           )
           // console.log(new Blob(res.data.image.data))
