@@ -28,10 +28,10 @@ const authAPI = {
     url: '/forgetPassword',
     headers: {},
     data: {
-    // email:''
-    ...data,
-  },
-}),
+      // email:''
+      ...data,
+    },
+  }),
   resetPassword: (data) => ({
     method: 'post',
     url: '/resetPassword',
