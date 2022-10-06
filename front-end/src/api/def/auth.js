@@ -28,10 +28,10 @@ const authAPI = {
     url: '/forgetPassword',
     headers: {},
     data: {
-      // email:''
-      ...data,
-    },
-  }),
+    // email:''
+    ...data,
+  },
+}),
   resetPassword: (data) => ({
     method: 'post',
     url: '/resetPassword',
@@ -45,8 +45,8 @@ const authAPI = {
     url: '/verifyEmail',
     headers: {},
     data: {
-      ...data
-    }
+      ...data,
+    },
   }),
   loginWithGoogle: () => ({
     method: 'get',
