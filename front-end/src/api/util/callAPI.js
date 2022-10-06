@@ -22,15 +22,14 @@ export const callApi = async ({
     result = error
     if (AxiosV1.isCancel(error)) {
       console.log(error)
-    } /*else {
-      //console.log(error.response)
+    } else {
       if (error.response.status !== 401) {
         console.error(error)
-      }*/
-    //await onError(error)
+      }
+      await onError(error)
     }
   }
-  //onFinally()
-  //eturn result
-
+  onFinally()
+  return result
+}
 export default callApi
