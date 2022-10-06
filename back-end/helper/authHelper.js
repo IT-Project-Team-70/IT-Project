@@ -70,7 +70,7 @@ async function sendEmail(email, userId, token) {
       to: email,
       subject: 'reset password',
       html:
-        `<b>Hey there! </b><br> Please click onto the link below to reset your password<br><a href =  ${process.env.BASE_URL_FRONT_END}/resetPassword/` +
+        `<b>Hey there! </b><br> Please click onto the link below to reset your password<br><a href =  ${process.env.BASE_URL}/resetPassword/` +
         authDetails +
         '>here</a>',
     }

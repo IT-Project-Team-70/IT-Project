@@ -49,7 +49,7 @@ app.get('/loginGoogleSuccess', authController.loginGoogleSuccess)
 
 //check token before resetting user's password
 app.get('/resetPassword/:userId/:tokenId', authController.checkToken)
-app.get('/resetPassword/:userId', ()=>{return null})
+app.get('/resetPassword/:userId', (req,res)=>{res.status(200).send(null)})
 //update password handler
 app.post('/resetPassword', authController.resetPassword)
 
