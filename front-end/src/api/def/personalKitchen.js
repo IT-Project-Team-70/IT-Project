@@ -14,7 +14,12 @@ const personalKitchenAPI = {
     method: 'get',
     url: `/personalKitchen/${id}`,
     headers: {},
-    // responseType: 'blob',
+  }),
+  editRecipe: (id, data) => ({
+    method: 'post',
+    url: `/personalKitchen//editOldRecipe/${id}`,
+    headers: {},
+    data: data,
   }),
 }
 export default personalKitchenAPI

@@ -323,7 +323,7 @@ const RecipeDetail = ({
                 variant="outlined"
                 size="medium"
                 fullWidth
-                required
+                required={source === 'Own' ? false : true}
                 placeholder={
                   source === 'URL'
                     ? 'URL'

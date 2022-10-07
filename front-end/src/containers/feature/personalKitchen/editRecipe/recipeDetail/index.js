@@ -55,9 +55,11 @@ const RecipeDetail = ({
         preview: image,
       },
     ])
+    setTagList(recipeData.categoryNameList)
+    setCourseList(recipeData.courseNameList)
     onChange({
       source: recipeData.source.type,
-      tagList: recipeData.tagNameList,
+      tagList: recipeData.categoryNameList,
       courseList: recipeData.courseNameList,
       cover: [
         {
@@ -77,7 +79,7 @@ const RecipeDetail = ({
     onChange({ source: source, tagList: tagList, courseList: courseList })
     return () => {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files, source, tagList])
+  }, [files, source, tagList, courseList])
 
   return (
     <Fragment>
@@ -279,7 +281,7 @@ const RecipeDetail = ({
               <Typography variant="body1">Other Categories</Typography>
               <Autocomplete
                 multiple
-                defaultValue={recipeData.tagNameList}
+                defaultValue={recipeData.categoryNameList}
                 freeSolo
                 loading={false}
                 options={
