@@ -16,33 +16,48 @@ import { callApi } from '../../api/util/callAPI'
 import { useHistory } from 'react-router-dom'
 import { RECIPE } from '../../routes/routeConstant'
 
-export default function RecipeCard(props) {
-  const [image, setImage] = useState('')
+export default function RecipeCard({
+  image = '',
+  hasFavorite = true,
+  ...props
+}) {
+  const [recipeImage, setImage] = useState(image)
   const [favorited, setFavorited] = useState(false)
   const history = useHistory()
 
   const GetRecipeImage = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
+
     useEffect(() => {
-      callApi({
-        apiConfig: personalKitchenAPI.getRecipe(props.recipeID),
-        onStart: () => {},
-        onSuccess: (res) => {
-          setImage(
-            URL.createObjectURL(
-              new Blob(
-                [new Uint8Array(JSON.parse(res.data.recipe.image.data))],
-                {
-                  type: 'image/png',
-                }
+      if (recipeImage === '') {
+        callApi({
+          apiConfig: personalKitchenAPI.getRecipe(props.recipeID),
+          onStart: () => {},
+          onSuccess: (res) => {
+            setImage(
+              URL.createObjectURL(
+                new Blob(
+                  [new Uint8Array(JSON.parse(res.data.recipe.image.data))],
+                  {
+                    type: 'image/png',
+                  }
+                )
               )
             )
+            // console.log(new Blob(res.data.image.data))
+          },
+          onError: (err) => {},
+          onFinally: () => {},
+        })
+      } else {
+        setImage(
+          URL.createObjectURL(
+            new Blob([new Uint8Array(JSON.parse(image))], {
+              type: 'image/png',
+            })
           )
-          // console.log(new Blob(res.data.image.data))
-        },
-        onError: (err) => {},
-        onFinally: () => {},
-      })
+        )
+      }
       return () => {
         cancelToken.cancel('Request cancel.')
       }
@@ -57,7 +72,7 @@ export default function RecipeCard(props) {
           width: 320,
         }}
         alt="Food Image"
-        src={image}
+        src={recipeImage}
       />
     )
   }
@@ -85,13 +100,12 @@ export default function RecipeCard(props) {
   }
 
   return (
-    <Card id={props.recipeID} sx={{ width: 335, flexShrink: 0 }}>
-      <CardActions
-        disableSpacing
-        onClick={() => history.push(RECIPE.replace(':id', props.recipeID))}
-      >
-        {GetRecipeImage(props.recipeID)}
-      </CardActions>
+    <Card
+      id={props.recipeID}
+      sx={{ width: 335, flexShrink: 0 }}
+      onClick={() => history.push(RECIPE.replace(':id', props.recipeID))}
+    >
+      <CardActions disableSpacing>{GetRecipeImage(props.recipeID)}</CardActions>
       <CardContent sx={{ p: 0.5, paddingLeft: 1.5 }}>
         <Typography variant="body1" color="text.primary">
           {props.title}
@@ -107,13 +121,15 @@ export default function RecipeCard(props) {
           readOnly
           sx={{ marginRight: 20.5 }}
         />
-        <IconButton
-          aria-label="favorites"
-          align="right"
-          onClick={() => handleFavoriteClick()}
-        >
-          {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-        </IconButton>
+        {hasFavorite && (
+          <IconButton
+            aria-label="favorites"
+            align="right"
+            onClick={() => handleFavoriteClick()}
+          >
+            {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          </IconButton>
+        )}
       </CardActions>
     </Card>
   )
@@ -124,4 +140,6 @@ RecipeCard.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   rating: PropTypes.number,
+  image: PropTypes.string,
+  hasFavorite: PropTypes.bool,
 }

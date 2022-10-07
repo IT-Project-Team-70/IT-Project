@@ -11,6 +11,7 @@ import {
   RESET_PASSWORD_FAILURE,
   LOGIN,
   EDIT_RECIPE,
+  HOW_TO_UPLOAD,
 } from './routeConstant'
 
 import {
@@ -25,6 +26,7 @@ import ResetPassword from '../containers/resetPassword'
 import ViewRecipe from '../containers/viewRecipe'
 import LoginPanel from '../containers/login/login'
 import EditRecipe from '../containers/feature/personalKitchen/editRecipe'
+import HowToUpload from '../containers/feature/frontPage/howToUpload'
 
 export const RouteItems = [
   {
@@ -87,6 +89,13 @@ export const RouteItems = [
     name: 'Login',
     path: LOGIN,
     component: LoginPanel,
+    exact: true,
+    show: false,
+  },
+  {
+    name: 'How to upload',
+    path: HOW_TO_UPLOAD,
+    component: HowToUpload,
     exact: true,
     show: false,
   },
