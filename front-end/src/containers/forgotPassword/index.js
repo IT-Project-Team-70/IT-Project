@@ -16,6 +16,7 @@ const ForgotPassword = ({ onChange = () => {}, onClose = () => {} }) => {
   const [isloading, setIsLoading] = React.useState(false)
   const [toPage, setToPage] = React.useState({ toPage: false, to: '' })
   const [error, setError] = React.useState({ error: false, errorMeessage: '' })
+  const [sentEmail, setSentEmail] = React.useState(false)
   // const [success, setSuccess] = React.useState({
   //   success: false,
   //   successMessage: '',
@@ -34,6 +35,7 @@ const ForgotPassword = ({ onChange = () => {}, onClose = () => {} }) => {
       onSuccess: (res) => {
         //setSuccess({ success: true, successMessage: res.data })
         console.log(res)
+        setSentEmail(true)
       },
       onError: (err) => {
         console.log(err)
@@ -66,79 +68,85 @@ const ForgotPassword = ({ onChange = () => {}, onClose = () => {} }) => {
         justifyContent={'center'}
         height="inherit"
       >
-        <Box>
-          <Box marginBottom={4}>
-            <Typography
-              sx={{
-                textTransform: 'uppercase',
-                fontWeight: 'medium',
-              }}
-              gutterBottom
-              color={'textSecondary'}
-            >
-              Recover account
-            </Typography>
-            <Typography
-              variant="h4"
-              sx={{
-                fontWeight: 700,
-              }}
-            >
-              Forgot your password?
-            </Typography>
-            <Typography color="text.secondary">
-              Enter your email address below and we will get you back on track.
-            </Typography>
-          </Box>
-
-          <form onSubmit={handleonSubmit}>
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
-                <TextField
-                  placeholder="Email"
-                  label="Enter your email"
-                  name={'email'}
-                  error={error.error}
-                  helperText={error.errorMeessage}
-                  required
-                  fullWidth
-                />
-              </Grid>
-              <Grid item container xs={12}>
-                <Box
-                  display="flex"
-                  flexDirection={{ xs: 'column', sm: 'row' }}
-                  alignItems={{ xs: 'stretched', sm: 'center' }}
-                  justifyContent={'space-between'}
-                  width={'100%'}
-                  maxWidth={600}
-                  margin={'0 auto'}
-                >
-                  <Box marginBottom={{ xs: 1, sm: 0 }}>
+        {sentEmail == false ? (
+          <Box>
+            <Box marginBottom={4}>
+              <Typography
+                sx={{
+                  textTransform: 'uppercase',
+                  fontWeight: 'medium',
+                }}
+                gutterBottom
+                color={'textSecondary'}
+              >
+                Recover account
+              </Typography>
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 700,
+                }}
+              >
+                Forgot your password?
+              </Typography>
+              <Typography color="text.secondary">
+                Enter your email address below and we will get you back on
+                track.
+              </Typography>
+            </Box>
+            <form onSubmit={handleonSubmit}>
+              <Grid container spacing={4}>
+                <Grid item xs={12}>
+                  <TextField
+                    placeholder="Email"
+                    label="Enter your email"
+                    name={'email'}
+                    error={error.error}
+                    helperText={error.errorMeessage}
+                    required
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item container xs={12}>
+                  <Box
+                    display="flex"
+                    flexDirection={{ xs: 'column', sm: 'row' }}
+                    alignItems={{ xs: 'stretched', sm: 'center' }}
+                    justifyContent={'space-between'}
+                    width={'100%'}
+                    maxWidth={600}
+                    margin={'0 auto'}
+                  >
+                    <Box marginBottom={{ xs: 1, sm: 0 }}>
+                      <Button
+                        size={'large'}
+                        variant={'outlined'}
+                        onClick={() => {
+                          onChange('Login')
+                          setToPage({ toPage: true, to: 'Login' })
+                        }}
+                      >
+                        Back to login
+                      </Button>
+                    </Box>
                     <Button
                       size={'large'}
-                      variant={'outlined'}
-                      onClick={() => {
-                        onChange('Login')
-                        setToPage({ toPage: true, to: 'Login' })
-                      }}
+                      variant={'contained'}
+                      type={'submit'}
+                      color="secondary"
                     >
-                      Back to login
+                      Send reset link
                     </Button>
                   </Box>
-                  <Button
-                    size={'large'}
-                    variant={'contained'}
-                    type={'submit'}
-                    color="secondary"
-                  >
-                    Send reset link
-                  </Button>
-                </Box>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </Box>
+            </form>
+          </Box>
+        ) : (
+          <Typography color="success.main">
+            Please check your email to reset password
+          </Typography>
+        )}
         <LoadingSpinner isLoading={isloading} />
       </Box>
     </ThemeProvider>

@@ -21,7 +21,34 @@ function isValidPassword(password, hash, salt) {
     .toString('hex')
   return hashVerify === hash
 }
-
+async function verifyEmail(email){
+  try{
+    let transporter = nodemailer.createTransport({
+      service: process.env.SERVICE,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      },
+      from: process.env.EMAIL_USER,
+    })
+    const message = {
+      from: `Dont Forget Your Recipe <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Email Verification',
+      html:
+        `<b>Hey there!</b><br> Thanks for joining us !<br>Click on the link below to back to the homepage and login.<br><a href =  ${process.env.BASE_URL_FRONT_END}` +
+        '>here</a>',
+      
+    }
+    await transporter.sendMail(message)
+    return true
+  }
+  catch(err){
+    return false
+    throw new Error(err)
+  }
+}
 //This function is used to send the reset password link
 async function sendEmail(email, userId, token) {
   try {
@@ -35,6 +62,7 @@ async function sendEmail(email, userId, token) {
       from: process.env.EMAIL_USER,
     })
     const authDetails = `${userId}/${token}`
+    console.log(authDetails)
     //https://localhost:8000/resetPassword/' + authDetails + '
     //https://dont-recipe-frontback.herokuapp.com/resetPassword'
     const message = {
@@ -42,7 +70,7 @@ async function sendEmail(email, userId, token) {
       to: email,
       subject: 'reset password',
       html:
-        `<b>Hey there! </b><br> Please click onto the link below to reset your password<br><a href =  ${process.env.BASE_URL}/resetPassword/` +
+        `<b>Hey there! </b><br> Please click onto the link below to reset your password<br><a href =  ${process.env.BASE_URL_FRONT_END}/resetPassword/` +
         authDetails +
         '>here</a>',
     }
@@ -66,6 +94,7 @@ function hasRole() {}
 module.exports = {
   genPassword,
   sendEmail,
+  verifyEmail,
   isValidPassword,
   isAuthenticated,
   hasRole,

@@ -56,11 +56,12 @@ export default function SignUpPanel({
     setIsLoading(true)
     callApi({
       apiConfig: authAPI.register(data),
+      //apiConfig: authAPI.verifyEmail(data),
       onStart: () => {},
       onSuccess: (res) => {
         setSuccess({ success: true, successMessage: res.data })
-        userContext.dispatch({ type: 'loginSuccess', payload: res.data })
-        console.log(res)
+        //userContext.dispatch({ type: 'loginSuccess', payload: res.data })
+        //console.log(res)
       },
       onError: (err) => {
         console.log(err)
