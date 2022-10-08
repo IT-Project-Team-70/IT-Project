@@ -1,10 +1,11 @@
 const { readFileSync } = require('fs')
 const Recipe = require('../models/recipe')
+const path = require('path')
 
-async function getLandingPage() {
+async function getLandingPage(req,res) {
   try {
     let instructions = readFileSync(
-      '../public/resource/landingInstruction.txt',
+      path.join(__dirname + '/../public/resource/landingInstruction.txt'),
       'utf8'
     )
     let demoRecipes = await Recipe.find({ isPublic: true }).limit(10)
