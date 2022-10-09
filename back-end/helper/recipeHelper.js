@@ -3,6 +3,7 @@
 const User = require('../models/user')
 const Recipe = require('../models/recipe')
 const Tag = require('../models/tag')
+const commentHelper = require('./commentHelper')
 
 /* ***************************************************************************************** */
 
@@ -23,9 +24,19 @@ async function getUserRecipes(userId) {
 
     const recipes = []
     for (let i = 0; i < user.recipes.length; i++) {
-      const recipe = await Recipe.findById(user.recipes[i])
-      recipes.push(recipe)
+      let recipe = await Recipe.findById(user.recipes[i])
+      if(recipe!==null){
+        recipe=recipe.toObject()
+        if(user.favorites.includes(user.recipes[i])){
+          recipe.isfavorite=true
+        }else{
+          recipe.isfavorite=false
+        }
+        recipes.push(recipe)
+      }
     }
+     
+    
     return recipes
   } catch (err) {
     // res.status(500).send('Get all Recipes unsuccessfully')
@@ -119,15 +130,71 @@ async function createNewRecipe(recipe) {
 
 // Update a recipe
 async function updateRecipe(id, recipe) {
-  const { error } = recipe.joiValidate()
-  if (error) {
-    throw new Error(error.details[0].message)
-  }
-
   try {
-    const result = await Recipe.findByIdAndUpdate(id, recipe, {
-      new: true,
-    })
+    const oldRecipe=getRecipeById(id)
+    // assign tags to the recipe
+    const newTagList = []
+    const categoryNameList = []
+    for (let i = 0; i < recipe.tagList.length; i++) {
+        const tag = await findTag(recipe.tagList[i])
+        if (tag) {
+           newTagList.push(tag)
+          categoryNameList.push(tag.name)
+       } else {
+          const newTag = await createNewTag(recipe.tagList[i])
+           newTagList.push(newTag)
+          categoryNameList.push(tag.name)
+      }
+    }
+    recipe.tagList = newTagList
+    recipe.categoryNameList = categoryNameList
+
+    // assign course tag to the recipe
+     const newCourseList = []
+    const courseNameList = []
+    for (let i = 0; i < recipe.courseList.length; i++) {
+        const course = await findTag(recipe.courseList[i])
+        if (course) {
+          newCourseList.push(course)
+          courseNameList.push(course.name)
+        } else {
+            throw new Error('Course tag is not found')
+        }
+    }
+    recipe.courseList = newCourseList
+    recipe.courseNameList = courseNameList
+    // create recipe and validate
+
+    // const newRecipe = new Recipe(recipe)
+    //add old recipe's field into edited(new) recipe
+    //averageRating
+    recipe.averageRating=oldRecipe.averageRating
+    //ratingList
+    recipe.ratingList=oldRecipe.ratingList
+    //isPublic
+    recipe.isPublic=oldRecipe.isPublic
+    //notes ?
+    recipe.notes=oldRecipe.notes
+    const newRecipe = new Recipe(recipe)
+    const { error } = newRecipe.joiValidate(recipe)
+    if (error) {
+        throw new Error(error.details[0].message)
+    }
+    // save the recipe into the recipe & user database
+    const result = await newRecipe.save()
+    //update comment that is associate to the old recipe to the edited(new) recipe
+    const comments = commentHelper.getCommentsFromRecipe(id)
+    if(comments!==null){
+      for (var i in comments) {
+        await Comment.findByIdAndUpdate(comments[i].commentId, {recipeId: result._id})
+    }
+    }
+
+    const user = await User.findById(recipe.userId)
+    user.recipes.push(result._id)
+    await user.save()
+    //delete old recipe
+    deleteRecipe(id)
     return result
   } catch (err) {
     console.log(err)
