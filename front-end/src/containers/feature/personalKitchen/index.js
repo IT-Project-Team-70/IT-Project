@@ -20,40 +20,41 @@ import personalKitchenAPI from '../../../api/def/personalKitchen'
 import { callApi } from '../../../api/util/callAPI'
 import { Context } from '../../../stores/userStore'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import LoadingSpinner from '../../../component/loadingSpinner'
 
 const PersonalKitchen = (props) => {
   const history = useHistory()
   const theme = useTheme()
   const [userContext] = useContext(Context)
   const [pkStatus, setPkStatus] = useState('initial')
-  const [error, setError] = React.useState({ error: false, errorMessage: '' })
+  const [error, setError] = useState({ error: false, errorMessage: '' })
+  const [reloadTrigger, setReloadTrigger] = useState(-1)
   const GetKitchen = () => {
     const [recipeList, setRecipeList] = useState([])
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
-      if (pkStatus === 'initial') {
-        setPkStatus('loading')
-        callApi({
-          apiConfig: personalKitchenAPI.personalKitchen(),
-          onStart: () => {},
-          onSuccess: (res) => {
-            setRecipeList(res.data.recipes)
-            setPkStatus('success')
-          },
-          onError: (err) => {
-            setPkStatus('error')
-            setError({ error: true, errorMessage: err.response.data })
-            if (err.response.status === 401) {
-              history.push(LOGIN)
-            }
-          },
-          onFinally: () => {},
-        })
-        return () => {
-          cancelToken.cancel('Request cancel.')
-        }
+      setPkStatus('loading')
+      callApi({
+        apiConfig: personalKitchenAPI.personalKitchen(),
+        onStart: () => {},
+        onSuccess: (res) => {
+          setRecipeList(res.data.recipes)
+          setPkStatus('success')
+        },
+        onError: (err) => {
+          setPkStatus('error')
+          setError({ error: true, errorMessage: err.response.data })
+          if (err.response.status === 401) {
+            history.push(LOGIN)
+          }
+        },
+        onFinally: () => {},
+      })
+      return () => {
+        cancelToken.cancel('Request cancel.')
       }
-    }, [cancelToken])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cancelToken, reloadTrigger])
     return recipeList.map((recipe) => {
       return (
         recipe && (
@@ -66,6 +67,10 @@ const PersonalKitchen = (props) => {
               image={recipe.image.data}
               hasToolButton={true}
               isfavorite={recipe.isfavorite}
+              onChange={() => {
+                console.log('change')
+                setReloadTrigger((prev) => prev + 1)
+              }}
             />
           </Grid>
         )
@@ -148,6 +153,7 @@ const PersonalKitchen = (props) => {
             </Box>
           </Box>
         )}
+        <LoadingSpinner isLoading={pkStatus === 'loading'} />
       </ThemeProvider>
     </Box>
   )

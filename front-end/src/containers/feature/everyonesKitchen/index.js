@@ -11,21 +11,30 @@ import CheckboxList from './checkboxList'
 import AxiosV1 from '../../../api/axiosV1'
 import { callApi } from '../../../api/util/callAPI'
 import everyonesKitchenAPI from '../../../api/def/everyonesKitchen'
+import LoadingSpinner from '../../../component/loadingSpinner'
+import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 
 const EveryonesKitchen = (props) => {
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
+  const [ekStatus, setEkStatus] = useState('initial')
+  const [error, setError] = useState({ error: false, errorMessage: '' })
 
   const GetKitchen = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
+      setEkStatus('loading')
       callApi({
         apiConfig: everyonesKitchenAPI.getEveryonesKitchen(),
         onStart: () => {},
         onSuccess: (res) => {
+          setEkStatus('success')
           setRecipeList(res.data)
         },
-        onError: (err) => {},
+        onError: (err) => {
+          setEkStatus('error')
+          setError({ error: true, errorMessage: err.response.data })
+        },
         onFinally: () => {},
       })
       return () => {
@@ -59,6 +68,25 @@ const EveryonesKitchen = (props) => {
       }}
     >
       <ThemeProvider theme={theme}>
+      {error.error ? (
+          <Box
+            display="flex"
+            flexDirection={'column'}
+            alignItems="center"
+            height="inherit"
+            justifyContent="center"
+          >
+            <ReportProblemIcon fontSize="large" />
+            Oops something went wrong!
+            <Typography
+              variant="body"
+              color="primary"
+              sx={{ textAlign: 'center' }}
+            >
+              {error.message}
+            </Typography>
+          </Box>
+        ) : (
         <Box
           sx={{
             display: 'flex',
@@ -88,7 +116,8 @@ const EveryonesKitchen = (props) => {
               {GetKitchen()}
             </Grid>
           </Box>
-        </Box>
+        </Box>)}
+      <LoadingSpinner isLoading={ekStatus === 'loading'} />
       </ThemeProvider>
     </Box>
   )

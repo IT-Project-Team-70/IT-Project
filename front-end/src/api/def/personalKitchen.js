@@ -17,9 +17,14 @@ const personalKitchenAPI = {
   }),
   editRecipe: (id, data) => ({
     method: 'post',
-    url: `/personalKitchen//editOldRecipe/${id}`,
+    url: `/personalKitchen/editOldRecipe/${id}`,
     headers: {},
     data: data,
+  }),
+  deleteRecipe: (id) => ({
+    method: 'delete',
+    url: `/personalKitchen/${id}`,
+    headers: {},
   }),
 }
 export default personalKitchenAPI
