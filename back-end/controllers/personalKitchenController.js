@@ -85,13 +85,26 @@ async function registerNewRecipe(req, res) {
 
 async function editOldRecipe(req, res) {
   try {
-    const id = req.body.id
-    const recipe = req.body.recipe
-    const updatedRecipe = await recipeHelper.updateRecipe(id, recipe)
-    if (updatedRecipe === null) {
+    const id = req.params.id
+    if (recipeHelper.getRecipeById(id) === null) {
       return res.status(404).send('Recipe not found')
     }
-    return res.status(200).send(updatedRecipe)
+    form.parse(req, (err, fields) => {
+      if (err) {
+        res.status(500).send('Register the new recipe unsuccessfully')
+      }
+      // console.log(typeof fields);
+
+      //iterate through object, convert all value back to object
+      fields = Object.keys(fields).reduce((prev, curr) => {
+        return { ...prev, [curr]: JSON.parse(fields[curr]) }
+      }, {})
+      fields = { ...fields, userId: req.user._id }
+      recipeHelper.updateRecipe(id,fields).then((value) => {
+        return res.status(200).send(value)
+      })
+    })
+
   } catch (err) {
     res.status(500).send('Update the recipe unsuccessfully')
     throw new Error(err)
