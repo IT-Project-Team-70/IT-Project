@@ -31,11 +31,11 @@ export default function RecipeCard({
   image = '',
   hasFavorite = true,
   hasToolButton = false,
-  onChange = () => {},
+  isfavorite = false,
   ...props
 }) {
   const [recipeImage, setImage] = useState(image)
-  const [favorited, setFavorited] = useState(false)
+  const [favorited, setFavorited] = useState(isfavorite)
   const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -106,7 +106,6 @@ export default function RecipeCard({
           onStart: () => {},
           onSuccess: (res) => {
             setFavorited(!favorited)
-            onChange()
           },
           onError: (err) => {},
           onFinally: () => {},
@@ -215,5 +214,5 @@ RecipeCard.propTypes = {
   image: PropTypes.string,
   hasFavorite: PropTypes.bool,
   hasToolButton: PropTypes.bool,
-  onChange: PropTypes.func,
+  isfavorite: PropTypes.bool,
 }

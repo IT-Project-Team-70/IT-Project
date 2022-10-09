@@ -40,8 +40,11 @@ const EveryonesKitchen = (props) => {
           <RecipeCard
             recipeID={recipe._id}
             title={recipe.title}
-            description="Description Placeholder"
+            description={recipe.description}
             rating={recipe.rating}
+            image={recipe.image.data}
+            hasToolButton={false}
+            isfavorite={recipe.isfavorite}
           />
         </Grid>
       )
