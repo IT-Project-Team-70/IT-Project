@@ -126,12 +126,13 @@ async function tagOldRecipe(req, res) {
 // modified to asynchornous
 function deleteOldRecipe(req, res) {
   try {
-    const id = req.body.id
+    
+    const id = req.params.id
     const recipe = recipeHelper.deleteRecipe(id)
     if (recipe === null) {
       return res.status(404).send('Recipe not found')
     }
-    return recipe
+    return res.status(200).send(recipe)
   } catch (err) {
     res.status(500).send('Delete the recipe successfully')
     throw new Error(err)
