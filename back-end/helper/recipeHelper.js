@@ -206,6 +206,7 @@ async function updateRecipe(id, recipe) {
 async function deleteRecipe(id) {
   try {
     const result = await Recipe.findByIdAndDelete(id)
+    return result
   } catch (err) {
     console.log(err)
     throw new Error(err)
