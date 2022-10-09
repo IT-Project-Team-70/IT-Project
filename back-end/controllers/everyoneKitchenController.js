@@ -1,6 +1,7 @@
 const userHelper = require('../helper/userHelper')
 const recipeHelper = require('../helper/recipeHelper')
 const generalHelper = require('../helper/generalHelper')
+const User = require('../models/user')
 
 const { isEmpty } = require('lodash')
 var formidable = require('formidable')
@@ -8,12 +9,27 @@ const form = new formidable.IncomingForm()
 
 async function getEveryoneKitchen(req, res) {
   try {
+    const user = await User.findById(req.user._id)
     const isPublic = true
-    const allRecipes = await recipeHelper.getAllRecipes(isPublic) 
+    const allRecipes = await recipeHelper.getAllRecipes(isPublic)
     if (isEmpty(allRecipes)) {
       return res.status(200).send(null)
     }
-    return res.status(200).send(allRecipes)
+    const recipes = []
+    for (let i = 0; i < allRecipes.length; i++) {
+      // let recipe = await Recipe.findById(allRecipes[i])
+      let recipe
+      if(allRecipes[i]!==null){
+        recipe=allRecipes[i].toObject()
+        if(user.favorites.includes(allRecipes[i]._id)){
+          recipe.isfavorite=true
+        }else{
+          recipe.isfavorite=false
+        }
+        recipes.push(recipe)
+      }
+    }
+    return res.status(200).send(recipes)
     //const sortedRecipes = recipeHelper.sortRecipesByRating(allRecipes)
     //return res.status(200).send(sortedRecipes)
   } catch (err) {

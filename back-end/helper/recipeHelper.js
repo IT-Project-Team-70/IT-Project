@@ -24,9 +24,19 @@ async function getUserRecipes(userId) {
 
     const recipes = []
     for (let i = 0; i < user.recipes.length; i++) {
-      const recipe = await Recipe.findById(user.recipes[i])
-      recipes.push(recipe)
+      let recipe = await Recipe.findById(user.recipes[i])
+      if(recipe!==null){
+        recipe=recipe.toObject()
+        if(user.favorites.includes(user.recipes[i])){
+          recipe.isfavorite=true
+        }else{
+          recipe.isfavorite=false
+        }
+        recipes.push(recipe)
+      }
     }
+     
+    
     return recipes
   } catch (err) {
     // res.status(500).send('Get all Recipes unsuccessfully')
