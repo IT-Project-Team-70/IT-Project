@@ -27,7 +27,6 @@ const PersonalKitchen = (props) => {
   const [userContext] = useContext(Context)
   const [pkStatus, setPkStatus] = useState('initial')
   const [error, setError] = React.useState({ error: false, errorMessage: '' })
-  const [reloadTrigger, setReloadTrigger] = useState(-1)
   const GetKitchen = () => {
     const [recipeList, setRecipeList] = useState([])
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
@@ -54,8 +53,7 @@ const PersonalKitchen = (props) => {
           cancelToken.cancel('Request cancel.')
         }
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cancelToken, reloadTrigger])
+    }, [cancelToken])
     return recipeList.map((recipe) => {
       return (
         recipe && (
@@ -67,9 +65,7 @@ const PersonalKitchen = (props) => {
               rating={recipe.rating}
               image={recipe.image.data}
               hasToolButton={true}
-              onChange={() => {
-                setReloadTrigger((prev) => prev + 1)
-              }}
+              isfavorite={recipe.isfavorite}
             />
           </Grid>
         )
