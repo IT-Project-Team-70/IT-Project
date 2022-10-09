@@ -46,7 +46,13 @@ const EditRecipe = ({ match, ...props }) => {
         apiConfig: personalKitchenAPI.getRecipe(recipeId),
         onStart: () => {},
         onSuccess: (res) => {
-          setRecipeData(res.data.recipe)
+          //remove ingredients's _id
+          setRecipeData({
+            ...res.data.recipe,
+            ingredients: res.data.recipe.ingredients.map((ind) => {
+              return { name: ind.name, quantity: ind.quantity, unit: ind.unit }
+            }),
+          })
           setImage(
             URL.createObjectURL(
               new Blob(
