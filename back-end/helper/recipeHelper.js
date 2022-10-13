@@ -25,18 +25,17 @@ async function getUserRecipes(userId) {
     const recipes = []
     for (let i = 0; i < user.recipes.length; i++) {
       let recipe = await Recipe.findById(user.recipes[i])
-      if(recipe!==null){
-        recipe=recipe.toObject()
-        if(user.favorites.includes(user.recipes[i])){
-          recipe.isfavorite=true
-        }else{
-          recipe.isfavorite=false
+      if (recipe !== null) {
+        recipe = recipe.toObject()
+        if (user.favorites.includes(user.recipes[i])) {
+          recipe.isfavorite = true
+        } else {
+          recipe.isfavorite = false
         }
         recipes.push(recipe)
       }
     }
-     
-    
+
     return recipes
   } catch (err) {
     // res.status(500).send('Get all Recipes unsuccessfully')
@@ -131,35 +130,35 @@ async function createNewRecipe(recipe) {
 // Update a recipe
 async function updateRecipe(id, recipe) {
   try {
-    const oldRecipe=getRecipeById(id)
+    const oldRecipe = getRecipeById(id)
     // assign tags to the recipe
     const newTagList = []
     const categoryNameList = []
     for (let i = 0; i < recipe.tagList.length; i++) {
-        const tag = await findTag(recipe.tagList[i])
-        if (tag) {
-           newTagList.push(tag)
-          categoryNameList.push(tag.name)
-       } else {
-          const newTag = await createNewTag(recipe.tagList[i])
-           newTagList.push(newTag)
-          categoryNameList.push(tag.name)
+      const tag = await findTag(recipe.tagList[i])
+      if (tag) {
+        newTagList.push(tag)
+        categoryNameList.push(tag.name)
+      } else {
+        const newTag = await createNewTag(recipe.tagList[i])
+        newTagList.push(newTag)
+        categoryNameList.push(tag.name)
       }
     }
     recipe.tagList = newTagList
     recipe.categoryNameList = categoryNameList
 
     // assign course tag to the recipe
-     const newCourseList = []
+    const newCourseList = []
     const courseNameList = []
     for (let i = 0; i < recipe.courseList.length; i++) {
-        const course = await findTag(recipe.courseList[i])
-        if (course) {
-          newCourseList.push(course)
-          courseNameList.push(course.name)
-        } else {
-            throw new Error('Course tag is not found')
-        }
+      const course = await findTag(recipe.courseList[i])
+      if (course) {
+        newCourseList.push(course)
+        courseNameList.push(course.name)
+      } else {
+        throw new Error('Course tag is not found')
+      }
     }
     recipe.courseList = newCourseList
     recipe.courseNameList = courseNameList
@@ -168,26 +167,28 @@ async function updateRecipe(id, recipe) {
     // const newRecipe = new Recipe(recipe)
     //add old recipe's field into edited(new) recipe
     //averageRating
-    recipe.averageRating=oldRecipe.averageRating
+    recipe.averageRating = oldRecipe.averageRating
     //ratingList
-    recipe.ratingList=oldRecipe.ratingList
+    recipe.ratingList = oldRecipe.ratingList
     //isPublic
-    recipe.isPublic=oldRecipe.isPublic
+    recipe.isPublic = oldRecipe.isPublic
     //notes ?
-    recipe.notes=oldRecipe.notes
+    recipe.notes = oldRecipe.notes
     const newRecipe = new Recipe(recipe)
     const { error } = newRecipe.joiValidate(recipe)
     if (error) {
-        throw new Error(error.details[0].message)
+      throw new Error(error.details[0].message)
     }
     // save the recipe into the recipe & user database
     const result = await newRecipe.save()
     //update comment that is associate to the old recipe to the edited(new) recipe
     const comments = commentHelper.getCommentsFromRecipe(id)
-    if(comments!==null){
+    if (comments !== null) {
       for (var i in comments) {
-        await Comment.findByIdAndUpdate(comments[i].commentId, {recipeId: result._id})
-    }
+        await Comment.findByIdAndUpdate(comments[i].commentId, {
+          recipeId: result._id,
+        })
+      }
     }
 
     const user = await User.findById(recipe.userId)
@@ -307,6 +308,11 @@ async function rateRecipe(recipeId, userId, rate) {
   }
 }
 
+function sortRecipesByRating(recipes) {
+  recipes.sort((a, b) => b.averageRating - a.averageRating)
+  return recipes
+}
+
 function partition(arr, start, end) {
   // Taking the last element as the pivot
   const pivotValue = arr[end]
@@ -336,9 +342,6 @@ function sortRating(recipes) {
   quickSort(arr, index + 1, end)
 }
 
-function sortRecipesByRating(recipes) {
-  // const ratings =
-}
 /* ***************************************************************************************** */
 
 module.exports = {
@@ -356,6 +359,7 @@ module.exports = {
   findTag,
   createNewTag,
   createNewTagAdmi,
-  sortRecipesByRating,
+
   rateRecipe,
+  sortRecipesByRating,
 }

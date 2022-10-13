@@ -19,19 +19,18 @@ async function getEveryoneKitchen(req, res) {
     for (let i = 0; i < allRecipes.length; i++) {
       // let recipe = await Recipe.findById(allRecipes[i])
       let recipe
-      if(allRecipes[i]!==null){
-        recipe=allRecipes[i].toObject()
-        if(user.favorites.includes(allRecipes[i]._id)){
-          recipe.isfavorite=true
-        }else{
-          recipe.isfavorite=false
+      if (allRecipes[i] !== null) {
+        recipe = allRecipes[i].toObject()
+        if (user.favorites.includes(allRecipes[i]._id)) {
+          recipe.isfavorite = true
+        } else {
+          recipe.isfavorite = false
         }
         recipes.push(recipe)
       }
     }
-    return res.status(200).send(recipes)
-    //const sortedRecipes = recipeHelper.sortRecipesByRating(allRecipes)
-    //return res.status(200).send(sortedRecipes)
+    const sortedRecipes = recipeHelper.sortRecipesByRating(recipes)
+    return res.status(200).send(sortedRecipes)
   } catch (err) {
     res.status(500).send('errors while getting all recipes')
     throw new Error(err)
@@ -145,7 +144,8 @@ async function rateRecipe(req, res) {
     }
     const userId = req.user._id
     const recipeId = req.params.id
-    const rating = req.body.rating
+    const rating = req.params.score
+    // const rating = req.body.rating
     const result = await recipeHelper.rateRecipe(recipeId, userId, rating)
     return res.status(200).send(result)
   } catch (err) {
