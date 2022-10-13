@@ -1,7 +1,7 @@
-const UserModel = require('../models/user')
 const User = require('../models/user')
 const Comment = require('../models/comment')
 const generalHelper = require('../helper/generalHelper')
+
 // Create a new user
 async function registerNewUser(user) {
   // const { error } = user.joiValidate()
@@ -21,6 +21,16 @@ async function registerNewUser(user) {
   }
 }
 
+// get all users
+async function getAllUsers() {
+  try {
+    const result = await User.find()
+    return result
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 // retrieve user from database
 async function getUserByID(id) {
   try {
@@ -31,7 +41,7 @@ async function getUserByID(id) {
     }
     return user
   } catch (err) {
-    // throw new Error(err)
+    throw new Error(err)
   }
 }
 
@@ -64,7 +74,7 @@ async function updateUser(id, user) {
 // delete user from database
 async function deleteUser(id) {
   try {
-    const result = await UserModel.findByIdAndDelete(id)
+    const result = await User.findByIdAndDelete(id)
     return result
   } catch (err) {
     console.log(err)
@@ -74,6 +84,7 @@ async function deleteUser(id) {
 
 module.exports = {
   registerNewUser,
+  getAllUsers,
   getUserByID,
   getUserByUsername,
   updateUser,

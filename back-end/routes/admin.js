@@ -1,7 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const passport = require('passport')
+require('../passport.js')
 
 const adminController = require('../controllers/adminController')
+
+const { isAuthenticated, hasRole } = require('../helper/authHelper')
 
 /* ********************************************************************************************* */
 
