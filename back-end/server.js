@@ -5,6 +5,7 @@ const https = require('https')
 const path = require('path');
 const http = require("http")
 const fs = require('fs')
+const {Server} = require("socket.io")
 // Experss
 const express = require('express')
 const session = require('express-session')
@@ -15,13 +16,17 @@ require('./passport')
 const mongoDB = require('./models')
 const MongoStore = require('connect-mongo')
 const cors = require('cors')
+const userHelper = require('./helper/userHelper')
+const User = require('./models/user')
 // Routers
 const landingRouter = require('./routes/landing.js')
 const personalKitchenRouter = require('./routes/personalKitchen.js')
 const everyoneKitchenRouter = require('./routes/everyoneKitchen.js')
 const viewRecipeRouter = require('./routes/viewingRecipe.js')
 const testingRouter = require('./routes/testing.js')
-const authRouter = require('./routes/auth.js')
+const authRouter = require('./routes/auth.js');
+const userRouter = require('./routes/user.js');
+const { receiveMessageOnPort } = require('worker_threads');
 // ******************************************************************************************** //
 //get .env from the root folder
 dotenv.config({ path: '../.env' });
@@ -86,6 +91,7 @@ app.use('/personalKitchen', personalKitchenRouter)
 app.use('/forum', everyoneKitchenRouter)
 app.use('/viewRecipe', viewRecipeRouter)
 app.use('/testing', testingRouter)
+app.use('/user', userRouter)
 app.all('*', (req, res) => {
   // render the 404 page
   res.status(404).send('404 Not Found')
@@ -103,7 +109,52 @@ https.createServer({
   rejectUnauthorized: false,
   
 },app);
+//Socket.IO
+const io = new Server(server, {
+  cors: {
+    origin: process.env.BASE_URL_FRONT_END
+  }
+})
+io.on("connection", (socket) =>{
+  let socketUser = null //online user 
+  socket.on("addSocket", (userId, callback) =>{
+      User.findById(userId).then((user)=>{
+        //if(!user.socketId){
+          user.socketId = socket.id
+          user.save().then((newUser) => {socketUser = newUser})
+      })
+      socket.on("disconnect", () =>{
+        socketUser.socketId = ''
+   })
+    })
+  socket.on("sendNotification", ({receiver, type, recipeID}) =>{
+    console.log(recipeID)
+    User.findById(receiver).then((user) =>{
+      if(user){
+        const receiverSocketId = user.socketId
+      //console.log(receiverSocketId)
+      let message
+      if(type == 1){
+        message = `${socketUser.username} liked your recipe`
+      }
+      else{
+        message = `${socketUser.username} commented on your recipe`
+      }
+      const newNoti = {message: message, recipeId: recipeID, time: new Date()}
+      //store a new notification in our database 
+      userHelper.storeNewNotifications(user, newNoti)
+      //check if a receiver is online or not
+      //if(receiverSocketId != socketUser.id && receiverSocketId.length > 0){
+        console.log(receiverSocketId)
+        //SEND TO RECEIVER
+        io.to(receiverSocketId).emit("notifyReceiver", user.notifications)
+      //}
+    }
+      }
+ )})})
+
 server.listen(port || 8080, () => {
   console.log(`Ther server is running on ${port}`);
 });
-module.exports = server
+
+module.exports = {server}

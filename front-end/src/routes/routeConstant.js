@@ -7,6 +7,7 @@ export const UPLOAD_RECIPE = '/upload_recipe'
 export const RECIPE = '/recipe/:id'
 export const EDIT_RECIPE = '/recipe/edit/:id'
 export const LOGIN = '/login'
+export const NOTIFICATION = '/notification'
 // Developing
 export const DEV = `/dev`
 export const TEST = `${DEV}/test`

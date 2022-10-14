@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
@@ -13,14 +13,18 @@ import AxiosV1 from '../../api/axiosV1'
 import personalKitchenAPI from '../../api/def/personalKitchen'
 import everyonesKitchenAPI from '../../api/def/everyonesKitchen'
 import { callApi } from '../../api/util/callAPI'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { RECIPE } from '../../routes/routeConstant'
-
+import { propertyOf } from 'lodash'
+import { socketIo } from '../../socket'
+import { Context } from '../../stores/userStore'
 export default function RecipeCard(props) {
   const [image, setImage] = useState('')
   const [favorited, setFavorited] = useState(false)
   const history = useHistory()
-
+  const userState = useContext(Context)
+  const user = userState[0].userState.userInfo
+  
   const GetRecipeImage = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
@@ -61,7 +65,28 @@ export default function RecipeCard(props) {
       />
     )
   }
-
+  const addFavorite = () => {
+    
+    /*socketIo.socket.emit("sendNotification", {
+      sender: user,
+      receiver: props.userId,
+      type: 1
+    })*/
+    callApi({
+      apiConfig: everyonesKitchenAPI.addFavorite(props.recipeID),
+      onStart: () => {},
+      onSuccess: (res) => {
+        setFavorited(!favorited)
+        socketIo.socket.emit("sendNotification", {
+          recipeID: props.recipeID,
+          receiver: props.userId,
+          type: 1
+        })
+      },
+      onError: (err) => {},
+      onFinally: () => {},
+    })
+  }
   const handleFavoriteClick = () => {
     favorited
       ? callApi({
@@ -73,15 +98,7 @@ export default function RecipeCard(props) {
           onError: (err) => {},
           onFinally: () => {},
         })
-      : callApi({
-          apiConfig: everyonesKitchenAPI.addFavorite(props.recipeID),
-          onStart: () => {},
-          onSuccess: (res) => {
-            setFavorited(!favorited)
-          },
-          onError: (err) => {},
-          onFinally: () => {},
-        })
+      : addFavorite()
   }
 
   return (
@@ -120,6 +137,7 @@ export default function RecipeCard(props) {
 }
 
 RecipeCard.propTypes = {
+  userId: PropTypes.string,
   recipeID: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,

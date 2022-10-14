@@ -8,6 +8,7 @@ import LoginInButton from '../login/loginButton'
 import SignUpButton from '../signUp/signupButton'
 import LogoutButton from '../logout/logoutButton'
 import { Context } from '../../stores/userStore'
+import NotiPopUp from '../notification/notification'
 
 const AppLayout = (props) => {
   const { children = <></> } = props
@@ -104,6 +105,10 @@ const AppLayout = (props) => {
             </ThemeProvider>
           ) : (
             <ThemeProvider theme={theme}>
+
+                <Box sx={{ paddingRight: '8px' }}>
+                  <NotiPopUp socket = {props.socket}/>
+              </Box>
               <Box sx={{ paddingRight: '8px' }}>
                 <LogoutButton />
               </Box>
@@ -132,6 +137,7 @@ const AppLayout = (props) => {
 
 AppLayout.propTypes = {
   children: PropTypes.node,
+  socket: PropTypes.object
 }
 
 export default AppLayout

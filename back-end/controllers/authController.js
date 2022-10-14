@@ -14,6 +14,7 @@ function checkCookie(req, res) {
       email: req.user.email,
       username: req.user.username,
       id: req.user._id,
+      notifications: req.user.notifications
     }
     return res.status(200).send(result)
   } catch (err) {
@@ -31,6 +32,7 @@ function loginSuccess(req, res, next) {
     username: req.user.username,
     id: req.user._id,
     role: req.user.role,
+    notifications: req.user.notifications
   }
   return res.status(200).send(result)
 }

@@ -11,6 +11,7 @@ import {
   RESET_PASSWORD_FAILURE,
   LOGIN,
   EDIT_RECIPE,
+  NOTIFICATION,
 } from './routeConstant'
 
 import {
@@ -25,6 +26,7 @@ import ResetPassword from '../containers/resetPassword'
 import ViewRecipe from '../containers/viewRecipe'
 import LoginPanel from '../containers/login/login'
 import EditRecipe from '../containers/feature/personalKitchen/editRecipe'
+import NotiPopUp from '../containers/notification/notification'
 
 export const RouteItems = [
   {
@@ -91,6 +93,13 @@ export const RouteItems = [
     show: false,
   },
   {
+    name: 'Notification',
+    path: NOTIFICATION,
+    component: NotiPopUp,
+    exact: true,
+    show: false,
+  },
+  /*{
     name: 'Test 1',
     path: TEST_1,
     component: Test1,
@@ -113,7 +122,7 @@ export const RouteItems = [
     show:
       process.env.NODE_ENV === 'development' &&
       process.env.REACT_APP_TEST_MODE === 'ON',
-  },
+  },*/
 ]
 
 export const notNavRouteItems = [

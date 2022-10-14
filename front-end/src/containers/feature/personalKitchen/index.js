@@ -63,6 +63,7 @@ const PersonalKitchen = (props) => {
             title={recipe.title}
             description={recipe.description}
             rating={recipe.rating}
+            userId={recipe.userId}
           />
         </Grid>
       )
