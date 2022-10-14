@@ -51,9 +51,22 @@ async function getRecipesByTag(req, res) {
 
 async function getUserFavorite(req, res) {
   try {
-    const user = await userHelper.getUserById(req.user._id)
-    const favoriteRecipes = user.favorites
-    return res.status(200).send(favoriteRecipes)
+    const user = await userHelper.getUserByID(req.user._id)
+    const favoriteRecipes = []
+    if(user.favorites !==null){
+    for(let i in user.toJSON().favorites){
+      let recipe = await recipeHelper.getRecipeById(user.toJSON().favorites[i].toJSON());
+      if (recipe !== null) {
+        recipe = recipe.toObject()
+        if (user.favorites.includes(user.toJSON().favorites[i].toJSON())) {
+          recipe.isfavorite = true
+        } else {
+          recipe.isfavorite = false
+        }
+      }
+      favoriteRecipes.push(recipe);
+    }}
+    return res.status(200).send({recipes: favoriteRecipes})
   } catch (err) {
     res.status(500).send('Get the user favorite recipes unsuccessfully')
     throw new Error(err)
