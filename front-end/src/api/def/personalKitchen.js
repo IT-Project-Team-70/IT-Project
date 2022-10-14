@@ -26,5 +26,10 @@ const personalKitchenAPI = {
     url: `/personalKitchen/${id}`,
     headers: {},
   }),
+  getFavorites: (id) => ({
+    method: 'get',
+    url: `/personalKitchen/favorite`,
+    headers: {},
+  }),
 }
 export default personalKitchenAPI

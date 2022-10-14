@@ -28,6 +28,10 @@ const PersonalKitchen = (props) => {
   const [userContext] = useContext(Context)
   const [pkStatus, setPkStatus] = useState('initial')
   const [error, setError] = useState({ error: false, errorMessage: '' })
+  const [buttonSatus, setButtonSatus] = useState('Personal')
+  const [apiConfig, setApiConfig] = useState(
+    personalKitchenAPI.personalKitchen()
+  )
   const [reloadTrigger, setReloadTrigger] = useState(-1)
   const GetKitchen = () => {
     const [recipeList, setRecipeList] = useState([])
@@ -35,7 +39,7 @@ const PersonalKitchen = (props) => {
     useEffect(() => {
       setPkStatus('loading')
       callApi({
-        apiConfig: personalKitchenAPI.personalKitchen(),
+        apiConfig: apiConfig,
         onStart: () => {},
         onSuccess: (res) => {
           setRecipeList(res.data.recipes)
@@ -54,7 +58,7 @@ const PersonalKitchen = (props) => {
         cancelToken.cancel('Request cancel.')
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cancelToken, reloadTrigger])
+    }, [cancelToken, reloadTrigger, apiConfig])
     return recipeList.map((recipe) => {
       return (
         recipe && (
@@ -120,7 +124,21 @@ const PersonalKitchen = (props) => {
             <Box>
               <List sx={{ width: '240px' }}>
                 <ListItem disablePadding>
-                  <ListItemButton>
+                  <ListItemButton
+                    sx={{
+                      '&.Mui-selected': {
+                        backgroundColor: 'rgba(224, 71, 11, 0.7)',
+                      },
+                      '&.Mui-selected:hover': {
+                        backgroundColor: 'rgba(224, 71, 11, 0.45)',
+                      },
+                    }}
+                    selected={buttonSatus === 'Personal'}
+                    onClick={() => {
+                      setApiConfig(personalKitchenAPI.personalKitchen())
+                      setButtonSatus('Personal')
+                    }}
+                  >
                     <ListItemIcon>
                       <MenuBookIcon />
                     </ListItemIcon>
@@ -128,7 +146,21 @@ const PersonalKitchen = (props) => {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton>
+                  <ListItemButton
+                    selected={buttonSatus === 'Favorite'}
+                    sx={{
+                      '&.Mui-selected': {
+                        backgroundColor: 'rgba(224, 71, 11, 0.7)',
+                      },
+                      '&.Mui-selected:hover': {
+                        backgroundColor: 'rgba(224, 71, 11, 0.45)',
+                      },
+                    }}
+                    onClick={() => {
+                      setApiConfig(personalKitchenAPI.getFavorites())
+                      setButtonSatus('Favorite')
+                    }}
+                  >
                     <ListItemIcon>
                       <FastfoodIcon />
                     </ListItemIcon>
