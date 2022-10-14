@@ -113,21 +113,45 @@ SERVICE="gmail"
 add ... to your computer
 
 
-## Deployment
-
-To deploy this project run
-
-```bash
-  npm run deploy
-```
-
-
-
 ## Contributing
 
 _branches & ci cd_
 
+# Deployment
 
+See the deploy on Heroku:
+https://dont-recipe-frontback.herokuapp.com/
+
+### Set up Heroku
+
+#### Settings on Heroku:
+
+BuildPack:
+`heroku/nodejs`
+
+Application requires the same environemnt variable that need to be set under `Project Setting => Config Vars`
+
+Download and install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
+
+If you haven't already, log in to your Heroku account and follow the prompts to create a new SSH public key.
+`heroku login`
+
+Set up Heroku in your local repository, run:
+`heroku git:remote -a <heroku name>`
+
+#### Deploy Process
+Scripts had already been setup for the deploy process
+
+Our npm server serves a static frontend build. 
+
+Heroku runs the script under`heroku-postbuild` first to create the frontend build. 
+After the build is done successfully, Heroku runs `npm start` and start running the server.
+
+
+### To Deploy:
+
+run:
+`git push heroku <branch>`
 
 
 
@@ -172,26 +196,7 @@ You may also see any lint errors in the console.
 :pray: :bangbang:Please inform everyone when you upgrade/install packages.
 To update, delete folder `/node_modules` completely and run `yarn install`to install all dependencies again in order to prevent conflicts.
 
-## Deployment
 
-See the deploy on Heroku:
-https://dont-recipe-frontback.herokuapp.com/
-
-
-### Set up Heroku
-
-Download and install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
-
-If you haven't already, log in to your Heroku account and follow the prompts to create a new SSH public key.
-`heroku login`
-
-Set up Heroku in your local repository, run:
-`heroku git:remote -a <heroku name>`
-
-### To Deploy:
-
-run:
-`git push heroku <branch>`
 
 ## Coding Style
 
