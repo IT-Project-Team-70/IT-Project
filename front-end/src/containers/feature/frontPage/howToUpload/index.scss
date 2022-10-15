@@ -1,0 +1,11 @@
+.instruction {
+    //for Jodit
+    .jodit-container {
+      &:not(.jodit_inline) {
+        border: none;
+      }
+      .jodit-wysiwyg {
+        background-color: transparent !important;
+      }
+    }
+  }

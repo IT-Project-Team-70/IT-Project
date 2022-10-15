@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react'
+import React, { useContext,useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import List from '@mui/material/List'
@@ -11,21 +11,44 @@ import CheckboxList from './checkboxList'
 import AxiosV1 from '../../../api/axiosV1'
 import { callApi } from '../../../api/util/callAPI'
 import everyonesKitchenAPI from '../../../api/def/everyonesKitchen'
+import LoadingSpinner from '../../../component/loadingSpinner'
+import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import { useHistory } from 'react-router-dom'
+import { LOGIN } from '../../../routes/routeConstant'
+import { Context } from '../../../stores/userStore'
 
 const EveryonesKitchen = (props) => {
+  const history = useHistory()
+  const [userContext] = useContext(Context)
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
+  const [ekStatus, setEkStatus] = useState('initial')
+  const [error, setError] = useState({ error: false, errorMessage: '' })
+  useEffect(() => {
+    if (userContext.userState && !userContext.userState.login) {
+      history.push(LOGIN)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userContext.userState])
 
   const GetKitchen = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
+      setEkStatus('loading')
       callApi({
         apiConfig: everyonesKitchenAPI.getEveryonesKitchen(),
         onStart: () => {},
         onSuccess: (res) => {
+          setEkStatus('success')
           setRecipeList(res.data)
         },
-        onError: (err) => {},
+        onError: (err) => {
+          setEkStatus('error')
+          setError({ error: true, errorMessage: err.response.data })
+          if (err.response.status === 401) {
+            history.push(LOGIN)
+          }
+        },
         onFinally: () => {},
       })
       return () => {
@@ -40,8 +63,11 @@ const EveryonesKitchen = (props) => {
           <RecipeCard
             recipeID={recipe._id}
             title={recipe.title}
-            description="Description Placeholder"
+            description={recipe.description}
             rating={recipe.rating}
+            image={recipe.image.data}
+            hasToolButton={false}
+            isfavorite={recipe.isfavorite}
           />
         </Grid>
       )
@@ -56,6 +82,25 @@ const EveryonesKitchen = (props) => {
       }}
     >
       <ThemeProvider theme={theme}>
+      {error.error ? (
+          <Box
+            display="flex"
+            flexDirection={'column'}
+            alignItems="center"
+            height="inherit"
+            justifyContent="center"
+          >
+            <ReportProblemIcon fontSize="large" />
+            Oops something went wrong!
+            <Typography
+              variant="body"
+              color="primary"
+              sx={{ textAlign: 'center' }}
+            >
+              {error.message}
+            </Typography>
+          </Box>
+        ) : (
         <Box
           sx={{
             display: 'flex',
@@ -85,7 +130,8 @@ const EveryonesKitchen = (props) => {
               {GetKitchen()}
             </Grid>
           </Box>
-        </Box>
+        </Box>)}
+      <LoadingSpinner isLoading={ekStatus === 'loading'} />
       </ThemeProvider>
     </Box>
   )

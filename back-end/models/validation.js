@@ -29,7 +29,7 @@ let recipeSchema = Joi.object().keys({
   rating: Joi.array().items(Joi.object()),
   averageRating: Joi.number().min(0).max(5),
   isPublic: Joi.boolean(),
-
+  ratingList:Joi.array(),
   tagList: Joi.array().items(Joi.object()).default([]),
   courseList: Joi.array().items(Joi.object()).required(),
   courseNameList: Joi.array().items(Joi.string()).required(),

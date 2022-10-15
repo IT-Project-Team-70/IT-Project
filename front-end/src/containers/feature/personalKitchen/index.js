@@ -20,51 +20,64 @@ import personalKitchenAPI from '../../../api/def/personalKitchen'
 import { callApi } from '../../../api/util/callAPI'
 import { Context } from '../../../stores/userStore'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import LoadingSpinner from '../../../component/loadingSpinner'
 
 const PersonalKitchen = (props) => {
   const history = useHistory()
   const theme = useTheme()
   const [userContext] = useContext(Context)
   const [pkStatus, setPkStatus] = useState('initial')
-  const [error, setError] = React.useState({ error: false, errorMessage: '' })
-
+  const [error, setError] = useState({ error: false, errorMessage: '' })
+  const [buttonSatus, setButtonSatus] = useState('Personal')
+  const [apiConfig, setApiConfig] = useState(
+    personalKitchenAPI.personalKitchen()
+  )
+  const [reloadTrigger, setReloadTrigger] = useState(-1)
   const GetKitchen = () => {
     const [recipeList, setRecipeList] = useState([])
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
-      if (pkStatus === 'initial') {
-        setPkStatus('loading')
-        callApi({
-          apiConfig: personalKitchenAPI.personalKitchen(),
-          onStart: () => {},
-          onSuccess: (res) => {
-            setRecipeList(res.data.recipes)
-            setPkStatus('success')
-          },
-          onError: (err) => {
-            setPkStatus('error')
-            setError({ error: true, errorMessage: err.response.data })
-            if (err.response.status === 401) {
-              history.push(LOGIN)
-            }
-          },
-          onFinally: () => {},
-        })
-        return () => {
-          cancelToken.cancel('Request cancel.')
-        }
+      setPkStatus('loading')
+      callApi({
+        apiConfig: apiConfig,
+        onStart: () => {},
+        onSuccess: (res) => {
+          setRecipeList(res.data.recipes)
+          setPkStatus('success')
+        },
+        onError: (err) => {
+          setPkStatus('error')
+          setError({ error: true, errorMessage: err.response.data })
+          if (err.response.status === 401) {
+            history.push(LOGIN)
+          }
+        },
+        onFinally: () => {},
+      })
+      return () => {
+        cancelToken.cancel('Request cancel.')
       }
-    }, [cancelToken])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cancelToken, reloadTrigger, apiConfig])
     return recipeList.map((recipe) => {
       return (
-        <Grid key={recipe._id}>
-          <RecipeCard
-            recipeID={recipe._id}
-            title={recipe.title}
-            description={recipe.description}
-            rating={recipe.rating}
-          />
-        </Grid>
+        recipe && (
+          <Grid key={recipe._id}>
+            <RecipeCard
+              recipeID={recipe._id}
+              title={recipe.title}
+              description={recipe.description}
+              rating={recipe.rating}
+              image={recipe.image.data}
+              hasToolButton={true}
+              isfavorite={recipe.isfavorite}
+              onChange={() => {
+                console.log('change')
+                setReloadTrigger((prev) => prev + 1)
+              }}
+            />
+          </Grid>
+        )
       )
     })
   }
@@ -111,7 +124,21 @@ const PersonalKitchen = (props) => {
             <Box>
               <List sx={{ width: '240px' }}>
                 <ListItem disablePadding>
-                  <ListItemButton>
+                  <ListItemButton
+                    sx={{
+                      '&.Mui-selected': {
+                        backgroundColor: 'rgba(224, 71, 11, 0.7)',
+                      },
+                      '&.Mui-selected:hover': {
+                        backgroundColor: 'rgba(224, 71, 11, 0.45)',
+                      },
+                    }}
+                    selected={buttonSatus === 'Personal'}
+                    onClick={() => {
+                      setApiConfig(personalKitchenAPI.personalKitchen())
+                      setButtonSatus('Personal')
+                    }}
+                  >
                     <ListItemIcon>
                       <MenuBookIcon />
                     </ListItemIcon>
@@ -119,7 +146,21 @@ const PersonalKitchen = (props) => {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton>
+                  <ListItemButton
+                    selected={buttonSatus === 'Favorite'}
+                    sx={{
+                      '&.Mui-selected': {
+                        backgroundColor: 'rgba(224, 71, 11, 0.7)',
+                      },
+                      '&.Mui-selected:hover': {
+                        backgroundColor: 'rgba(224, 71, 11, 0.45)',
+                      },
+                    }}
+                    onClick={() => {
+                      setApiConfig(personalKitchenAPI.getFavorites())
+                      setButtonSatus('Favorite')
+                    }}
+                  >
                     <ListItemIcon>
                       <FastfoodIcon />
                     </ListItemIcon>
@@ -144,6 +185,7 @@ const PersonalKitchen = (props) => {
             </Box>
           </Box>
         )}
+        <LoadingSpinner isLoading={pkStatus === 'loading'} />
       </ThemeProvider>
     </Box>
   )

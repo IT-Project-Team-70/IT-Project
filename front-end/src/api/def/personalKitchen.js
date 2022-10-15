@@ -14,7 +14,22 @@ const personalKitchenAPI = {
     method: 'get',
     url: `/personalKitchen/${id}`,
     headers: {},
-    // responseType: 'blob',
+  }),
+  editRecipe: (id, data) => ({
+    method: 'post',
+    url: `/personalKitchen/editOldRecipe/${id}`,
+    headers: {},
+    data: data,
+  }),
+  deleteRecipe: (id) => ({
+    method: 'delete',
+    url: `/personalKitchen/${id}`,
+    headers: {},
+  }),
+  getFavorites: (id) => ({
+    method: 'get',
+    url: `/personalKitchen/favorite`,
+    headers: {},
   }),
 }
 export default personalKitchenAPI

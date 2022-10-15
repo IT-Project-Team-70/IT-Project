@@ -46,12 +46,21 @@ const EditRecipe = ({ match, ...props }) => {
         apiConfig: personalKitchenAPI.getRecipe(recipeId),
         onStart: () => {},
         onSuccess: (res) => {
-          setRecipeData(res.data)
+          //remove ingredients's _id
+          setRecipeData({
+            ...res.data.recipe,
+            ingredients: res.data.recipe.ingredients.map((ind) => {
+              return { name: ind.name, quantity: ind.quantity, unit: ind.unit }
+            }),
+          })
           setImage(
             URL.createObjectURL(
-              new Blob([new Uint8Array(JSON.parse(res.data.image.data))], {
-                type: res.data.image.type,
-              })
+              new Blob(
+                [new Uint8Array(JSON.parse(res.data.recipe.image.data))],
+                {
+                  type: res.data.recipe.image.type,
+                }
+              )
             )
           )
           setRecipeStatus('success')
@@ -150,30 +159,41 @@ const EditRecipe = ({ match, ...props }) => {
               type: noneInputData.cover[0].file.type,
             }
             submitFormData.set('image', JSON.stringify(newImage))
-            for (var pair of submitFormData.entries()) {
-              console.log(pair[0] + ', ' + pair[1])
-            }
-            // callApi({
-            //   apiConfig: personalKitchenAPI.newRecipe(submitFormData),
-            //   onStart: () => {},
-            //   onSuccess: (res) => {
-            //     console.log('success', res)
-            //     history.push(`/recipe/${res.data._id}`)
-            //   },
-            //   onError: (err) => {
-            //     console.log(err)
-            //     setSubmitStatus('fail')
-            //     setError({ error: true, message: err.response.data })
-            //   },
-            //   onFinally: () => {},
-            // })
+            callApi({
+              apiConfig: personalKitchenAPI.editRecipe(
+                recipeId,
+                submitFormData
+              ),
+              onStart: () => {},
+              onSuccess: (res) => {
+                console.log('success', res)
+                history.push(`/recipe/${res.data._id}`)
+              },
+              onError: (err) => {
+                console.log(err)
+                setSubmitStatus('fail')
+                setError({ error: true, message: err.response.data })
+              },
+              onFinally: () => {},
+            })
           })
         } else {
           submitFormData.set('image', JSON.stringify(recipeData.image))
-          // for (var pair of submitFormData.entries()) {
-          // console.log(pair[0] + ', ' + pair[1])
-          // }
           //call api
+          callApi({
+            apiConfig: personalKitchenAPI.editRecipe(recipeId, submitFormData),
+            onStart: () => {},
+            onSuccess: (res) => {
+              console.log('success', res)
+              history.push(`/recipe/${res.data._id}`)
+            },
+            onError: (err) => {
+              console.log(err)
+              setSubmitStatus('fail')
+              setError({ error: true, message: err.response.data })
+            },
+            onFinally: () => {},
+          })
         }
       } else {
         //procedure is empty

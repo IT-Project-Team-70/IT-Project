@@ -51,9 +51,22 @@ async function getRecipesByTag(req, res) {
 
 async function getUserFavorite(req, res) {
   try {
-    const user = await userHelper.getUserById(req.user._id)
-    const favoriteRecipes = user.favorites
-    return res.status(200).send(favoriteRecipes)
+    const user = await userHelper.getUserByID(req.user._id)
+    const favoriteRecipes = []
+    if(user.favorites !==null){
+    for(let i in user.toJSON().favorites){
+      let recipe = await recipeHelper.getRecipeById(user.toJSON().favorites[i].toJSON());
+      if (recipe !== null) {
+        recipe = recipe.toObject()
+        if (user.favorites.includes(user.toJSON().favorites[i].toJSON())) {
+          recipe.isfavorite = true
+        } else {
+          recipe.isfavorite = false
+        }
+      }
+      favoriteRecipes.push(recipe);
+    }}
+    return res.status(200).send({recipes: favoriteRecipes})
   } catch (err) {
     res.status(500).send('Get the user favorite recipes unsuccessfully')
     throw new Error(err)
@@ -85,13 +98,26 @@ async function registerNewRecipe(req, res) {
 
 async function editOldRecipe(req, res) {
   try {
-    const id = req.body.id
-    const recipe = req.body.recipe
-    const updatedRecipe = await recipeHelper.updateRecipe(id, recipe)
-    if (updatedRecipe === null) {
+    const id = req.params.id
+    if (recipeHelper.getRecipeById(id) === null) {
       return res.status(404).send('Recipe not found')
     }
-    return res.status(200).send(updatedRecipe)
+    form.parse(req, (err, fields) => {
+      if (err) {
+        res.status(500).send('Register the new recipe unsuccessfully')
+      }
+      // console.log(typeof fields);
+
+      //iterate through object, convert all value back to object
+      fields = Object.keys(fields).reduce((prev, curr) => {
+        return { ...prev, [curr]: JSON.parse(fields[curr]) }
+      }, {})
+      fields = { ...fields, userId: req.user._id }
+      recipeHelper.updateRecipe(id,fields).then((value) => {
+        return res.status(200).send(value)
+      })
+    })
+
   } catch (err) {
     res.status(500).send('Update the recipe unsuccessfully')
     throw new Error(err)
@@ -113,12 +139,13 @@ async function tagOldRecipe(req, res) {
 // modified to asynchornous
 function deleteOldRecipe(req, res) {
   try {
-    const id = req.body.id
+    
+    const id = req.params.id
     const recipe = recipeHelper.deleteRecipe(id)
     if (recipe === null) {
       return res.status(404).send('Recipe not found')
     }
-    return recipe
+    return res.status(200).send(recipe)
   } catch (err) {
     res.status(500).send('Delete the recipe successfully')
     throw new Error(err)
