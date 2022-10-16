@@ -24,7 +24,7 @@ export default function ListOfNoti(props) {
   const history = useHistory()
   const handleListItemClick = (event, index, recipeId, notification) => {
     setSelectedIndex(index)
-    if (notification.unread) {
+    if (notification.unread && props.unreadNotis > 0) {
       props.setUnreadNotis(props.unreadNotis - 1)
       callApi({
         apiConfig: userAPI.readNoti(notification._id),
