@@ -60,6 +60,7 @@ const NotiPopUp = (props) => {
         <DialogContent dividers={scroll === 'paper'}>
           <ListOfNoti
             notifications={notifications}
+            addNotifications={addNotifications}
             setUnreadNotis={setUnreadNotis}
             unreadNotis={unreadNotis}
             setOpen={setOpen}

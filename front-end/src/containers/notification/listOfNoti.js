@@ -25,20 +25,22 @@ export default function ListOfNoti(props) {
   const handleListItemClick = (event, index, recipeId, notification) => {
     setSelectedIndex(index)
     if (notification.unread && props.unreadNotis > 0) {
-      props.setUnreadNotis(props.unreadNotis - 1)
       callApi({
         apiConfig: userAPI.readNoti(notification._id),
         onStart: () => {},
         onSuccess: (res) => {
           console.log(res.data)
+          props.addNotifications(res.data)
+          props.setUnreadNotis(props.unreadNotis - 1)
+          props.setOpen(false)
+          history.push(RECIPE.replace(':id', recipeId))
+          //window.location.hef = RECIPE.replace(':id', recipeId)
         },
         onError: (res) => {
           console.log(res.error)
         },
       })
     }
-    props.setOpen(false)
-    history.push(RECIPE.replace(':id', recipeId))
   }
   return (
     <List aria-label="main mailbox folders">
