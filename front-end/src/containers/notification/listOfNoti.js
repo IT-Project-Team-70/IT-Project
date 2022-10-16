@@ -34,12 +34,13 @@ export default function ListOfNoti(props) {
           props.setUnreadNotis(props.unreadNotis - 1)
           props.setOpen(false)
           history.push(RECIPE.replace(':id', recipeId))
-          //window.location.hef = RECIPE.replace(':id', recipeId)
         },
         onError: (res) => {
           console.log(res.error)
         },
       })
+    } else {
+      history.push(RECIPE.replace(':id', recipeId))
     }
   }
   return (
