@@ -105,7 +105,7 @@ const AppLayout = (props) => {
             </ThemeProvider>
           ) : (
             <ThemeProvider theme={theme}>
-                <Box sx={{ paddingRight: '8px' }}>
+              <Box sx={{ paddingRight: '8px' }}>
                 <NotiPopUp socket={props.socket} />
               </Box>
               <Box sx={{ paddingRight: '8px' }}>
