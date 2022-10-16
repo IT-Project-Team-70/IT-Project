@@ -106,9 +106,9 @@ export const RouteItems = [
     path: ONE_USER_KITCHEN,
     component: OneUserKitchen,
     exact: true,
-    show: false
-  }
-  /*{
+    show: false,
+  },
+  {
     name: 'Test 1',
     path: TEST_1,
     component: Test1,
@@ -131,7 +131,7 @@ export const RouteItems = [
     show:
       process.env.NODE_ENV === 'development' &&
       process.env.REACT_APP_TEST_MODE === 'ON',
-  },*/
+  },
 ]
 
 export const notNavRouteItems = [

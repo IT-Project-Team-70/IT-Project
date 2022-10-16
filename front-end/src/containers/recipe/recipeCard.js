@@ -13,9 +13,8 @@ import AxiosV1 from '../../api/axiosV1'
 import personalKitchenAPI from '../../api/def/personalKitchen'
 import everyonesKitchenAPI from '../../api/def/everyonesKitchen'
 import { callApi } from '../../api/util/callAPI'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { RECIPE } from '../../routes/routeConstant'
-import { propertyOf } from 'lodash'
 import { socketIo } from '../../socket'
 import { Context } from '../../stores/userStore'
 export default function RecipeCard(props) {
@@ -24,7 +23,6 @@ export default function RecipeCard(props) {
   const history = useHistory()
   const userState = useContext(Context)
   const user = userState[0].userState.userInfo
-  
   const GetRecipeImage = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
@@ -66,21 +64,15 @@ export default function RecipeCard(props) {
     )
   }
   const addFavorite = () => {
-    
-    /*socketIo.socket.emit("sendNotification", {
-      sender: user,
-      receiver: props.userId,
-      type: 1
-    })*/
     callApi({
       apiConfig: everyonesKitchenAPI.addFavorite(props.recipeID),
       onStart: () => {},
       onSuccess: (res) => {
         setFavorited(!favorited)
-        socketIo.socket.emit("sendNotification", {
+        socketIo.socket.emit('sendNotification', {
           recipeID: props.recipeID,
           receiver: props.userId,
-          type: 1
+          type: 1,
         })
       },
       onError: (err) => {},
