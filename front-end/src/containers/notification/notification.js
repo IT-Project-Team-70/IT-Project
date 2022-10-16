@@ -1,6 +1,5 @@
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import React from 'react'
-import { PropTypes } from 'prop-types'
 import { socketIo } from '../../socket'
 import { Context } from '../../stores/userStore'
 import ListOfNoti from './listOfNoti'

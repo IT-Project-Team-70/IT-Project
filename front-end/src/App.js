@@ -51,54 +51,55 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cancelToken])
-  useEffect(() =>{
-    if(userContext.userState.login){
-      socketIo.socket.emit('addSocket', userContext.userState.userInfo.id, (response)=>{
-      })
+  useEffect(() => {
+    if (userContext.userState.login) {
+      socketIo.socket.emit(
+        'addSocket',
+        userContext.userState.userInfo.id,
+        (response) => {}
+      )
     }
   }, [userContext.userState])
   return (
-    
-      <BrowserRouter>
-        <Switch
-          path={RouteItems.reduce(
-            (acc, curr) => (curr.authority ? [...acc, curr.path] : acc),
-            []
-          )}
-          exact={true}
-        >
-          {RouteItems.map((routeItem) => (
-            <Route
-              key={routeItem.path}
-              path={routeItem.path}
-              exact={routeItem.exact}
-              render={(routeProps) => (
-                <AppLayout>
-                  <routeItem.component {...routeProps} />{' '}
-                </AppLayout>
-              )}
-            />
-          ))}
+    <BrowserRouter>
+      <Switch
+        path={RouteItems.reduce(
+          (acc, curr) => (curr.authority ? [...acc, curr.path] : acc),
+          []
+        )}
+        exact={true}
+      >
+        {RouteItems.map((routeItem) => (
           <Route
+            key={routeItem.path}
+            path={routeItem.path}
+            exact={routeItem.exact}
             render={(routeProps) => (
-              <div
-                style={{
-                  border: '1px solid red',
-                  height: '100vh',
-                  width: '100vw',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                }}
-              >
-                Oops! there is no resource here.
-              </div>
+              <AppLayout>
+                <routeItem.component {...routeProps} />{' '}
+              </AppLayout>
             )}
           />
-        </Switch>
-      </BrowserRouter>
-    
+        ))}
+        <Route
+          render={(routeProps) => (
+            <div
+              style={{
+                border: '1px solid red',
+                height: '100vh',
+                width: '100vw',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+              }}
+            >
+              Oops! there is no resource here.
+            </div>
+          )}
+        />
+      </Switch>
+    </BrowserRouter>
   )
 }
 
