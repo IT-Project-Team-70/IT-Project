@@ -22,6 +22,7 @@ const User = require('./models/user')
 const landingRouter = require('./routes/landing.js')
 const personalKitchenRouter = require('./routes/personalKitchen.js')
 const everyoneKitchenRouter = require('./routes/everyoneKitchen.js')
+const oneUserKitchenRouter = require('./routes/oneUserKitchen.js')
 const viewRecipeRouter = require('./routes/viewingRecipe.js')
 const testingRouter = require('./routes/testing.js')
 const authRouter = require('./routes/auth.js');
@@ -92,6 +93,7 @@ app.use('/forum', everyoneKitchenRouter)
 app.use('/viewRecipe', viewRecipeRouter)
 app.use('/testing', testingRouter)
 app.use('/user', userRouter)
+app.use('/oneUserKitchen', oneUserKitchenRouter) 
 app.all('*', (req, res) => {
   // render the 404 page
   res.status(404).send('404 Not Found')
@@ -119,7 +121,6 @@ io.on("connection", (socket) =>{
   let socketUser = null //online user 
   socket.on("addSocket", (userId, callback) =>{
       User.findById(userId).then((user)=>{
-        //if(!user.socketId){
           user.socketId = socket.id
           user.save().then((newUser) => {socketUser = newUser})
       })
@@ -140,14 +141,13 @@ io.on("connection", (socket) =>{
       else{
         message = `${socketUser.username} commented on your recipe`
       }
-      const newNoti = {message: message, recipeId: recipeID, time: new Date()}
+      const newNoti = {message: message, recipeId: recipeID, time: new Date(), sender: socketUser._id}
       //store a new notification in our database 
       userHelper.storeNewNotifications(user, newNoti)
       //check if a receiver is online or not
-      //if(receiverSocketId != socketUser.id && receiverSocketId.length > 0){
         console.log(receiverSocketId)
         //SEND TO RECEIVER
-        io.to(receiverSocketId).emit("notifyReceiver", user.notifications)
+        io.to(receiverSocketId).emit("notifyReceiver", user.notifications, socketUser.userId)
       //}
     }
       }

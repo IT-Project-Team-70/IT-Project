@@ -267,9 +267,24 @@ function sortRating(recipes) {
   quickSort(arr, start, index - 1)
   quickSort(arr, index + 1, end)
 }
-
 function sortRecipesByRating(recipes) {
   // const ratings =
+}
+async function getPublicRecipes(userId){
+  try{
+    console.log(userId)
+    const recipes = await getUserRecipes(userId)
+    let result = []
+    for(let i = 0; i < recipes.length; i++){
+      if(recipes[i].isPublic){
+        result.push(recipes[i])
+      }
+    }
+    return result
+  }
+  catch(err){
+    throw new Error(err)
+  }
 }
 /* ***************************************************************************************** */
 
@@ -278,11 +293,11 @@ module.exports = {
   getUserRecipes,
   getRecipeById,
   getRecipesByTag,
+  getPublicRecipes,
   createNewRecipe,
   tagRecipe,
   updateRecipe,
   deleteRecipe,
-
   getAllTags,
   getCourseTags,
   findTag,

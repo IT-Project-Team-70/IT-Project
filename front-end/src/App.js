@@ -54,7 +54,6 @@ function App() {
   useEffect(() =>{
     if(userContext.userState.login){
       socketIo.socket.emit('addSocket', userContext.userState.userInfo.id, (response)=>{
-        console.log(1)
       })
     }
   }, [userContext.userState])

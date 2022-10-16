@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     },
   ],
   socketId: {type: String},
-  notifications: [{message: String, recipeId: String, time: Date, unread: {type: Boolean, default: true}}]
+  notifications: [{message: String, recipeId: String, time: Date, unread: {type: Boolean, default: true}, sender: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}}]
   //comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
   //likedComments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]
 })

@@ -8,6 +8,7 @@ export const RECIPE = '/recipe/:id'
 export const EDIT_RECIPE = '/recipe/edit/:id'
 export const LOGIN = '/login'
 export const NOTIFICATION = '/notification'
+export const ONE_USER_KITCHEN = '/oneUserKitchen/:userId'
 // Developing
 export const DEV = `/dev`
 export const TEST = `${DEV}/test`

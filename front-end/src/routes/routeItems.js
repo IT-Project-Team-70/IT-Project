@@ -12,12 +12,14 @@ import {
   LOGIN,
   EDIT_RECIPE,
   NOTIFICATION,
+  ONE_USER_KITCHEN,
 } from './routeConstant'
 
 import {
   FrontPage,
   EveryonesKitchen,
   PersonalKitchen,
+  OneUserKitchen,
 } from '../containers/feature'
 
 import { Test1, Test2, Test3 } from '../containers/developing'
@@ -99,6 +101,13 @@ export const RouteItems = [
     exact: true,
     show: false,
   },
+  {
+    name: 'OneUserKitchen',
+    path: ONE_USER_KITCHEN,
+    component: OneUserKitchen,
+    exact: true,
+    show: false
+  }
   /*{
     name: 'Test 1',
     path: TEST_1,
