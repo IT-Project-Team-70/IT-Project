@@ -105,9 +105,8 @@ const AppLayout = (props) => {
             </ThemeProvider>
           ) : (
             <ThemeProvider theme={theme}>
-
                 <Box sx={{ paddingRight: '8px' }}>
-                  <NotiPopUp socket = {props.socket}/>
+                <NotiPopUp socket={props.socket} />
               </Box>
               <Box sx={{ paddingRight: '8px' }}>
                 <LogoutButton />
@@ -134,10 +133,9 @@ const AppLayout = (props) => {
     </Fragment>
   )
 }
-
 AppLayout.propTypes = {
   children: PropTypes.node,
-  socket: PropTypes.object
+  socket: PropTypes.object,
 }
 
 export default AppLayout
