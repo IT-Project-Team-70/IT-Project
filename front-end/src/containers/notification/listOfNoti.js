@@ -33,13 +33,13 @@ export default function ListOfNoti(props) {
           props.addNotifications(res.data)
           props.setUnreadNotis(props.unreadNotis - 1)
           props.setOpen(false)
+          history.push(RECIPE.replace(':id', recipeId))
         },
         onError: (res) => {
           console.log(res.error)
         },
       })
     }
-    history.push(RECIPE.replace(':id', recipeId))
   }
   return (
     <List aria-label="main mailbox folders">
