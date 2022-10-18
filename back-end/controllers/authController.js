@@ -38,7 +38,7 @@ function loginFailure(req, res, next) {
   return res.status(401).send('Either password or username is incorrect')
 }
 function loginGoogleSuccess(req, res, next) {
-  return res.redirect(process.env.BASE_URL_FRONT_END)
+  return res.redirect('/')
 }
 async function registerHandler(req, res) {
   try {
