@@ -15,6 +15,7 @@ function checkCookie(req, res) {
       username: req.user.username,
       id: req.user._id,
     }
+    console.log(result)
     return res.status(200).send(result)
   } catch (err) {
     res.status(500).send('Get userInfo unsuccessfully')
@@ -38,8 +39,9 @@ function loginFailure(req, res, next) {
   return res.status(401).send('Either password or username is incorrect')
 }
 function loginGoogleSuccess(req, res, next) {
-  return res.redirect('/')
-}
+  return res.redirect(process.env.BASE_URL_FRONT_END)
+  }
+
 async function registerHandler(req, res) {
   try {
     const password = req.body.password

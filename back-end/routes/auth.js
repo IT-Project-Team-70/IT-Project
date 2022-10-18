@@ -34,8 +34,8 @@ app.get(
   '/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/loginFailure',
-    successRedirect: '/loginGoogleSuccess',
-  })
+  }),
+  authController.loginGoogleSuccess
 )
 
 //login unsuccessfully
