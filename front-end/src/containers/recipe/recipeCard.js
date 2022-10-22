@@ -119,6 +119,17 @@ export default function RecipeCard({
           onFinally: () => {},
         })
   }
+  const handleRatingClick = (newRating) => {
+    callApi({
+      apiConfig: everyonesKitchenAPI.addRating(props.recipeID, newRating),
+      onStart: () => {},
+      onSuccess: (res) => {
+        onChange()
+      },
+      onError: (err) => {},
+      onFinally: () => {},
+    })
+  }
   const handleOnDeleteClick = () => {
     callApi({
       apiConfig: personalKitchenAPI.deleteRecipe(props.recipeID),
@@ -225,7 +236,9 @@ export default function RecipeCard({
           <Rating
             name="recipe-rating"
             value={props.rating}
-            readOnly
+            onChange={(event, newRating) => {
+              handleRatingClick(newRating)
+            }}
             sx={{ marginRight: 20.5 }}
           />
           {hasFavorite && (

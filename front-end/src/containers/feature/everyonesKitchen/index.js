@@ -64,7 +64,7 @@ const EveryonesKitchen = (props) => {
             recipeID={recipe._id}
             title={recipe.title}
             description={recipe.description}
-            rating={recipe.rating}
+            rating={recipe.averageRating}
             image={recipe.image.data}
             hasToolButton={false}
             isfavorite={recipe.isfavorite}
