@@ -23,6 +23,12 @@ import {
   ListItemText,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -45,6 +51,16 @@ export default function RecipeCard({
     message: '',
   }
   const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
+
+  const [open, setOpen] = React.useState(false)
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   const GetRecipeImage = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
@@ -124,6 +140,7 @@ export default function RecipeCard({
       apiConfig: everyonesKitchenAPI.addRating(props.recipeID, newRating),
       onStart: () => {},
       onSuccess: (res) => {
+        handleClickOpen()
         onChange()
       },
       onError: (err) => {},
@@ -241,6 +258,26 @@ export default function RecipeCard({
             }}
             sx={{ marginRight: 20.5 }}
           />
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {'Rating Success!'}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                You successfully rated the recipe.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} autoFocus>
+                Done
+              </Button>
+            </DialogActions>
+          </Dialog>
           {hasFavorite && (
             <IconButton
               aria-label="favorites"
