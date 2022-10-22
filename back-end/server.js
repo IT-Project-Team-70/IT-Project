@@ -129,12 +129,11 @@ io.on("connection", (socket) =>{
    })
     })
   socket.on("sendNotification", ({receiver, type, recipeID}) =>{
-    console.log(recipeID)
     User.findById(receiver).then((user) =>{
       if(user){
         const receiverSocketId = user.socketId
       //console.log(receiverSocketId)
-      let message
+      let message = ''
       if(type == 1){
         message = `${socketUser.username} liked your recipe`
       }
@@ -147,7 +146,7 @@ io.on("connection", (socket) =>{
       //check if a receiver is online or not
         console.log(receiverSocketId)
         //SEND TO RECEIVER
-        io.to(receiverSocketId).emit("notifyReceiver", user.notifications, socketUser.userId)
+        io.to(receiverSocketId).emit("notifyReceiver", user.notifications)
       //}
     }
       }

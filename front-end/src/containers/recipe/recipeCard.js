@@ -69,14 +69,14 @@ export default function RecipeCard(props) {
       onStart: () => {},
       onSuccess: (res) => {
         setFavorited(!favorited)
-        socketIo.socket.emit('sendNotification', {
-          recipeID: props.recipeID,
-          receiver: props.userId,
-          type: 1,
-        })
-      },
+        },
       onError: (err) => {},
       onFinally: () => {},
+    })
+    socketIo.socket.emit('sendNotification', {
+      recipeID: props.recipeID,
+      receiver: props.userId,
+      type: 1,
     })
   }
   const handleFavoriteClick = () => {

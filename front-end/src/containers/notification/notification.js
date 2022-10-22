@@ -24,17 +24,35 @@ const NotiPopUp = (props) => {
   const [open, setOpen] = React.useState(false)
   const [userContext] = React.useContext(Context)
   const [scroll, setScroll] = React.useState('paper')
-  const [notifications, addNotifications] = React.useState(
+  const countUnread = (notifications) => {
+    let result = 0
+    for(let i = 0; i < notifications.length; i++){
+      if(notifications[i].unread){
+        result += 1
+      }
+    }
+    return result
+  }
+  /*const [notifications, addNotifications] = React.useState(
     userContext.userState.userInfo.notifications
   )
   const [unreadNotis, setUnreadNotis] = React.useState(
     getUnReadNotifications(notifications)
-  )
+  )*/
+  let userInfo = userContext.userState.userInfo
+  
+  const [unread, setUnread] = React.useState(countUnread(userInfo.notifications))
+  
   //real-time data
-  socketIo.socket.on('notifyReceiver', (newNotification) => {
-    console.log(newNotification.length)
-    addNotifications(newNotification)
-    setUnreadNotis(unreadNotis + 1)
+  socketIo.socket.on('notifyReceiver', (notifications) => {
+    console.log(1)
+    userContext.dispatch({type: 'addNoti', payload:  
+      {username: userInfo.username, 
+      email: userInfo.email,
+      id: userInfo.id,
+      notifications: notifications
+      }})
+    setUnread(unread + 1)
   })
   const handleNotiClick = () => {
     setOpen(true)
@@ -44,7 +62,7 @@ const NotiPopUp = (props) => {
   }
   return (
     <Box sx={{ mr: 2 }}>
-      <Badge badgeContent={unreadNotis} color="noti">
+      <Badge badgeContent={unread} color="noti">
         <NotificationsIcon onClick={() => handleNotiClick()} />
       </Badge>
       <Dialog
@@ -59,10 +77,8 @@ const NotiPopUp = (props) => {
         </DialogTitle>
         <DialogContent dividers={scroll === 'paper'}>
           <ListOfNoti
-            notifications={notifications}
-            addNotifications={addNotifications}
-            setUnreadNotis={setUnreadNotis}
-            unreadNotis={unreadNotis}
+            unread={unread}
+            setUnread={setUnread}
             setOpen={setOpen}
           />
         </DialogContent>

@@ -144,16 +144,20 @@ async function deleteAllNotis(userId){
 async function readNoti(userId, notiId){
   try{
     const user = await User.findById(userId)
-    const newNotis = user.notifications.map((noti)=>{
-      if(noti._id == notiId){
-        return{...noti, unread: false}
+    let newNotis = []
+    for(let i = 0; i < user.notifications.length; i++){
+      if(user.notifications[i]._id == notiId){
+        user.notifications[i].unread = false
+        newNotis.push(user.notifications[i])
       }
-      return noti
-    })
+      else{
+        newNotis.push(user.notifications[i])
+      }
+    }
     user.notifications = newNotis
     await user.save()
-    console.log(notiId)
-    return user.notifications
+   
+    return newNotis
   }
   catch(err){
     throw new Error(err)

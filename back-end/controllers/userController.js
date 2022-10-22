@@ -45,7 +45,13 @@ async function deleteAllNotifications(req, res){
 async function readNotification(req, res){
   try{
     const notis = await userHelper.readNoti(req.user._id, req.body.notiId)
-    return res.status(200).send(notis)
+    const result = {
+      email: req.user.email,
+      username: req.user.username,
+      id: req.user._id,
+      notifications: notis
+    }
+    return res.status(200).send(result)
   }
   catch(err){
     res.status(500).send('Errors while reading a notification')

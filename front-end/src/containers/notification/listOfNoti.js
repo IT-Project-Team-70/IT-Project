@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -8,6 +8,7 @@ import { RECIPE } from '../../routes/routeConstant'
 import callApi from '../../api/util/callAPI'
 import userAPI from '../../api/def/noti'
 import { makeStyles } from '@mui/styles'
+import { Context } from '../../stores/userStore'
 
 const useStyles = makeStyles({
   unreadNoti: {
@@ -18,32 +19,39 @@ const useStyles = makeStyles({
   },
 })
 export default function ListOfNoti(props) {
-  console.log(props.notifications)
   const [selectedIndex, setSelectedIndex] = useState(null)
+  const [userContext] = useContext(Context)
+  const notifications = userContext.userState.userInfo.notifications
   const classes = useStyles()
   const history = useHistory()
+ 
   const handleListItemClick = (event, index, recipeId, notification) => {
-    setSelectedIndex(index)
-    if (notification.unread && props.unreadNotis > 0) {
+    if (notification.unread && props.unread > 0) {
       callApi({
         apiConfig: userAPI.readNoti(notification._id),
         onStart: () => {},
         onSuccess: (res) => {
-          console.log(res.data)
-          props.addNotifications(res.data)
-          props.setUnreadNotis(props.unreadNotis - 1)
-          props.setOpen(false)
-          history.push(RECIPE.replace(':id', recipeId))
+        console.log(res.data)
+        userContext.dispatch({type: 'readNoti', payload: res.data})
+        //console.log(userContext.userState.userInfo.notifications)
+        props.setUnread(props.unread - 1)
+        props.setOpen(false)
+        history.push(RECIPE.replace(':id', recipeId))
         },
         onError: (res) => {
           console.log(res.error)
         },
       })
     }
+    else if(!notification.unread){
+      props.setOpen(false)
+      history.push(RECIPE.replace(':id', recipeId))
+    }
+    setSelectedIndex(index)
   }
   return (
     <List aria-label="main mailbox folders">
-      {props.notifications.map((notification, i) => (
+      {notifications.map((notification, i) => (
         <div key={i}>
           {notification.unread ? (
             <ListItem className={classes.unreadNoti}>
@@ -78,7 +86,7 @@ export default function ListOfNoti(props) {
               </ListItemButton>
             </ListItem>
           )}
-          {i != props.notifications.length - 1 && <Divider />}
+          {i != notifications.length - 1 && <Divider />}
         </div>
       ))}
     </List>
