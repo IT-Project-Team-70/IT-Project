@@ -22,5 +22,10 @@ const everyonesKitchenAPI = {
     url: `/forum/removeFavorite/${id}`,
     headers: {},
   }),
+  rateRecipe: ({ id, score }) => ({
+    method: 'post',
+    url: `/forum//rating/${id}/${score}`,
+    headers: {},
+  }),
 }
 export default everyonesKitchenAPI

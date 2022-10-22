@@ -19,12 +19,9 @@ const LoadingSpinner = ({
         zIndex: '999',
         left: '0',
         top: '0',
-        // top: '61px',
         width: '100%',
         height: '100%',
-        // height: 'calc(100% - 61px)',
         overflow: 'auto',
-        // backgroundColor: ' rgb(0, 0, 0)',
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
       }}
       {...BoxProps}

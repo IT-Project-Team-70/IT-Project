@@ -91,5 +91,4 @@ AlertDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   onConfirm: oneOfType([PropTypes.func, PropTypes.bool]),
   onCancel: oneOfType([PropTypes.func, PropTypes.bool]),
-  icon: PropTypes.node,
 }

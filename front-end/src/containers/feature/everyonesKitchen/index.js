@@ -24,6 +24,7 @@ const EveryonesKitchen = (props) => {
   const [recipeList, setRecipeList] = useState([])
   const [ekStatus, setEkStatus] = useState('initial')
   const [error, setError] = useState({ error: false, errorMessage: '' })
+  const [reloadTrigger, setReloadTrigger] = useState(-1)
   useEffect(() => {
     if (userContext.userState && !userContext.userState.login) {
       history.push(LOGIN)
@@ -54,7 +55,8 @@ const EveryonesKitchen = (props) => {
       return () => {
         cancelToken.cancel('Request cancel.')
       }
-    }, [cancelToken])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cancelToken,reloadTrigger])
     return recipeList.map((recipe) => {
       return (
         <Grid
@@ -64,10 +66,13 @@ const EveryonesKitchen = (props) => {
             recipeID={recipe._id}
             title={recipe.title}
             description={recipe.description}
-            rating={recipe.rating}
+            rating={recipe.averageRating}
             image={recipe.image.data}
             hasToolButton={false}
             isfavorite={recipe.isfavorite}
+            onChange={() => {
+              setReloadTrigger((prev) => prev + 1)
+            }}
           />
         </Grid>
       )
