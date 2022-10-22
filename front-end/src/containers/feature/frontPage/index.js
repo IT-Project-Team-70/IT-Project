@@ -121,7 +121,7 @@ const FrontPage = (props) => {
         <Box
           width="100%"
           component="div"
-          sx={{ overflow: 'auto', position: 'relative' }}
+          sx={{ overflow: 'auto', position: 'relative', minHeight: '335px' }}
           display="flex"
           alignContent="center"
         >
