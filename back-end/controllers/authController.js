@@ -14,7 +14,9 @@ function checkCookie(req, res) {
       email: req.user.email,
       username: req.user.username,
       id: req.user._id,
+      notifications: req.user.notifications
     }
+    console.log(result)
     return res.status(200).send(result)
   } catch (err) {
     res.status(500).send('Get userInfo unsuccessfully')
@@ -31,6 +33,7 @@ function loginSuccess(req, res, next) {
     username: req.user.username,
     id: req.user._id,
     role: req.user.role,
+    notifications: req.user.notifications
   }
   return res.status(200).send(result)
 }
@@ -39,7 +42,8 @@ function loginFailure(req, res, next) {
 }
 function loginGoogleSuccess(req, res, next) {
   return res.redirect(process.env.BASE_URL_FRONT_END)
-}
+  }
+
 async function registerHandler(req, res) {
   try {
     const password = req.body.password

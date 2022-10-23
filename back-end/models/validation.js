@@ -1,4 +1,5 @@
 const Joi = require('joi-oid')
+const { join } = require('path')
 
 /* ***************************************************************************************** */
 
@@ -6,8 +7,7 @@ let userSchema = Joi.object().keys({
   username: Joi.string().min(1).max(50).required(),
   // password: Joi.string().min(1).max(255).required(),
   email: Joi.string().min(1).max(255).required(),
-  comments: Joi.array().items(Joi.object()).default([]),
-  likedComments: Joi.array().items(Joi.object()).default([])
+  socketId: Joi.string()
 })
 
 let tagSchema = Joi.object().keys({

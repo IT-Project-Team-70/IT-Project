@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
+// import TextField from '@mui/material/TextField'
 import { Button, ThemeProvider } from '@mui/material'
 import useTheme from '../../../css/muiTheme'
 import RecipeCard from '../../recipe/recipeCard'
@@ -96,7 +96,7 @@ const FrontPage = (props) => {
             </Typography>
           </Box>
         </Box>
-        <Box sx={{ m: 5 }}>
+        {/* <Box sx={{ m: 5 }}>
           <Typography textAlign={'center'} fontSize={20} fontWeight={'medium'}>
             SEARCH FOR RECIPES HERE
           </Typography>
@@ -117,11 +117,20 @@ const FrontPage = (props) => {
               sx={{ bgcolor: '#FFFFFF' }}
             />
           </Box>
-        </Box>
+        </Box> */}
+        <Typography
+          textAlign={'center'}
+          fontSize={24}
+          fontWeight={'bold'}
+          fontFamily={'Roboto'}
+          p={2}
+        >
+          Trending Recipes
+        </Typography>
         <Box
           width="100%"
           component="div"
-          sx={{ overflow: 'auto', position: 'relative' }}
+          sx={{ overflow: 'auto', position: 'relative', minHeight: '335px' }}
           display="flex"
           alignContent="center"
         >

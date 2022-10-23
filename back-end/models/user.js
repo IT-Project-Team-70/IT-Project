@@ -1,3 +1,4 @@
+const { boolean } = require('joi')
 const { default: mongoose } = require('mongoose')
 const validation = require('./validation')
 
@@ -35,6 +36,8 @@ const userSchema = new mongoose.Schema({
       // conversation: [{type: mongoose.Schema.Types.ObjectId, ref: 'Message'}]
     },
   ],
+  socketId: {type: String},
+  notifications: [{message: String, recipeId: String, time: Date, unread: {type: Boolean, default: true}, sender: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}}]
   //comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
   //likedComments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]
 })

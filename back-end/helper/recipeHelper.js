@@ -341,7 +341,6 @@ function sortRating(recipes) {
   quickSort(arr, start, index - 1)
   quickSort(arr, index + 1, end)
 }
-
 /* ***************************************************************************************** */
 
 module.exports = {
@@ -353,7 +352,6 @@ module.exports = {
   tagRecipe,
   updateRecipe,
   deleteRecipe,
-
   getAllTags,
   getCourseTags,
   findTag,

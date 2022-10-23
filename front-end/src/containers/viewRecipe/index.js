@@ -7,7 +7,7 @@ import {
   Paper,
   Chip,
 } from '@mui/material'
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, useContext } from 'react'
 import AxiosV1 from '../../api/axiosV1'
 import personalKitchenAPI from '../../api/def/personalKitchen'
 import { callApi } from '../../api/util/callAPI'
@@ -17,8 +17,10 @@ import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { LOGIN } from '../../routes/routeConstant'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import { Context } from '../../stores/userStore'
 
 const ViewRecipe = ({ match, ...props }) => {
+  const [userContext] = useContext(Context)
   const [image, setImage] = useState('')
   const [recipeData, setRecipeData] = useState(null)
   const [recipeStatus, setRecipeStatus] = useState('initial')
@@ -62,7 +64,12 @@ const ViewRecipe = ({ match, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cancelToken])
   const theme = useTheme()
-
+  useEffect(() => {
+    if (userContext.userState && !userContext.userState.login) {
+      history.push(LOGIN)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userContext.userState])
   return (
     <Fragment>
       <Box

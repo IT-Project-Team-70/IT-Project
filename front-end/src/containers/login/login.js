@@ -21,7 +21,11 @@ import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
 import ForgotPassword from '../forgotPassword'
 import { Context } from '../../stores/userStore'
 import { useHistory } from 'react-router-dom'
-
+const googleLink =
+  process.env.NODE_ENV === 'development' &&
+  process.env.REACT_APP_TEST_MODE === 'ON'
+    ? 'https://localhost:8000/google'
+    : 'https://dont-recipe-frontback.herokuapp.com/google'
 export default function LoginPanel({
   onChange = () => {},
   onClose = () => {},
@@ -211,6 +215,11 @@ export default function LoginPanel({
                       variant="body2"
                     >
                       {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href={googleLink} variant="body2">
+                      Login with Google
                     </Link>
                   </Grid>
                 </Grid>

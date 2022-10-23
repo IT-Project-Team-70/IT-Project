@@ -68,7 +68,7 @@ const ForgotPassword = ({ onChange = () => {}, onClose = () => {} }) => {
         justifyContent={'center'}
         height="inherit"
       >
-        {sentEmail == false ? (
+        {sentEmail === false ? (
           <Box>
             <Box marginBottom={4}>
               <Typography

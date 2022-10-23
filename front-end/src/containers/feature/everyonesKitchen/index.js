@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react'
+import React, { useContext,useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import List from '@mui/material/List'
@@ -13,12 +13,24 @@ import { callApi } from '../../../api/util/callAPI'
 import everyonesKitchenAPI from '../../../api/def/everyonesKitchen'
 import LoadingSpinner from '../../../component/loadingSpinner'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import { useHistory } from 'react-router-dom'
+import { LOGIN } from '../../../routes/routeConstant'
+import { Context } from '../../../stores/userStore'
 
 const EveryonesKitchen = (props) => {
+  const history = useHistory()
+  const [userContext] = useContext(Context)
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
   const [ekStatus, setEkStatus] = useState('initial')
   const [error, setError] = useState({ error: false, errorMessage: '' })
+  const [reloadTrigger, setReloadTrigger] = useState(-1)
+  useEffect(() => {
+    if (userContext.userState && !userContext.userState.login) {
+      history.push(LOGIN)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userContext.userState])
 
   const GetKitchen = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
@@ -34,26 +46,34 @@ const EveryonesKitchen = (props) => {
         onError: (err) => {
           setEkStatus('error')
           setError({ error: true, errorMessage: err.response.data })
+          if (err.response.status === 401) {
+            history.push(LOGIN)
+          }
         },
         onFinally: () => {},
       })
       return () => {
         cancelToken.cancel('Request cancel.')
       }
-    }, [cancelToken])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cancelToken,reloadTrigger])
     return recipeList.map((recipe) => {
       return (
         <Grid
           key={recipe._id}
         >
           <RecipeCard
+            userId={recipe.userId}
             recipeID={recipe._id}
             title={recipe.title}
             description={recipe.description}
-            rating={recipe.rating}
+            rating={recipe.averageRating}
             image={recipe.image.data}
             hasToolButton={false}
             isfavorite={recipe.isfavorite}
+            onChange={() => {
+              setReloadTrigger((prev) => prev + 1)
+            }}
           />
         </Grid>
       )

@@ -9,9 +9,9 @@ const pkController = require('../controllers/personalKitchenController')
 
 router.get('/', isAuthenticated, pkController.getPersonalKitchen)
 router.get('/admin', isAuthenticated, isAdmin, pkController.getAdminKitchen)
+router.get('/favorite', isAuthenticated, pkController.getUserFavorite)
 router.get('/:id', isAuthenticated, pkController.getOneRecipeById)
 router.get('/category/:tag', isAuthenticated, pkController.getRecipesByTag)
-router.get('/favorite', isAuthenticated, pkController.getUserFavorite)
 // router.get('/favorite/:id', isAuthenticated, (req, res) => {})
 
 // post a new recipe into the database

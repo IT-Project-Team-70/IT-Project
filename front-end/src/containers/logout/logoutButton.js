@@ -3,6 +3,8 @@ import Button from '@mui/material/Button'
 import authAPI from '../../api/def/auth'
 import callApi from '../../api/util/callAPI'
 import { Context } from '../../stores/userStore'
+import { socketIo } from '../../socket'
+
 const LogoutButton = () => {
   const [userContext] = React.useContext(Context)
   const handleLogoutOnClick = () => {
@@ -12,6 +14,7 @@ const LogoutButton = () => {
       onSuccess: (data) => {
         console.log(data)
         userContext.dispatch({ type: 'logoutSuccess' })
+        socketIo.socket.disconnect()
       },
       onError: (err) => {
         userContext.dispatch({ type: 'logoutFailure' })

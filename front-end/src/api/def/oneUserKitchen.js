@@ -1,10 +1,10 @@
-const everyonesKitchenAPI = {
-  getEveryonesKitchen: (data) => ({
+const oneUserKitchenAPI = {
+  getOneUserKitchen: (userId) => ({
     method: 'get',
-    url: '/forum',
+    url: `/oneUserKitchen/${userId}`,
     headers: {},
   }),
-  everyonesKitchen: (tags) => ({
+  filterRecipes: (tags) => ({
     method: 'post',
     url: '/forum/filterRecipes',
     headers: {},
@@ -22,10 +22,5 @@ const everyonesKitchenAPI = {
     url: `/forum/removeFavorite/${id}`,
     headers: {},
   }),
-  rateRecipe: ({ id, score }) => ({
-    method: 'post',
-    url: `/forum//rating/${id}/${score}`,
-    headers: {},
-  }),
 }
-export default everyonesKitchenAPI
+export default oneUserKitchenAPI

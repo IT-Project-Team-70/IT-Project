@@ -12,12 +12,15 @@ import {
   LOGIN,
   EDIT_RECIPE,
   HOW_TO_UPLOAD,
+  NOTIFICATION,
+  ONE_USER_KITCHEN,
 } from './routeConstant'
 
 import {
   FrontPage,
   EveryonesKitchen,
   PersonalKitchen,
+  OneUserKitchen,
 } from '../containers/feature'
 
 import { Test1, Test2, Test3 } from '../containers/developing'
@@ -27,6 +30,7 @@ import ViewRecipe from '../containers/viewRecipe'
 import LoginPanel from '../containers/login/login'
 import EditRecipe from '../containers/feature/personalKitchen/editRecipe'
 import HowToUpload from '../containers/feature/frontPage/howToUpload'
+import NotiPopUp from '../containers/notification/notification'
 
 export const RouteItems = [
   {
@@ -96,6 +100,16 @@ export const RouteItems = [
     name: 'How to upload',
     path: HOW_TO_UPLOAD,
     component: HowToUpload,
+    name: 'Notification',
+    path: NOTIFICATION,
+    component: NotiPopUp,
+    exact: true,
+    show: false,
+  },
+  {
+    name: 'OneUserKitchen',
+    path: ONE_USER_KITCHEN,
+    component: OneUserKitchen,
     exact: true,
     show: false,
   },

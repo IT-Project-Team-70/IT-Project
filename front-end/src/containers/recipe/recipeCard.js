@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, useContext } from 'react'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import CardActions from '@mui/material/CardActions'
@@ -27,6 +27,9 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import AlertDialog from '../../component/alertDialog'
+import LoadingSpinner from '../../component/loadingSpinner'
+import { socketIo } from '../../socket'
+import { Context } from '../../stores/userStore'
 
 export default function RecipeCard({
   image = '',
@@ -34,10 +37,15 @@ export default function RecipeCard({
   hasToolButton = false,
   isfavorite = false,
   onChange = () => {},
+  recipeID = '',
+  title = '',
+  description = '',
+  rating = 0,
   ...props
 }) {
   const [recipeImage, setImage] = useState(image)
   const [favorited, setFavorited] = useState(isfavorite)
+  const [isLoading, setIsLoading] = useState(false)
   const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
   const initialAlertDialogState = {
@@ -45,14 +53,13 @@ export default function RecipeCard({
     message: '',
   }
   const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
-
+  const userState = useContext(Context)
   const GetRecipeImage = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
-
     useEffect(() => {
       if (recipeImage === '') {
         callApi({
-          apiConfig: personalKitchenAPI.getRecipe(props.recipeID),
+          apiConfig: personalKitchenAPI.getRecipe(recipeID),
           onStart: () => {},
           onSuccess: (res) => {
             setImage(
@@ -96,48 +103,73 @@ export default function RecipeCard({
       />
     )
   }
-
   const handleFavoriteClick = () => {
+    setIsLoading(true)
     favorited
       ? callApi({
-          apiConfig: everyonesKitchenAPI.removeFavorite(props.recipeID),
+          apiConfig: everyonesKitchenAPI.removeFavorite(recipeID),
           onStart: () => {},
           onSuccess: (res) => {
             setFavorited(!favorited)
+            setIsLoading(false)
           },
           onError: (err) => {},
           onFinally: () => {},
         })
       : callApi({
-          apiConfig: everyonesKitchenAPI.addFavorite(props.recipeID),
+          apiConfig: everyonesKitchenAPI.addFavorite(recipeID),
           onStart: () => {},
           onSuccess: (res) => {
             setFavorited(!favorited)
-            onChange()
+            setIsLoading(false)
+            socketIo.socket.emit('sendNotification', {
+              recipeID: recipeID,
+              receiver: props.userId,
+              type: 1,
+            })
           },
           onError: (err) => {},
           onFinally: () => {},
         })
   }
   const handleOnDeleteClick = () => {
+    setIsLoading(true)
     callApi({
-      apiConfig: personalKitchenAPI.deleteRecipe(props.recipeID),
+      apiConfig: personalKitchenAPI.deleteRecipe(recipeID),
       onStart: () => {},
       onSuccess: (res) => {
         onChange()
+        setIsLoading(false)
       },
       onError: (err) => {},
       onFinally: () => {},
     })
   }
+  const handleOnRatingClick = (score) => {
+    setIsLoading(true)
+    callApi({
+      apiConfig: everyonesKitchenAPI.rateRecipe({ id: recipeID, score: score }),
+      onStart: () => {},
+      onSuccess: (res) => {
+        // onChange('rate')
+        setIsLoading(false)
+      },
+      onError: (err) => {},
+      onFinally: () => {},
+    })
+  }
+
   return (
     <Fragment>
-      <Card id={props.recipeID} sx={{ width: 335, flexShrink: 0 }}>
+      <Card
+        id={recipeID}
+        sx={{ width: 335, flexShrink: 0, position: 'relative' }}
+      >
         <CardActions
           disableSpacing
-          onClick={() => history.push(RECIPE.replace(':id', props.recipeID))}
+          onClick={() => history.push(RECIPE.replace(':id', recipeID))}
         >
-          <Box>{GetRecipeImage(props.recipeID)}</Box>
+          <Box>{GetRecipeImage(recipeID)}</Box>
         </CardActions>
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Box
@@ -155,10 +187,10 @@ export default function RecipeCard({
               }}
             >
               <Typography variant="body1" color="text.primary">
-                {props.title}
+                {title}
               </Typography>
               <Typography variant="body2" color="text.secondary" noWrap>
-                {props.description}
+                {description}
               </Typography>
             </Box>
             {hasToolButton && (
@@ -189,9 +221,7 @@ export default function RecipeCard({
                     <ListItem disablePadding>
                       <ListItemButton
                         onClick={() => {
-                          history.push(
-                            EDIT_RECIPE.replace(':id', props.recipeID)
-                          )
+                          history.push(EDIT_RECIPE.replace(':id', recipeID))
                         }}
                       >
                         <ListItemIcon>
@@ -205,7 +235,7 @@ export default function RecipeCard({
                         onClick={() =>
                           setAlertDialog({
                             open: true,
-                            message: `The Recipe "${props.title}" will be deleted, do you still wish to proceed?`,
+                            message: `The Recipe "${title}" will be deleted, do you still wish to proceed?`,
                           })
                         }
                       >
@@ -224,9 +254,9 @@ export default function RecipeCard({
         <CardActions disableSpacing>
           <Rating
             name="recipe-rating"
-            value={props.rating}
-            readOnly
+            value={rating}
             sx={{ marginRight: 20.5 }}
+            onChange={(event, value) => handleOnRatingClick(value)}
           />
           {hasFavorite && (
             <IconButton
@@ -238,6 +268,7 @@ export default function RecipeCard({
             </IconButton>
           )}
         </CardActions>
+        <LoadingSpinner isLoading={isLoading} />
       </Card>
       <AlertDialog
         open={alertDialog.open}
@@ -253,6 +284,7 @@ export default function RecipeCard({
 }
 
 RecipeCard.propTypes = {
+  userId: PropTypes.string,
   recipeID: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
