@@ -25,18 +25,17 @@ export default function ListOfNoti(props) {
   const classes = useStyles()
   const history = useHistory()
  
-  const handleListItemClick = (event, index, recipeId, notification) => {
+  const handleListItemClick = (event, index, notification) => {
     if (notification.unread && props.unread > 0) {
       callApi({
         apiConfig: userAPI.readNoti(notification._id),
         onStart: () => {},
         onSuccess: (res) => {
-        console.log(res.data)
         userContext.dispatch({type: 'readNoti', payload: res.data})
         //console.log(userContext.userState.userInfo.notifications)
         props.setUnread(props.unread - 1)
         props.setOpen(false)
-        history.push(RECIPE.replace(':id', recipeId))
+        history.push(RECIPE.replace(':id', notification.recipeId))
         },
         onError: (res) => {
           console.log(res.error)
@@ -45,7 +44,7 @@ export default function ListOfNoti(props) {
     }
     else if(!notification.unread){
       props.setOpen(false)
-      history.push(RECIPE.replace(':id', recipeId))
+      history.push(RECIPE.replace(':id', notification.recipeId))
     }
     setSelectedIndex(index)
   }
@@ -61,7 +60,6 @@ export default function ListOfNoti(props) {
                   handleListItemClick(
                     event,
                     i,
-                    notification.recipeId,
                     notification
                   )
                 }
@@ -77,7 +75,6 @@ export default function ListOfNoti(props) {
                   handleListItemClick(
                     event,
                     i,
-                    notification.recipeId,
                     notification
                   )
                 }

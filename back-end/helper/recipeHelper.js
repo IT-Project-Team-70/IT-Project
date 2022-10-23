@@ -348,7 +348,6 @@ module.exports = {
   getUserRecipes,
   getRecipeById,
   getRecipesByTag,
-  getPublicRecipes,
   createNewRecipe,
   tagRecipe,
   updateRecipe,

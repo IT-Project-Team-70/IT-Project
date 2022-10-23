@@ -124,7 +124,7 @@ export default function RecipeCard({
             setFavorited(!favorited)
             setIsLoading(false)
             socketIo.socket.emit('sendNotification', {
-              recipeID: props.recipeID,
+              recipeID: recipeID,
               receiver: props.userId,
               type: 1,
             })
