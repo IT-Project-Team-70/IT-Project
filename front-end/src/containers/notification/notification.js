@@ -26,32 +26,29 @@ const NotiPopUp = (props) => {
   const [scroll, setScroll] = React.useState('paper')
   const countUnread = (notifications) => {
     let result = 0
-    for(let i = 0; i < notifications.length; i++){
-      if(notifications[i].unread){
+    for (let i = 0; i < notifications.length; i++) {
+      if (notifications[i].unread) {
         result += 1
       }
     }
     return result
   }
-  /*const [notifications, addNotifications] = React.useState(
-    userContext.userState.userInfo.notifications
-  )
-  const [unreadNotis, setUnreadNotis] = React.useState(
-    getUnReadNotifications(notifications)
-  )*/
   let userInfo = userContext.userState.userInfo
-  
-  const [unread, setUnread] = React.useState(countUnread(userInfo.notifications))
-  
+  const [unread, setUnread] = React.useState(
+    countUnread(userInfo.notifications)
+  )
   //real-time data
   socketIo.socket.on('notifyReceiver', (notifications) => {
     console.log(1)
-    userContext.dispatch({type: 'addNoti', payload:  
-      {username: userInfo.username, 
-      email: userInfo.email,
-      id: userInfo.id,
-      notifications: notifications
-      }})
+    userContext.dispatch({
+      type: 'addNoti',
+      payload: {
+        username: userInfo.username,
+        email: userInfo.email,
+        id: userInfo.id,
+        notifications: notifications,
+      },
+    })
     setUnread(unread + 1)
   })
   const handleNotiClick = () => {
@@ -76,11 +73,7 @@ const NotiPopUp = (props) => {
           Notification
         </DialogTitle>
         <DialogContent dividers={scroll === 'paper'}>
-          <ListOfNoti
-            unread={unread}
-            setUnread={setUnread}
-            setOpen={setOpen}
-          />
+          <ListOfNoti unread={unread} setUnread={setUnread} setOpen={setOpen} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

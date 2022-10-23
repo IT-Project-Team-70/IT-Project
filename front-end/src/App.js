@@ -52,7 +52,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cancelToken])
   useEffect(() => {
-    if (userContext.userState.login) { 
+    if (userContext.userState.login) {
       socketIo.socket.emit(
         'addSocket',
         userContext.userState.userInfo.id,
