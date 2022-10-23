@@ -20,6 +20,15 @@ async function getPersonalKitchen(req, res) {
     throw new Error(err)
   }
 }
+async function getAdminKitchen(req, res) {
+  try {
+    const publicRecipes = await recipeHelper.getPublicRecipes(true)
+    return res.status(200).send(publicRecipes)
+  } catch (err) {
+    res.status(500).send('Get the public recipes unsuccessfully')
+    throw new Error(err)
+  }
+}
 async function getOneRecipeById(req, res) {
   try {
     const id = req.params.id
@@ -100,11 +109,10 @@ async function editOldRecipe(req, res) {
         return { ...prev, [curr]: JSON.parse(fields[curr]) }
       }, {})
       fields = { ...fields, userId: req.user._id }
-      recipeHelper.updateRecipe(id,fields).then((value) => {
+      recipeHelper.updateRecipe(id, fields).then((value) => {
         return res.status(200).send(value)
       })
     })
-
   } catch (err) {
     res.status(500).send('Update the recipe unsuccessfully')
     throw new Error(err)
@@ -126,7 +134,6 @@ async function tagOldRecipe(req, res) {
 // modified to asynchornous
 function deleteOldRecipe(req, res) {
   try {
-    
     const id = req.params.id
     const recipe = recipeHelper.deleteRecipe(id)
     if (recipe === null) {
@@ -141,6 +148,7 @@ function deleteOldRecipe(req, res) {
 
 module.exports = {
   getPersonalKitchen,
+  getAdminKitchen,
   getOneRecipeById,
   getRecipesByTag,
   getUserFavorite,
