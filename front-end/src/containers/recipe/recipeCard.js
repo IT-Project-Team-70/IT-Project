@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, useContext } from 'react'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import CardActions from '@mui/material/CardActions'
@@ -28,6 +28,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import AlertDialog from '../../component/alertDialog'
 import LoadingSpinner from '../../component/loadingSpinner'
+import { socketIo } from '../../socket'
+import { Context } from '../../stores/userStore'
 
 export default function RecipeCard({
   image = '',
@@ -51,10 +53,10 @@ export default function RecipeCard({
     message: '',
   }
   const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
-
+  const userState = useContext(Context)
+  const user = userState[0].userState.userInfo
   const GetRecipeImage = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
-
     useEffect(() => {
       if (recipeImage === '') {
         callApi({
@@ -102,7 +104,6 @@ export default function RecipeCard({
       />
     )
   }
-
   const handleFavoriteClick = () => {
     setIsLoading(true)
     favorited
@@ -122,6 +123,11 @@ export default function RecipeCard({
           onSuccess: (res) => {
             setFavorited(!favorited)
             setIsLoading(false)
+            socketIo.socket.emit('sendNotification', {
+              recipeID: props.recipeID,
+              receiver: props.userId,
+              type: 1,
+            })
           },
           onError: (err) => {},
           onFinally: () => {},
@@ -279,6 +285,7 @@ export default function RecipeCard({
 }
 
 RecipeCard.propTypes = {
+  userId: PropTypes.string,
   recipeID: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,

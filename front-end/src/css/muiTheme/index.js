@@ -22,6 +22,11 @@ export const useTheme = () => {
       error: {
         main: '#ff2214',
       },
+      noti: {
+        main: '#4caf50',
+        title: '#0e1111',
+        unread: '#2196f3',
+      },
     },
   })
   return theme

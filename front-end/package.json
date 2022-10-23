@@ -1,6 +1,6 @@
 {
   "name": "front-end",
-  "proxy":"https://localhost:8000/",
+  "proxy": "https://localhost:8000/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,6 +12,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.3",
     "@mui/styled-engine": "^5.10.1",
+    "@mui/styles": "^5.10.10",
     "@testing-library/dom": "^8.16.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -42,6 +43,7 @@
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.1",
     "sass": "^1.54.3",
+    "socket.io-client": "^4.5.2",
     "web-vitals": "^2.1.4",
     "webpack": "4"
   },
@@ -53,7 +55,7 @@
     "start:windows": "set HTTPS=true SSL_CRT_FILE=../security/DontForgetUrRecipe.crt SSL_KEY_FILE=../security/DontForgetUrRecipe.key && cross-env REACT_APP_TEST_MODE=ON react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "herokuDeploy":"yarn install && yarn herokuBuild"
+    "herokuDeploy": "yarn install && yarn herokuBuild"
   },
   "eslintConfig": {
     "extends": [

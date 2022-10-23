@@ -35,7 +35,8 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-google-oidc": "^0.1.0",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "socket.io": "^4.5.2"
   },
   "devDependencies": {
     "chai": "^4.3.6",

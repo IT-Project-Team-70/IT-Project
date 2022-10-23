@@ -63,6 +63,7 @@ const EveryonesKitchen = (props) => {
           key={recipe._id}
         >
           <RecipeCard
+            userId={recipe.userId}
             recipeID={recipe._id}
             title={recipe.title}
             description={recipe.description}

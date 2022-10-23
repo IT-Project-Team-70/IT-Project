@@ -8,10 +8,12 @@ import { Context } from './stores/userStore'
 import AxiosV1 from './api/axiosV1'
 import callApi from './api/util/callAPI'
 import authAPI from './api/def/auth'
+import { socketIo } from './socket'
 
 function App() {
   const [cancelToken] = useState(AxiosV1.CancelToken.source())
   const [userContext] = useContext(Context)
+  console.log(userContext)
   //check login status
   useEffect(() => {
     AxiosV1.interceptors.response.use(
@@ -49,7 +51,15 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cancelToken])
-
+  useEffect(() => {
+    if (userContext.userState.login) { 
+      socketIo.socket.emit(
+        'addSocket',
+        userContext.userState.userInfo.id,
+        (response) => {}
+      )
+    }
+  }, [userContext.userState])
   return (
     <BrowserRouter>
       <Switch
