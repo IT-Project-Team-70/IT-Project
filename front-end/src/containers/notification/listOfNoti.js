@@ -24,25 +24,22 @@ export default function ListOfNoti(props) {
   const notifications = userContext.userState.userInfo.notifications
   const classes = useStyles()
   const history = useHistory()
- 
   const handleListItemClick = (event, index, notification) => {
     if (notification.unread && props.unread > 0) {
       callApi({
         apiConfig: userAPI.readNoti(notification._id),
         onStart: () => {},
         onSuccess: (res) => {
-        userContext.dispatch({type: 'readNoti', payload: res.data})
-        //console.log(userContext.userState.userInfo.notifications)
-        props.setUnread(props.unread - 1)
-        props.setOpen(false)
-        history.push(RECIPE.replace(':id', notification.recipeId))
+          userContext.dispatch({ type: 'readNoti', payload: res.data })
+          props.setUnread(props.unread - 1)
+          props.setOpen(false)
+          history.push(RECIPE.replace(':id', notification.recipeId))
         },
         onError: (res) => {
           console.log(res.error)
         },
       })
-    }
-    else if(!notification.unread){
+    } else if (!notification.unread) {
       props.setOpen(false)
       history.push(RECIPE.replace(':id', notification.recipeId))
     }
@@ -56,13 +53,7 @@ export default function ListOfNoti(props) {
             <ListItem className={classes.unreadNoti}>
               <ListItemButton
                 selected={selectedIndex === i}
-                onClick={(event) =>
-                  handleListItemClick(
-                    event,
-                    i,
-                    notification
-                  )
-                }
+                onClick={(event) => handleListItemClick(event, i, notification)}
               >
                 <ListItemText>{notification.message}</ListItemText>
               </ListItemButton>
@@ -71,13 +62,7 @@ export default function ListOfNoti(props) {
             <ListItem className={classes.readNoti}>
               <ListItemButton
                 selected={selectedIndex === i}
-                onClick={(event) =>
-                  handleListItemClick(
-                    event,
-                    i,
-                    notification
-                  )
-                }
+                onClick={(event) => handleListItemClick(event, i, notification)}
               >
                 <ListItemText>{notification.message}</ListItemText>
               </ListItemButton>

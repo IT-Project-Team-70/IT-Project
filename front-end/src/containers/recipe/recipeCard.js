@@ -54,7 +54,6 @@ export default function RecipeCard({
   }
   const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
   const userState = useContext(Context)
-  const user = userState[0].userState.userInfo
   const GetRecipeImage = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
