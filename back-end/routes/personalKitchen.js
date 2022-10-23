@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express()
 
-const { hasRole, isAuthenticated } = require('../helper/authHelper')
+const { hasRole, isAuthenticated, isAdmin } = require('../helper/authHelper')
 
 const pkController = require('../controllers/personalKitchenController')
 
 /* ********************************************************************************************* */
 
 router.get('/', isAuthenticated, pkController.getPersonalKitchen)
+router.get('/admin', isAuthenticated, isAdmin, pkController.getAdminKitchen)
 router.get('/favorite', isAuthenticated, pkController.getUserFavorite)
 router.get('/:id', isAuthenticated, pkController.getOneRecipeById)
 router.get('/category/:tag', isAuthenticated, pkController.getRecipesByTag)

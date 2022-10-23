@@ -21,14 +21,14 @@ function isValidPassword(password, hash, salt) {
     .toString('hex')
   return hashVerify === hash
 }
-async function verifyEmail(email){
-  try{
+async function verifyEmail(email) {
+  try {
     let transporter = nodemailer.createTransport({
       service: process.env.SERVICE,
       secure: false,
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        pass: process.env.EMAIL_PASS,
       },
       from: process.env.EMAIL_USER,
     })
@@ -39,12 +39,10 @@ async function verifyEmail(email){
       html:
         `<b>Hey there!</b><br> Thanks for joining us !<br>Click on the link below to back to the homepage and login.<br><a href =  ${process.env.BASE_URL_FRONT_END}` +
         '>here</a>',
-      
     }
     await transporter.sendMail(message)
     return true
-  }
-  catch(err){
+  } catch (err) {
     return false
     throw new Error(err)
   }
@@ -89,6 +87,14 @@ function isAuthenticated(req, res, next) {
   }
 }
 
+function isAdmin(req, res, next) {
+  if (req.user.role === 'admin') {
+    return next()
+  } else {
+    return res.status(401).send('You are not authorized admin')
+  }
+}
+
 function hasRole() {}
 
 module.exports = {
@@ -97,5 +103,6 @@ module.exports = {
   verifyEmail,
   isValidPassword,
   isAuthenticated,
+  isAdmin,
   hasRole,
 }

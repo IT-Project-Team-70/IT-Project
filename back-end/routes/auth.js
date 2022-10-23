@@ -14,9 +14,7 @@ app.post(
   passport.authenticate('local', {
     failureRedirect: '/loginFailure',
   }),
-  (req, res) => {
-    authController.loginSuccess(req, res)
-  }
+  authController.loginSuccess
 )
 
 //handle user's logout
@@ -49,7 +47,9 @@ app.get('/loginGoogleSuccess', authController.loginGoogleSuccess)
 
 //check token before resetting user's password
 app.get('/resetPassword/:userId/:tokenId', authController.checkToken)
-app.get('/resetPassword/:userId', (req,res)=>{res.status(200).send(null)})
+app.get('/resetPassword/:userId', (req, res) => {
+  res.status(200).send(null)
+})
 //update password handler
 app.post('/resetPassword', authController.resetPassword)
 
