@@ -13,9 +13,9 @@ export const reducer = (state, action) => {
     case 'logoutFailure':
       return state
     case 'addNoti':
-      return {login: true, userInfo: action.payload}
+      return { login: true, userInfo: action.payload }
     case 'readNoti':
-      return { login: true, userInfo: action.payload}
+      return { login: true, userInfo: action.payload }
     default:
       return state
   }
