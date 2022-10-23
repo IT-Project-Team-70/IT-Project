@@ -22,7 +22,7 @@ async function getPersonalKitchen(req, res) {
 }
 async function getAdminKitchen(req, res) {
   try {
-    const publicRecipes = await recipeHelper.getPublicRecipes(true)
+    const publicRecipes = await recipeHelper.getAllRecipes(true)
     return res.status(200).send(publicRecipes)
   } catch (err) {
     res.status(500).send('Get the public recipes unsuccessfully')
@@ -62,20 +62,23 @@ async function getUserFavorite(req, res) {
   try {
     const user = await userHelper.getUserByID(req.user._id)
     const favoriteRecipes = []
-    if(user.favorites !==null){
-    for(let i in user.toJSON().favorites){
-      let recipe = await recipeHelper.getRecipeById(user.toJSON().favorites[i].toJSON());
-      if (recipe !== null) {
-        recipe = recipe.toObject()
-        if (user.favorites.includes(user.toJSON().favorites[i].toJSON())) {
-          recipe.isfavorite = true
-        } else {
-          recipe.isfavorite = false
+    if (user.favorites !== null) {
+      for (let i in user.toJSON().favorites) {
+        let recipe = await recipeHelper.getRecipeById(
+          user.toJSON().favorites[i].toJSON()
+        )
+        if (recipe !== null) {
+          recipe = recipe.toObject()
+          if (user.favorites.includes(user.toJSON().favorites[i].toJSON())) {
+            recipe.isfavorite = true
+          } else {
+            recipe.isfavorite = false
+          }
         }
+        favoriteRecipes.push(recipe)
       }
-      favoriteRecipes.push(recipe);
-    }}
-    return res.status(200).send({recipes: favoriteRecipes})
+    }
+    return res.status(200).send({ recipes: favoriteRecipes })
   } catch (err) {
     res.status(500).send('Get the user favorite recipes unsuccessfully')
     throw new Error(err)
