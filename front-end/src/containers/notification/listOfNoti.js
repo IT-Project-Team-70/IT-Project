@@ -9,6 +9,7 @@ import callApi from '../../api/util/callAPI'
 import userAPI from '../../api/def/noti'
 import { makeStyles } from '@mui/styles'
 import { Context } from '../../stores/userStore'
+import PropTypes from 'prop-types'
 
 const useStyles = makeStyles({
   unreadNoti: {
@@ -18,7 +19,8 @@ const useStyles = makeStyles({
     backgroundColor: '#FFFFFF',
   },
 })
-export default function ListOfNoti(props) {
+
+const ListOfNoti = (props) => {
   const [selectedIndex, setSelectedIndex] = useState(null)
   const [userContext] = useContext(Context)
   const notifications = userContext.userState.userInfo.notifications
@@ -68,10 +70,15 @@ export default function ListOfNoti(props) {
               </ListItemButton>
             </ListItem>
           )}
-          {i != notifications.length - 1 && <Divider />}
+          {i !== notifications.length - 1 && <Divider />}
         </div>
       ))}
     </List>
   )
 }
-//ListOfNoti.PropTypes = {notifications: PropTypes.array}
+ListOfNoti.propTypes = {
+  unread: PropTypes.number,
+  setUnread: PropTypes.func,
+  setOpen: PropTypes.func,
+}
+export default ListOfNoti

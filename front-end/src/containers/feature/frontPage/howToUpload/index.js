@@ -8,6 +8,7 @@ import AxiosV1 from '../../../../api/axiosV1'
 import HtmlEditor from '../../../../component/htmlEditor'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import './index.scss'
+import LoadingSpinner from '../../../../component/loadingSpinner'
 
 const HowToUpload = (props) => {
   const theme = useTheme()
@@ -85,6 +86,7 @@ const HowToUpload = (props) => {
             />
           </Box>
         )}
+        <LoadingSpinner isLoading={howToUploadStatus === 'loading'} />
       </ThemeProvider>
     </Box>
   )

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useContext } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import CardActions from '@mui/material/CardActions'
@@ -29,7 +29,6 @@ import EditIcon from '@mui/icons-material/Edit'
 import AlertDialog from '../../component/alertDialog'
 import LoadingSpinner from '../../component/loadingSpinner'
 import { socketIo } from '../../socket'
-import { Context } from '../../stores/userStore'
 
 export default function RecipeCard({
   image = '',
@@ -53,7 +52,6 @@ export default function RecipeCard({
     message: '',
   }
   const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
-  const userState = useContext(Context)
   const GetRecipeImage = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {

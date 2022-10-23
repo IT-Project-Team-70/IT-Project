@@ -17,12 +17,10 @@ const OneUserKitchen = (props) => {
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
   const { userId }= useParams()
-  const [tokenExpired, setTokenExpired] = React.useState(false)
  
   React.useEffect(() => {
     const url = window.location.href
     if (url.includes('failure')) {
-      setTokenExpired(true)
     }
     return () => {}
   }, [])

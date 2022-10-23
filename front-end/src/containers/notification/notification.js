@@ -11,19 +11,9 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { Box } from '@mui/material'
 import Badge from '@mui/material/Badge'
 
-const getUnReadNotifications = (notifications) => {
-  let result = 0
-  for (let i = 0; i < notifications.length; i++) {
-    if (notifications[i].unread) {
-      result += 1
-    }
-  }
-  return result
-}
 const NotiPopUp = (props) => {
   const [open, setOpen] = React.useState(false)
   const [userContext] = React.useContext(Context)
-  const [scroll, setScroll] = React.useState('paper')
   const countUnread = (notifications) => {
     let result = 0
     for (let i = 0; i < notifications.length; i++) {
@@ -39,7 +29,6 @@ const NotiPopUp = (props) => {
   )
   //real-time data
   socketIo.socket.on('notifyReceiver', (notifications) => {
-    console.log(1)
     userContext.dispatch({
       type: 'addNoti',
       payload: {
@@ -72,7 +61,7 @@ const NotiPopUp = (props) => {
         <DialogTitle id="scroll-dialog-title" color="noti.title">
           Notification
         </DialogTitle>
-        <DialogContent dividers={scroll === 'paper'}>
+        <DialogContent dividers>
           <ListOfNoti unread={unread} setUnread={setUnread} setOpen={setOpen} />
         </DialogContent>
         <DialogActions>
@@ -82,5 +71,5 @@ const NotiPopUp = (props) => {
     </Box>
   )
 }
-//NotiPopUp.PropTypes = { socket: PropTypes.object }
+//NotiPopUp.propTypes = { socket: PropTypes.object }
 export default NotiPopUp

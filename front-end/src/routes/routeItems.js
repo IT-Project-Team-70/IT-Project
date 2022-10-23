@@ -100,6 +100,10 @@ export const RouteItems = [
     name: 'How to upload',
     path: HOW_TO_UPLOAD,
     component: HowToUpload,
+    exact: true,
+    show: false,
+  },
+  {
     name: 'Notification',
     path: NOTIFICATION,
     component: NotiPopUp,

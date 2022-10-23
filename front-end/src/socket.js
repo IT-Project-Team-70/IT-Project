@@ -1,4 +1,3 @@
-import React from 'react'
 import { io } from 'socket.io-client'
 const backend_url =
   process.env.NODE_ENV === 'development' &&
