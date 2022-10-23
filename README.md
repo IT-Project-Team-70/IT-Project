@@ -205,6 +205,13 @@ Make sure to use `VScode` and install extensions
 
 #### [`Prettier`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) [`ESlint`](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
+#### Setup Auto formatting
+use `crtl+shift+p` to open Vscode panel
+
+under the panel, type and select `format document wit`h, choose `Prettier` as the formatter
+
+In VScode settings, find `Editor: format on save` and click on the option.
+
 ### End-of-Line Character Sequences: LF
 
 Check at the bottom line of your VScode
@@ -229,3 +236,4 @@ Component.propTypes = {
     prop2=PropTypes.func,
 }
 ```
+[see more about typechecking and using PropTypes](https://reactjs.org/docs/typechecking-with-proptypes.html)
