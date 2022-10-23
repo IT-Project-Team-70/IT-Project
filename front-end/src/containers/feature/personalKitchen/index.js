@@ -69,7 +69,7 @@ const PersonalKitchen = (props) => {
               description={recipe.description}
               rating={recipe.averageRating}
               image={recipe.image.data}
-              hasToolButton={true}
+              hasToolButton={buttonSatus === 'Personal'}
               isfavorite={recipe.isfavorite}
               onChange={() => {
                 setReloadTrigger((prev) => prev + 1)
