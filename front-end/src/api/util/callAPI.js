@@ -16,7 +16,6 @@ export const callApi = async ({
       result = res
     } else {
       onError(res)
-      // throw new Error(JSON.stringify(res.data, ['message', 'showToUser'], '\t'))
     }
   } catch (error) {
     result = error

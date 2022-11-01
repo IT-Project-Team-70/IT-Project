@@ -21,11 +21,13 @@ import { callApi } from '../../../api/util/callAPI'
 import { Context } from '../../../stores/userStore'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import LoadingSpinner from '../../../component/loadingSpinner'
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 
 const PersonalKitchen = (props) => {
   const history = useHistory()
   const theme = useTheme()
   const [userContext] = useContext(Context)
+  console.log(userContext?.userState?.userInfo)
   const [pkStatus, setPkStatus] = useState('initial')
   const [error, setError] = useState({ error: false, errorMessage: '' })
   const [buttonSatus, setButtonSatus] = useState('Personal')
@@ -69,8 +71,12 @@ const PersonalKitchen = (props) => {
               description={recipe.description}
               rating={recipe.averageRating}
               image={recipe.image.data}
-              hasToolButton={buttonSatus === 'Personal'}
+              disableRating={buttonSatus === 'Admin'}
+              hasToolButton={
+                buttonSatus === 'Personal' || buttonSatus === 'Admin'
+              }
               isfavorite={recipe.isfavorite}
+              hasFavorite={buttonSatus !== 'Admin'}
               onChange={() => {
                 setReloadTrigger((prev) => prev + 1)
               }}
@@ -88,13 +94,13 @@ const PersonalKitchen = (props) => {
   }, [userContext.userState])
 
   return (
-    <Box
-      height="inherit"
-      sx={{
-        backgroundColor: '#FBEEDB',
-      }}
-    >
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <Box
+        height="inherit"
+        sx={{
+          backgroundColor: '#FBEEDB',
+        }}
+      >
         {error.error ? (
           <Box
             display="flex"
@@ -116,6 +122,7 @@ const PersonalKitchen = (props) => {
         ) : (
           <Box
             sx={{
+              height: 'inherit',
               display: 'flex',
               backgroundColor: '#FBEEDB',
             }}
@@ -166,6 +173,31 @@ const PersonalKitchen = (props) => {
                     <ListItemText primary={'Favourites'} />
                   </ListItemButton>
                 </ListItem>
+                {userContext &&
+                  userContext?.userState?.userInfo?.role === 'admin' && (
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        selected={buttonSatus === 'Admin'}
+                        sx={{
+                          '&.Mui-selected': {
+                            backgroundColor: 'rgba(224, 71, 11, 0.7)',
+                          },
+                          '&.Mui-selected:hover': {
+                            backgroundColor: 'rgba(224, 71, 11, 0.45)',
+                          },
+                        }}
+                        onClick={() => {
+                          setApiConfig(personalKitchenAPI.getAdmin())
+                          setButtonSatus('Admin')
+                        }}
+                      >
+                        <ListItemIcon>
+                          <AdminPanelSettingsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Admin'} />
+                      </ListItemButton>
+                    </ListItem>
+                  )}
                 <Divider />
                 <ListItem disablePadding>
                   <ListItemButton onClick={() => history.push(UPLOAD_RECIPE)}>
@@ -177,7 +209,7 @@ const PersonalKitchen = (props) => {
                 </ListItem>
               </List>
             </Box>
-            <Box sx={{ height: '100%', marginLeft: 1 }}>
+            <Box sx={{ height: 'inherit', marginLeft: 1, overflowY: 'auto' }}>
               <Grid container gap={1}>
                 {GetKitchen()}
               </Grid>
@@ -185,8 +217,8 @@ const PersonalKitchen = (props) => {
           </Box>
         )}
         <LoadingSpinner isLoading={pkStatus === 'loading'} />
-      </ThemeProvider>
-    </Box>
+      </Box>
+    </ThemeProvider>
   )
 }
 
