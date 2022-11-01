@@ -23,7 +23,7 @@ async function getPersonalKitchen(req, res) {
 async function getAdminKitchen(req, res) {
   try {
     const publicRecipes = await recipeHelper.getAllRecipes(true)
-    return res.status(200).send(publicRecipes)
+    return res.status(200).send({recipes: publicRecipes})
   } catch (err) {
     res.status(500).send('Get the public recipes unsuccessfully')
     throw new Error(err)

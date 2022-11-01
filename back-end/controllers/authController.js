@@ -14,6 +14,7 @@ function checkCookie(req, res) {
       email: req.user.email,
       username: req.user.username,
       id: req.user._id,
+      role: req.user.role,
       notifications: req.user.notifications
     }
     console.log(result)
