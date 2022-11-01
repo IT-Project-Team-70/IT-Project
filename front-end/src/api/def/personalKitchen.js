@@ -31,5 +31,10 @@ const personalKitchenAPI = {
     url: `/personalKitchen/favorite`,
     headers: {},
   }),
+  getAdmin: () => ({
+    method: 'get',
+    url: `/personalKitchen/admin`,
+    headers: {},
+  }),
 }
 export default personalKitchenAPI

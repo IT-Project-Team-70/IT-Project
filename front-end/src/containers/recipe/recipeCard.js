@@ -40,6 +40,7 @@ export default function RecipeCard({
   title = '',
   description = '',
   rating = 0,
+  disableRating = true,
   ...props
 }) {
   const [recipeImage, setImage] = useState(image)
@@ -254,6 +255,7 @@ export default function RecipeCard({
             name="recipe-rating"
             value={rating}
             sx={{ marginRight: 20.5 }}
+            disabled={disableRating}
             onChange={(event, value) => handleOnRatingClick(value)}
           />
           {hasFavorite && (
@@ -292,4 +294,5 @@ RecipeCard.propTypes = {
   hasToolButton: PropTypes.bool,
   isfavorite: PropTypes.bool,
   onChange: PropTypes.func,
+  disableRating: PropTypes.bool,
 }
