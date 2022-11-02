@@ -93,11 +93,12 @@ async function getOtherUsers(username){
 }
 
 //my info should be 
-async function addFriend(user, friendId){
+async function addFriend(user1, user2){
   try{
-    const friend= {details: getUserByID(friendId)}
-    user.friends.push(friend)
-    await user.save()
+    user1.friends.push(user2)
+    user2.friends.push(user1)
+    await user1.save()
+    await user2.save()
   } 
   catch(err){
     throw new Error(err)

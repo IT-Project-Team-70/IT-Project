@@ -16,6 +16,7 @@ const mongoDB = require('./models')
 const MongoStore = require('connect-mongo')
 const cors = require('cors')
 const userHelper = require('./helper/userHelper')
+const requestHelper = require('./helper/requestHelper')
 const User = require('./models/user')
 // Routers
 const landingRouter = require('./routes/landing.js')
@@ -155,7 +156,37 @@ io.on("connection", (socket) =>{
       //}
     }
       }
- )})})
+ )})
+ socket.on("sendFriendNoti", ({receiver, type}) =>{
+  User.findById(receiver).then((user) =>{
+    if(user){
+      const receiverSocketId = user.socketId
+    //console.log(receiverSocketId)
+    let message = ''
+    //Socket User sends a friend request to User
+    if(type == 1){
+      message = `${socketUser.username} sent you a friend request`
+      //create a new request 
+      requestHelper.addNewRequest(socketUser, user)
+    }
+    else{
+      message = `${socketUser.username} accepted you a friend request`
+      requestHelper.deleteRequest(socketUser, user)
+      userHelper.addFriend(socketUser, user)
+    }
+    const newNoti = {message: message, time: new Date(), sender: socketUser._id}
+    //store a new notification in our database 
+    userHelper.storeNewNotifications(user, newNoti)
+    //check if a receiver is online or not
+      console.log(receiverSocketId)
+      //SEND TO RECEIVER
+      io.to(receiverSocketId).emit("notifyFriendNoti", user.notifications)
+    //}
+  }
+    }
+)})
+
+})
 
 server.listen(port || 8080, () => {
   console.log(`Ther server is running on ${port}`);

@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema({
   friends: [
     {
       details: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-      status: { type: String, default: 'pending' },
       // conversation: [{type: mongoose.Schema.Types.ObjectId, ref: 'Message'}]
     },
   ],
