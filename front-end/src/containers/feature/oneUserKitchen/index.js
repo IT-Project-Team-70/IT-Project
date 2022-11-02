@@ -12,12 +12,34 @@ import CheckboxList from './checkboxList'
 import AxiosV1 from '../../../api/axiosV1'
 import { callApi } from '../../../api/util/callAPI'
 import oneUserKitchenAPI from '../../../api/def/oneUserKitchen'
+import { UserInfo } from './userInfo'
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const OneUserKitchen = (props) => {
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
+  //const [friendStatus, setFriendStatus] = useState(3)
+  let friendStatus 
   const { userId }= useParams()
- 
+  const [status, setStatus] = useState('')
+  const [icon, setIcon] = useState(null)
+  const renderStatus = (friendStatus) => {
+        // the current online user already sent the request from the profile user and they accept, they will do nothing other than waiting 
+        if(friendStatus == 1){
+            setStatus('Already Sent Request')
+            setIcon(<PersonAddIcon />)
+        }
+        //the current online user received the request
+        else if(friendStatus == 2){
+            setStatus('Accept Request')
+            setIcon(<PersonAddIcon />)
+        }
+        //these 2 users are not friends yet
+        else if(friendStatus == 3){
+            setStatus('Add Friend')
+            setIcon(<PersonAddIcon />)
+        }
+    }
   React.useEffect(() => {
     const url = window.location.href
     if (url.includes('failure')) {
@@ -31,7 +53,11 @@ const OneUserKitchen = (props) => {
         apiConfig: oneUserKitchenAPI.getOneUserKitchen(userId),
         onStart: () => {},
         onSuccess: (res) => {
-          setRecipeList(res.data)
+          //setFriendStatus(res.data.friendStatus)
+          friendStatus = res.data.friendStatus
+          renderStatus(friendStatus)
+          //console.log(friendStatus)
+          setRecipeList(res.data.kitchen)
         },
         onError: (err) => {},
         onFinally: () => {},
@@ -64,11 +90,14 @@ const OneUserKitchen = (props) => {
         backgroundColor: '#FBEEDB',
       }}
     >
+      <UserInfo friendStatus={friendStatus} icon={icon} status={status} />
       <ThemeProvider theme={theme}>
         <Box
           sx={{
             display: 'flex',
             backgroundColor: '#FBEEDB',
+            width: '70vw',
+            mx: 'auto',
           }}
         >
           <Box sx={{ paddingLeft: 1 }}>

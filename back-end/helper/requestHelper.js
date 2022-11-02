@@ -16,7 +16,9 @@ const checkRequest = async (user1, user2) =>{
             return 0
         }
         //check if these 2 users are already friends
-        
+        if(user1.friends && user1.friends.includes(user2)){
+            return 4
+        }
         const allRequests = await FriendRequest.find()
         for(let i = 0; i < allRequests.length; i++){
             //I sent the request
@@ -36,7 +38,7 @@ const checkRequest = async (user1, user2) =>{
 }
 const deleteRequest = async (sender, receiver) =>{
     try{
-        const requiredRequest = await FriendRequest.findAndDelete({sender: sender, receiver: receiver})
+        const requiredRequest = await FriendRequest.findOneAndDelete({sender: sender, receiver: receiver})
     }
     catch(err){
         throw new Error(err)

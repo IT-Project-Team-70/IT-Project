@@ -171,7 +171,7 @@ io.on("connection", (socket) =>{
     }
     else{
       message = `${socketUser.username} accepted you a friend request`
-      requestHelper.deleteRequest(socketUser, user)
+      requestHelper.deleteRequest(user, socketUser)
       userHelper.addFriend(socketUser, user)
     }
     const newNoti = {message: message, time: new Date(), sender: socketUser._id}

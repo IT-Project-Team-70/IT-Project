@@ -3,7 +3,7 @@ const requestHelper = require('../helper/requestHelper')
 const mongoose = require('mongoose')
 const getOneUserKitchen = async (req, res)=>{
   try{
-    const kitchen = await recipeHelper.getPublicRecipes(req.params.userId)
+    const kitchen = await recipeHelper.getUserRecipes(req.params.userId)
     const friendStatus = await requestHelper.checkRequest(req.user._id, mongoose.Types.ObjectId(req.params.userId))
     return res.status(200).send({kitchen: kitchen, friendStatus: friendStatus})
   }

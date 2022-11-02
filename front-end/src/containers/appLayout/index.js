@@ -9,7 +9,7 @@ import SignUpButton from '../signUp/signupButton'
 import LogoutButton from '../logout/logoutButton'
 import { Context } from '../../stores/userStore'
 import NotiPopUp from '../notification/notification'
-
+import FriendNotiPopUp from  '../friendNotification/notification'
 const AppLayout = (props) => {
   const { children = <></> } = props
   const history = useHistory()
@@ -107,6 +107,9 @@ const AppLayout = (props) => {
             <ThemeProvider theme={theme}>
               <Box sx={{ paddingRight: '8px' }}>
                 <NotiPopUp socket={props.socket} />
+              </Box>
+              <Box sx={{ paddingRight: '8px' }}>
+                <FriendNotiPopUp socket={props.socket} />
               </Box>
               <Box sx={{ paddingRight: '8px' }}>
                 <LogoutButton />
