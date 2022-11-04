@@ -96,9 +96,7 @@ async function getOtherUsers(username){
 async function addFriend(user1, user2){
   try{
     user1.friends.push(user2)
-    user2.friends.push(user1)
     await user1.save()
-    await user2.save()
   } 
   catch(err){
     throw new Error(err)

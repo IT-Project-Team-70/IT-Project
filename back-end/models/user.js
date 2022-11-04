@@ -30,10 +30,8 @@ const userSchema = new mongoose.Schema({
   recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
   friends: [
-    {
-      details: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
       // conversation: [{type: mongoose.Schema.Types.ObjectId, ref: 'Message'}]
-    },
   ],
   socketId: {type: String},
   notifications: [{message: String, recipeId: String, time: Date, unread: {type: Boolean, default: true}, sender: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}, isFriendNoti: {type: Boolean, default: true}}]

@@ -28,7 +28,7 @@ const FriendNotiPopUp = (props) => {
     countUnread(userInfo.notifications)
   )
   //real-time data
-  socketIo.socket.on('notifyFriendNoi', (notifications) => {
+  socketIo.socket.on('notifyFriendNoti', (notifications) => {
     userContext.dispatch({
       type: 'addNoti',
       payload: {

@@ -18,8 +18,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 const OneUserKitchen = (props) => {
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
-  //const [friendStatus, setFriendStatus] = useState(3)
-  let friendStatus 
+  const [friendStatus, setFriendStatus] = useState()
+  //let friendStatus 
   const { userId }= useParams()
   const [status, setStatus] = useState('')
   const [icon, setIcon] = useState(null)
@@ -48,15 +48,15 @@ const OneUserKitchen = (props) => {
   }, [])
   const GetKitchen = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
+
     useEffect(() => {
       callApi({
         apiConfig: oneUserKitchenAPI.getOneUserKitchen(userId),
         onStart: () => {},
         onSuccess: (res) => {
-          //setFriendStatus(res.data.friendStatus)
-          friendStatus = res.data.friendStatus
-          renderStatus(friendStatus)
-          //console.log(friendStatus)
+          setFriendStatus(res.data.friendStatus)
+          //friendStatus = res.data.friendStatus
+          console.log(friendStatus)
           setRecipeList(res.data.kitchen)
         },
         onError: (err) => {},
@@ -66,6 +66,9 @@ const OneUserKitchen = (props) => {
         cancelToken.cancel('Request cancel.')
       }
     }, [cancelToken])
+    useEffect(() => {
+      renderStatus(friendStatus)
+    }, [friendStatus])
     return recipeList.map((recipe) => {
       return (
         <Grid
@@ -90,7 +93,7 @@ const OneUserKitchen = (props) => {
         backgroundColor: '#FBEEDB',
       }}
     >
-      <UserInfo friendStatus={friendStatus} icon={icon} status={status} />
+      <UserInfo friendStatus={friendStatus} setFriendStatus = {setFriendStatus} icon={icon} status={status} setStatus={setStatus} setIcon={setIcon}/>
       <ThemeProvider theme={theme}>
         <Box
           sx={{

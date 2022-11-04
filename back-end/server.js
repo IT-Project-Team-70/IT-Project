@@ -185,7 +185,13 @@ io.on("connection", (socket) =>{
   }
     }
 )})
-
+  socket.on('rejectFriendRequest', (rejectedFriend) =>{
+    User.findById(rejectedFriend).then((user) =>{
+      if(user){
+        requestHelper.deleteRequest(user, socketUser)
+      }
+    })
+  })
 })
 
 server.listen(port || 8080, () => {
