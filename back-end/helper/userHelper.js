@@ -102,7 +102,21 @@ async function addFriend(user1, user2){
     throw new Error(err)
   }
 }
-
+async function unFriend(user1, user2){
+  try{
+    if(user1.friends && user1.friends.includes(user2._id)){
+      user1.friends.remove(user2._id)
+      await user1.save()
+    }
+    else{
+      user2.friends.remove(user1._id)
+      await user2.save()
+    }
+  }
+  catch(err){
+    throw new Error(err)
+  }
+}
 async function addSocketForUserId(userId, socketId){
   try{
     const user = getUserByID(userId)
@@ -181,6 +195,7 @@ module.exports = {
   deleteUser,
   getOtherUsers,
   addFriend,
+  unFriend,
   addSocketForUserId,
   storeNewNotifications,
   deleteNoti,

@@ -23,6 +23,7 @@ const OneUserKitchen = (props) => {
   const { userId }= useParams()
   const [status, setStatus] = useState('')
   const [icon, setIcon] = useState(null)
+  const [profile, setProfile] = useState(null)
   const renderStatus = (friendStatus) => {
         // the current online user already sent the request from the profile user and they accept, they will do nothing other than waiting 
         if(friendStatus == 1){
@@ -54,9 +55,10 @@ const OneUserKitchen = (props) => {
         apiConfig: oneUserKitchenAPI.getOneUserKitchen(userId),
         onStart: () => {},
         onSuccess: (res) => {
+          setProfile(res.data.profile)
           setFriendStatus(res.data.friendStatus)
           //friendStatus = res.data.friendStatus
-          console.log(friendStatus)
+          console.log(res.data)
           setRecipeList(res.data.kitchen)
         },
         onError: (err) => {},
@@ -93,7 +95,9 @@ const OneUserKitchen = (props) => {
         backgroundColor: '#FBEEDB',
       }}
     >
-      <UserInfo friendStatus={friendStatus} setFriendStatus = {setFriendStatus} icon={icon} status={status} setStatus={setStatus} setIcon={setIcon}/>
+      <img src='/fast-food-background.jpg' style = {{width: '100vw', height: '30vh'}} />
+      <div style={{position: 'absolute',  width: '70vw', top: '30%', left: '15vw'}}>
+      <UserInfo friendStatus={friendStatus} setFriendStatus = {setFriendStatus} icon={icon} status={status} setStatus={setStatus} setIcon={setIcon} profile={profile}/>
       <ThemeProvider theme={theme}>
         <Box
           sx={{
@@ -101,6 +105,7 @@ const OneUserKitchen = (props) => {
             backgroundColor: '#FBEEDB',
             width: '70vw',
             mx: 'auto',
+            marginTop: '10px'
           }}
         >
           <Box sx={{ paddingLeft: 1 }}>
@@ -128,6 +133,7 @@ const OneUserKitchen = (props) => {
           </Box>
         </Box>
       </ThemeProvider>
+      </div>
     </Box>
   )
 }

@@ -135,6 +135,7 @@ io.on("connection", (socket) =>{
    })
     })
   socket.on("sendNotification", ({receiver, type, recipeID}) =>{
+    
     User.findById(receiver).then((user) =>{
       if(user){
         const receiverSocketId = user.socketId
@@ -172,7 +173,7 @@ io.on("connection", (socket) =>{
     else{
       message = `${socketUser.username} accepted you a friend request`
       requestHelper.deleteRequest(user, socketUser)
-      userHelper.addFriend(socketUser, user)
+      userHelper.addFriend(socketUser, user._id)
     }
     const newNoti = {message: message, time: new Date(), sender: socketUser._id}
     //store a new notification in our database 
@@ -188,12 +189,18 @@ io.on("connection", (socket) =>{
   socket.on('rejectFriendRequest', (rejectedFriend) =>{
     User.findById(rejectedFriend).then((user) =>{
       if(user){
-        requestHelper.deleteRequest(user, socketUser)
+        requestHelper.deleteRequest(user,socketUser)
+      }
+    })
+  })
+  socket.on('unFriend', (unfriendUser) => {
+    User.findById(unfriendUser).then((user) =>{
+      if(user){
+        userHelper.unFriend(socketUser, user)
       }
     })
   })
 })
-
 server.listen(port || 8080, () => {
   console.log(`Ther server is running on ${port}`);
 });
