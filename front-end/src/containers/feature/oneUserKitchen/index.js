@@ -13,32 +13,27 @@ import AxiosV1 from '../../../api/axiosV1'
 import { callApi } from '../../../api/util/callAPI'
 import oneUserKitchenAPI from '../../../api/def/oneUserKitchen'
 import { UserInfo } from './userInfo'
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { socketIo } from '../../../socket'
 
 const OneUserKitchen = (props) => {
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
   const [friendStatus, setFriendStatus] = useState()
-  //let friendStatus 
   const { userId }= useParams()
   const [status, setStatus] = useState('')
-  const [icon, setIcon] = useState(null)
   const [profile, setProfile] = useState(null)
   const renderStatus = (friendStatus) => {
         // the current online user already sent the request from the profile user and they accept, they will do nothing other than waiting 
         if(friendStatus == 1){
             setStatus('Already Sent Request')
-            setIcon(<PersonAddIcon />)
         }
         //the current online user received the request
         else if(friendStatus == 2){
             setStatus('Accept Request')
-            setIcon(<PersonAddIcon />)
         }
         //these 2 users are not friends yet
         else if(friendStatus == 3){
             setStatus('Add Friend')
-            setIcon(<PersonAddIcon />)
         }
     }
   React.useEffect(() => {
@@ -49,8 +44,8 @@ const OneUserKitchen = (props) => {
   }, [])
   const GetKitchen = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
-
     useEffect(() => {
+      socketIo.socket.emit('getUserProfile', userId)
       callApi({
         apiConfig: oneUserKitchenAPI.getOneUserKitchen(userId),
         onStart: () => {},
@@ -95,9 +90,9 @@ const OneUserKitchen = (props) => {
         backgroundColor: '#FBEEDB',
       }}
     >
-      <img src='/fast-food-background.jpg' style = {{width: '100vw', height: '30vh'}} />
+      <img src='/fast-food-background.jpg' style={{width: '100vw', height: '30vh'}} />
       <div style={{position: 'absolute',  width: '70vw', top: '30%', left: '15vw'}}>
-      <UserInfo friendStatus={friendStatus} setFriendStatus = {setFriendStatus} icon={icon} status={status} setStatus={setStatus} setIcon={setIcon} profile={profile}/>
+      <UserInfo friendStatus={friendStatus} setFriendStatus={setFriendStatus} setStatus={setStatus} status={status} profile={profile} />
       <ThemeProvider theme={theme}>
         <Box
           sx={{

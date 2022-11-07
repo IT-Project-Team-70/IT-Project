@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import FaceIcon from '@mui/icons-material/Face';
 import { socketIo } from '../../../socket';
 import { Button, Box, Typography, Divider, Popover } from '@mui/material';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AlertDialog from '../../../component/alertDialog'
-import { ONE_USER_KITCHEN } from '../../../routes/routeConstant';
+import PersonAddDisabledIcon from '@mui/icons-material/PersonAddDisabled';
+
 export const UserInfo = (props) => {
+    //socketIo.on('receiveUserProfile', initialFriendStatus)
     const { userId } = useParams()
     const [anchorEl, setAnchorEl] = useState(null)
-    const history = useHistory()
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
       };
@@ -24,12 +25,12 @@ export const UserInfo = (props) => {
         message: '',
       }
     const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
+    //const [friendStatus, setFriendStatus] = useState(data.initialFriendStatus)
     const handleRequestClick = () => {
         //accept the friend request 
         if(props.friendStatus == 2){
             console.log(2)
             props.setStatus('Friends')
-            props.setIcon(<HowToRegIcon />)
             //props.friendStatus = 4
             props.setFriendStatus(4)
             socketIo.socket.emit('sendFriendNoti', {type: 2, receiver: userId})
@@ -40,20 +41,20 @@ export const UserInfo = (props) => {
             //props.friendStatus = 1
             props.setFriendStatus(3)
             props.setStatus('Already Sent Request')
-            props.setIcon(<PersonAddIcon />)
             socketIo.socket.emit('sendFriendNoti', {type: 1, receiver: userId})
         }
 
     }
     const rejectFriendRequest = () =>{
         socketIo.socket.emit('rejectFriendRequest', userId)
+        window.location.reload(false)
     }
     const handleOnDeleteClick = ()=>{
         socketIo.socket.emit('unFriend', userId)
         window.location.reload(false)
     }
     return(
-        <Box sx = {{display: 'flex', flexDirection: 'column', width: '50%', height: '280px', flexDirections: 'column', alignItems: 'center', borderRadius: '30px', backgroundColor: 'white', mx: 'auto'}}>
+        <Box sx = {{display: 'flex', flexDirection: 'column', width: '50%', height: '300px', flexDirections: 'column', alignItems: 'center', borderRadius: '30px', backgroundColor: 'white', mx: 'auto'}}>
             <FaceIcon sx = {{ fontSize: '130px', color: '#00A86B'}} />
             {props.profile && <Typography variant='h5' sx={{marginBottom: '20px'}}><strong>{props.profile.username}</strong></Typography>}
             <Box sx = {{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', width: '100%'}}>
@@ -67,10 +68,12 @@ export const UserInfo = (props) => {
                     <Typography variant='subtitle2' color='#757575' textAlign='center'>followers</Typography>
                 </span>
                 <Divider orientation='vertical' />
-                {props.friendStatus != 4 && <Button onClick={() => handleRequestClick()} variant='contained' size='small'>{props.status}</Button>}
-                {props.friendStaus == 2 && <Button onClick = {() => rejectFriendRequest()}>Reject Friend Request</Button>
-                }
-                {props.friendStatus == 4 && <Button variant='contained' size = 'small' sx={{height: '40px', width: '100px'}} startIcon={<HowToRegIcon  />} onClick={handleClick}>Friends</Button>}
+                <Box sx = {{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px'}}>
+                    {props.friendStatus != 4 && <Button onClick={() => handleRequestClick()} variant='contained' startIcon={<PersonAddIcon />}>{props.status}</Button>}
+                    {props.friendStatus == 2 && <Button onClick = {() => rejectFriendRequest()} variant='contained' startIcon={<PersonAddDisabledIcon />}>Reject Request</Button>
+                    }
+                    {props.friendStatus == 4 && <Button variant='contained' size = 'small' sx={{height: '40px', width: '100px'}} startIcon={<HowToRegIcon  />} onClick={handleClick}>Friends</Button>}
+                </Box>
                 <Popover
                     id={id}
                     open={open}
