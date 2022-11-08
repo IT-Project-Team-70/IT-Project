@@ -5,11 +5,12 @@ const mongoose = require('mongoose')
 const getOneUserKitchen = async (req, res)=>{
   try{
     const userId = mongoose.Types.ObjectId(req.params.userId)
-    const kitchen = await recipeHelper.getUserRecipes(mongoose.Types.ObjectId(userId))
-    const friendStatus = await requestHelper.checkRequest(req.user._id, mongoose.Types.ObjectId(userId))
-    const user = await userHelper.getUserByID(userId)
-    console.log(kitchen)
-    return res.status(200).send({kitchen: kitchen, friendStatus: friendStatus, profile: user})
+    if(userId){
+      const kitchen = await recipeHelper.getUserRecipes(mongoose.Types.ObjectId(userId))
+      const friendStatus = await requestHelper.checkRequest(req.user._id, mongoose.Types.ObjectId(userId))
+      const user = await userHelper.getUserByID(userId)
+      return res.status(200).send({kitchen: kitchen, friendStatus: friendStatus, profile: user})
+    }
   }
   catch(err){
     res.status(500).send("fail to get this user's kitchen")

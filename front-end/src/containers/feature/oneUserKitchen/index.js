@@ -18,24 +18,10 @@ import { socketIo } from '../../../socket'
 const OneUserKitchen = (props) => {
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
-  const [friendStatus, setFriendStatus] = useState()
+  const [friendStatus, setFriendStatus] = useState(null)
   const { userId }= useParams()
-  const [status, setStatus] = useState('')
+  //const [status, setStatus] = useState(null)
   const [profile, setProfile] = useState(null)
-  const renderStatus = (friendStatus) => {
-        // the current online user already sent the request from the profile user and they accept, they will do nothing other than waiting 
-        if(friendStatus == 1){
-            setStatus('Already Sent Request')
-        }
-        //the current online user received the request
-        else if(friendStatus == 2){
-            setStatus('Accept Request')
-        }
-        //these 2 users are not friends yet
-        else if(friendStatus == 3){
-            setStatus('Add Friend')
-        }
-    }
   React.useEffect(() => {
     const url = window.location.href
     if (url.includes('failure')) {
@@ -52,7 +38,6 @@ const OneUserKitchen = (props) => {
         onSuccess: (res) => {
           setProfile(res.data.profile)
           setFriendStatus(res.data.friendStatus)
-          //friendStatus = res.data.friendStatus
           console.log(res.data)
           setRecipeList(res.data.kitchen)
         },
@@ -63,9 +48,7 @@ const OneUserKitchen = (props) => {
         cancelToken.cancel('Request cancel.')
       }
     }, [cancelToken])
-    useEffect(() => {
-      renderStatus(friendStatus)
-    }, [friendStatus])
+    
     return recipeList.map((recipe) => {
       return (
         <Grid
@@ -92,7 +75,7 @@ const OneUserKitchen = (props) => {
     >
       <img src='/fast-food-background.jpg' style={{width: '100vw', height: '30vh'}} />
       <div style={{position: 'absolute',  width: '70vw', top: '30%', left: '15vw'}}>
-      <UserInfo friendStatus={friendStatus} setFriendStatus={setFriendStatus} setStatus={setStatus} status={status} profile={profile} />
+      {friendStatus && <UserInfo friendStatus={friendStatus} setFriendStatus={setFriendStatus} profile={profile} />}
       <ThemeProvider theme={theme}>
         <Box
           sx={{

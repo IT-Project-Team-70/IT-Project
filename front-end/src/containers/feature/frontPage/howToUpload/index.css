@@ -1,0 +1,8 @@
+.instruction .jodit-container:not(.jodit_inline) {
+  border: none;
+}
+
+.instruction .jodit-container .jodit-wysiwyg {
+  background-color: transparent !important;
+}
+/*# sourceMappingURL=index.css.map */

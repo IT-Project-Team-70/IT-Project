@@ -124,7 +124,7 @@ const io = new Server(server, {
   }
 })
 io.on("connection", (socket) =>{
-  let socketUser = null //online user 
+  let socketUser //online user 
   socket.on("addSocket", (userId, callback) =>{
       User.findById(userId).then((user)=>{
           user.socketId = socket.id
@@ -133,9 +133,7 @@ io.on("connection", (socket) =>{
       socket.on("disconnect", () =>{
         socketUser.socketId = ''
    })
-    })
   socket.on("sendNotification", ({receiver, type, recipeID}) =>{
-    
     User.findById(receiver).then((user) =>{
       if(user){
         const receiverSocketId = user.socketId
@@ -151,7 +149,6 @@ io.on("connection", (socket) =>{
       //store a new notification in our database 
       userHelper.storeNewNotifications(user, newNoti)
       //check if a receiver is online or not
-        console.log(receiverSocketId)
         //SEND TO RECEIVER
         io.to(receiverSocketId).emit("notifyReceiver", user.notifications)
       //}
@@ -162,7 +159,6 @@ io.on("connection", (socket) =>{
   User.findById(receiver).then((user) =>{
     if(user){
       const receiverSocketId = user.socketId
-    //console.log(receiverSocketId)
     let message = ''
     //Socket User sends a friend request to User
     if(type == 1){
@@ -179,7 +175,6 @@ io.on("connection", (socket) =>{
     //store a new notification in our database 
     userHelper.storeNewNotifications(user, newNoti)
     //check if a receiver is online or not
-      console.log(receiverSocketId)
       //SEND TO RECEIVER
       io.to(receiverSocketId).emit("notifyFriendNoti", user.notifications)
     //}
@@ -200,7 +195,7 @@ io.on("connection", (socket) =>{
       }
     })
   })
-})
+})})
 server.listen(port || 8080, () => {
   console.log(`Ther server is running on ${port}`);
 });
