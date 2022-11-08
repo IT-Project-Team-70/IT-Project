@@ -49,7 +49,10 @@ const NotiPopUp = (props) => {
   return (
     <Box sx={{ mr: 2 }}>
       <Badge badgeContent={unread} color="noti">
-        <NotificationsIcon sx={{ fontSize: '30px'}} onClick={() => handleNotiClick()} />
+        <NotificationsIcon
+          sx={{ fontSize: '30px' }}
+          onClick={() => handleNotiClick()}
+        />
       </Badge>
       <Dialog
         open={open}

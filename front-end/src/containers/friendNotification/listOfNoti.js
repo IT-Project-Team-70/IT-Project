@@ -49,30 +49,36 @@ const ListOfNoti = (props) => {
   }
   return (
     <List aria-label="main mailbox folders">
-      {notifications.filter(noti => noti.isFriendNoti).map((notification, i) => (
-        <div key={i}>
-          {notification.unread ? (
-            <ListItem className={classes.unreadNoti}>
-              <ListItemButton
-                selected={selectedIndex === i}
-                onClick={(event) => handleListItemClick(event, i, notification)}
-              >
-                <ListItemText>{notification.message}</ListItemText>
-              </ListItemButton>
-            </ListItem>
-          ) : (
-            <ListItem className={classes.readNoti}>
-              <ListItemButton
-                selected={selectedIndex === i}
-                onClick={(event) => handleListItemClick(event, i, notification)}
-              >
-                <ListItemText>{notification.message}</ListItemText>
-              </ListItemButton>
-            </ListItem>
-          )}
-          {i !== notifications.length - 1 && <Divider />}
-        </div>
-      ))}
+      {notifications
+        .filter((noti) => noti.isFriendNoti)
+        .map((notification, i) => (
+          <div key={i}>
+            {notification.unread ? (
+              <ListItem className={classes.unreadNoti}>
+                <ListItemButton
+                  selected={selectedIndex === i}
+                  onClick={(event) =>
+                    handleListItemClick(event, i, notification)
+                  }
+                >
+                  <ListItemText>{notification.message}</ListItemText>
+                </ListItemButton>
+              </ListItem>
+            ) : (
+              <ListItem className={classes.readNoti}>
+                <ListItemButton
+                  selected={selectedIndex === i}
+                  onClick={(event) =>
+                    handleListItemClick(event, i, notification)
+                  }
+                >
+                  <ListItemText>{notification.message}</ListItemText>
+                </ListItemButton>
+              </ListItem>
+            )}
+            {i !== notifications.length - 1 && <Divider />}
+          </div>
+        ))}
     </List>
   )
 }

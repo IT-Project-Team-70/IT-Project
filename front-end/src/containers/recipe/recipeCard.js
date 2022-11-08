@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, useContext } from 'react'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import CardActions from '@mui/material/CardActions'
@@ -14,7 +14,11 @@ import personalKitchenAPI from '../../api/def/personalKitchen'
 import everyonesKitchenAPI from '../../api/def/everyonesKitchen'
 import { callApi } from '../../api/util/callAPI'
 import { useHistory } from 'react-router-dom'
-import { EDIT_RECIPE, RECIPE, ONE_USER_KITCHEN } from '../../routes/routeConstant'
+import {
+  EDIT_RECIPE,
+  RECIPE,
+  ONE_USER_KITCHEN,
+} from '../../routes/routeConstant'
 import {
   Popover,
   List,
@@ -260,7 +264,13 @@ export default function RecipeCard({
             disabled={disableRating}
             onChange={(event, value) => handleOnRatingClick(value)}
           />
-          {userContext.userState.login && <PersonOutlineIcon onClick={() => {history.push(ONE_USER_KITCHEN.replace(':userId',  props.userId))}} />}
+          {userContext.userState.login && (
+            <PersonOutlineIcon
+              onClick={() => {
+                history.push(ONE_USER_KITCHEN.replace(':userId', props.userId))
+              }}
+            />
+          )}
           {hasFavorite && (
             <IconButton
               aria-label="favorites"

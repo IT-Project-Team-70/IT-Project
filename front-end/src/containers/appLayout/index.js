@@ -9,7 +9,7 @@ import SignUpButton from '../signUp/signupButton'
 import LogoutButton from '../logout/logoutButton'
 import { Context } from '../../stores/userStore'
 import NotiPopUp from '../notification/notification'
-import FriendNotiPopUp from  '../friendNotification/notification'
+import FriendNotiPopUp from '../friendNotification/notification'
 const AppLayout = (props) => {
   const { children = <></> } = props
   const history = useHistory()

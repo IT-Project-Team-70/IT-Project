@@ -1,4 +1,4 @@
-import TagFacesIcon from '@mui/icons-material/TagFaces';
+import TagFacesIcon from '@mui/icons-material/TagFaces'
 import React from 'react'
 import { socketIo } from '../../socket'
 import { Context } from '../../stores/userStore'
@@ -49,7 +49,10 @@ const FriendNotiPopUp = (props) => {
   return (
     <Box sx={{ mr: 2 }}>
       <Badge badgeContent={unread} color="noti">
-        <TagFacesIcon sx={{fontSize: '30px'}} onClick={() => handleNotiClick()} />
+        <TagFacesIcon
+          sx={{ fontSize: '30px' }}
+          onClick={() => handleNotiClick()}
+        />
       </Badge>
       <Dialog
         open={open}
