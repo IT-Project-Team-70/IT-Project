@@ -134,7 +134,7 @@ export const UserInfo = (props) => {
           )}
           {props.friendStatus == 4 && (
             <Button
-              onClick={() => handleRequestClick()}
+              onClick={(e) => handleClick(e)}
               variant="contained"
               startIcon={<HowToRegIcon />}
             >
