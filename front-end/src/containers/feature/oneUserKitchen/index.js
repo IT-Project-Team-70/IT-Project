@@ -12,12 +12,16 @@ import CheckboxList from './checkboxList'
 import AxiosV1 from '../../../api/axiosV1'
 import { callApi } from '../../../api/util/callAPI'
 import oneUserKitchenAPI from '../../../api/def/oneUserKitchen'
+import { UserInfo } from './userInfo'
+import { socketIo } from '../../../socket'
 
 const OneUserKitchen = (props) => {
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
+  const [friendStatus, setFriendStatus] = useState(null)
   const { userId }= useParams()
- 
+  //const [status, setStatus] = useState(null)
+  const [profile, setProfile] = useState(null)
   React.useEffect(() => {
     const url = window.location.href
     if (url.includes('failure')) {
@@ -27,11 +31,15 @@ const OneUserKitchen = (props) => {
   const GetKitchen = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
+      socketIo.socket.emit('getUserProfile', userId)
       callApi({
         apiConfig: oneUserKitchenAPI.getOneUserKitchen(userId),
         onStart: () => {},
         onSuccess: (res) => {
-          setRecipeList(res.data)
+          setProfile(res.data.profile)
+          setFriendStatus(res.data.friendStatus)
+          console.log(res.data)
+          setRecipeList(res.data.kitchen)
         },
         onError: (err) => {},
         onFinally: () => {},
@@ -40,6 +48,7 @@ const OneUserKitchen = (props) => {
         cancelToken.cancel('Request cancel.')
       }
     }, [cancelToken])
+    
     return recipeList.map((recipe) => {
       return (
         <Grid
@@ -64,11 +73,17 @@ const OneUserKitchen = (props) => {
         backgroundColor: '#FBEEDB',
       }}
     >
+      <img src='/fast-food-background.jpg' style={{width: '100vw', height: '30vh'}} />
+      <div style={{position: 'absolute',  width: '70vw', top: '30%', left: '15vw'}}>
+      {friendStatus && <UserInfo friendStatus={friendStatus} setFriendStatus={setFriendStatus} profile={profile} />}
       <ThemeProvider theme={theme}>
         <Box
           sx={{
             display: 'flex',
             backgroundColor: '#FBEEDB',
+            width: '70vw',
+            mx: 'auto',
+            marginTop: '10px'
           }}
         >
           <Box sx={{ paddingLeft: 1 }}>
@@ -96,6 +111,7 @@ const OneUserKitchen = (props) => {
           </Box>
         </Box>
       </ThemeProvider>
+      </div>
     </Box>
   )
 }

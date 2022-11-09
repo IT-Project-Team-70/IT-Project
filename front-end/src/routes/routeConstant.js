@@ -9,6 +9,7 @@ export const EDIT_RECIPE = '/recipe/edit/:id'
 export const LOGIN = '/login'
 export const HOW_TO_UPLOAD = '/how_to_upload'
 export const NOTIFICATION = '/notification'
+export const FRIEND_NOTIFICATION = '/friend_notification'
 export const ONE_USER_KITCHEN = '/oneUserKitchen/:userId'
 // Developing
 export const DEV = `/dev`

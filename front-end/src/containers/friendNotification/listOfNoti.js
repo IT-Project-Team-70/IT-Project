@@ -4,7 +4,7 @@ import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import { ListItem, Divider } from '@mui/material'
-import { RECIPE } from '../../routes/routeConstant'
+import { ONE_USER_KITCHEN } from '../../routes/routeConstant'
 import callApi from '../../api/util/callAPI'
 import userAPI from '../../api/def/noti'
 import { makeStyles } from '@mui/styles'
@@ -35,7 +35,7 @@ const ListOfNoti = (props) => {
           userContext.dispatch({ type: 'readNoti', payload: res.data })
           props.setUnread(props.unread - 1)
           props.setOpen(false)
-          history.push(RECIPE.replace(':id', notification.recipeId))
+          history.push(ONE_USER_KITCHEN.replace(':userId', notification.sender))
         },
         onError: (res) => {
           console.log(res.error)
@@ -43,14 +43,14 @@ const ListOfNoti = (props) => {
       })
     } else if (!notification.unread) {
       props.setOpen(false)
-      history.push(RECIPE.replace(':id', notification.recipeId))
+      history.push(ONE_USER_KITCHEN.replace(':userId', notification.sender))
     }
     setSelectedIndex(index)
   }
   return (
     <List aria-label="main mailbox folders">
       {notifications
-        .filter((noti) => !noti.isFriendNoti)
+        .filter((noti) => noti.isFriendNoti)
         .map((notification, i) => (
           <div key={i}>
             {notification.unread ? (

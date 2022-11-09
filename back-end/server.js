@@ -16,6 +16,7 @@ const mongoDB = require('./models')
 const MongoStore = require('connect-mongo')
 const cors = require('cors')
 const userHelper = require('./helper/userHelper')
+const requestHelper = require('./helper/requestHelper')
 const User = require('./models/user')
 // Routers
 const landingRouter = require('./routes/landing.js')
@@ -124,7 +125,7 @@ const io = new Server(server, {
   }
 })
 io.on("connection", (socket) =>{
-  let socketUser = null //online user 
+  let socketUser //online user 
   socket.on("addSocket", (userId, callback) =>{
       User.findById(userId).then((user)=>{
           user.socketId = socket.id
@@ -133,7 +134,6 @@ io.on("connection", (socket) =>{
       socket.on("disconnect", () =>{
         socketUser.socketId = ''
    })
-    })
   socket.on("sendNotification", ({receiver, type, recipeID}) =>{
     User.findById(receiver).then((user) =>{
       if(user){
@@ -150,14 +150,53 @@ io.on("connection", (socket) =>{
       //store a new notification in our database 
       userHelper.storeNewNotifications(user, newNoti)
       //check if a receiver is online or not
-        console.log(receiverSocketId)
         //SEND TO RECEIVER
         io.to(receiverSocketId).emit("notifyReceiver", user.notifications)
       //}
     }
       }
- )})})
-
+ )})
+ socket.on("sendFriendNoti", ({receiver, type}) =>{
+  User.findById(receiver).then((user) =>{
+    if(user){
+      const receiverSocketId = user.socketId
+    let message = ''
+    //Socket User sends a friend request to User
+    if(type == 1){
+      message = `${socketUser.username} sent you a friend request`
+      //create a new request 
+      requestHelper.addNewRequest(socketUser, user)
+    }
+    else{
+      message = `${socketUser.username} accepted you a friend request`
+      requestHelper.deleteRequest(user, socketUser)
+      userHelper.addFriend(socketUser, user._id)
+    }
+    const newNoti = {message: message, time: new Date(), sender: socketUser._id}
+    //store a new notification in our database 
+    userHelper.storeNewNotifications(user, newNoti)
+    //check if a receiver is online or not
+      //SEND TO RECEIVER
+      io.to(receiverSocketId).emit("notifyFriendNoti", user.notifications)
+    //}
+  }
+    }
+)})
+  socket.on('rejectFriendRequest', (rejectedFriend) =>{
+    User.findById(rejectedFriend).then((user) =>{
+      if(user){
+        requestHelper.deleteRequest(user,socketUser)
+      }
+    })
+  })
+  socket.on('unFriend', (unfriendUser) => {
+    User.findById(unfriendUser).then((user) =>{
+      if(user){
+        userHelper.unFriend(socketUser, user)
+      }
+    })
+  })
+})})
 server.listen(port || 8080, () => {
   console.log(`Ther server is running on ${port}`);
 });

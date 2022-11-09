@@ -1,10 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, useContext } from 'react'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import CardActions from '@mui/material/CardActions'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import Rating from '@mui/material/Rating'
 import PropTypes from 'prop-types'
@@ -13,7 +14,11 @@ import personalKitchenAPI from '../../api/def/personalKitchen'
 import everyonesKitchenAPI from '../../api/def/everyonesKitchen'
 import { callApi } from '../../api/util/callAPI'
 import { useHistory } from 'react-router-dom'
-import { EDIT_RECIPE, RECIPE } from '../../routes/routeConstant'
+import {
+  EDIT_RECIPE,
+  RECIPE,
+  ONE_USER_KITCHEN,
+} from '../../routes/routeConstant'
 import {
   Popover,
   List,
@@ -29,7 +34,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import AlertDialog from '../../component/alertDialog'
 import LoadingSpinner from '../../component/loadingSpinner'
 import { socketIo } from '../../socket'
-
+import { Context } from '../../stores/userStore'
 export default function RecipeCard({
   image = '',
   hasFavorite = true,
@@ -53,6 +58,7 @@ export default function RecipeCard({
     message: '',
   }
   const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
+  const [userContext] = useContext(Context)
   const GetRecipeImage = () => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
@@ -254,10 +260,17 @@ export default function RecipeCard({
           <Rating
             name="recipe-rating"
             value={rating}
-            sx={{ marginRight: 20.5 }}
+            sx={{ marginRight: 18 }}
             disabled={disableRating}
             onChange={(event, value) => handleOnRatingClick(value)}
           />
+          {userContext.userState.login && (
+            <PersonOutlineIcon
+              onClick={() => {
+                history.push(ONE_USER_KITCHEN.replace(':userId', props.userId))
+              }}
+            />
+          )}
           {hasFavorite && (
             <IconButton
               aria-label="favorites"

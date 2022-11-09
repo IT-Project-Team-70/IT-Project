@@ -1,4 +1,4 @@
-import NotificationsIcon from '@mui/icons-material/Notifications'
+import TagFacesIcon from '@mui/icons-material/TagFaces'
 import React from 'react'
 import { socketIo } from '../../socket'
 import { Context } from '../../stores/userStore'
@@ -11,13 +11,13 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { Box } from '@mui/material'
 import Badge from '@mui/material/Badge'
 
-const NotiPopUp = (props) => {
+const FriendNotiPopUp = (props) => {
   const [open, setOpen] = React.useState(false)
   const [userContext] = React.useContext(Context)
   const countUnread = (notifications) => {
     let result = 0
     for (let i = 0; i < notifications.length; i++) {
-      if (notifications[i].unread && !notifications[i].isFriendNoti) {
+      if (notifications[i].unread && notifications[i].isFriendNoti) {
         result += 1
       }
     }
@@ -28,7 +28,7 @@ const NotiPopUp = (props) => {
     countUnread(userInfo.notifications)
   )
   //real-time data
-  socketIo.socket.on('notifyReceiver', (notifications) => {
+  socketIo.socket.on('notifyFriendNoti', (notifications) => {
     userContext.dispatch({
       type: 'addNoti',
       payload: {
@@ -49,7 +49,7 @@ const NotiPopUp = (props) => {
   return (
     <Box sx={{ mr: 2 }}>
       <Badge badgeContent={unread} color="noti">
-        <NotificationsIcon
+        <TagFacesIcon
           sx={{ fontSize: '30px' }}
           onClick={() => handleNotiClick()}
         />
@@ -62,7 +62,7 @@ const NotiPopUp = (props) => {
         scroll="paper"
       >
         <DialogTitle id="scroll-dialog-title" color="noti.title">
-          Notification
+          Friend Requests
         </DialogTitle>
         <DialogContent dividers>
           <ListOfNoti unread={unread} setUnread={setUnread} setOpen={setOpen} />
@@ -75,4 +75,4 @@ const NotiPopUp = (props) => {
   )
 }
 //NotiPopUp.propTypes = { socket: PropTypes.object }
-export default NotiPopUp
+export default FriendNotiPopUp

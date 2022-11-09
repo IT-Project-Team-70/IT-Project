@@ -21,22 +21,22 @@ async function getAllRecipes(isPublic) {
 async function getUserRecipes(userId) {
   try {
     const user = await User.findById(userId)
-
-    const recipes = []
-    for (let i = 0; i < user.recipes.length; i++) {
-      let recipe = await Recipe.findById(user.recipes[i])
-      if (recipe !== null) {
-        recipe = recipe.toObject()
-        if (user.favorites.includes(user.recipes[i])) {
-          recipe.isfavorite = true
-        } else {
-          recipe.isfavorite = false
+    if(user){
+      const recipes = []
+      for (let i = 0; i < user.recipes.length; i++) {
+        let recipe = await Recipe.findById(user.recipes[i])
+        if (recipe !== null) {
+          recipe = recipe.toObject()
+          if (user.favorites.includes(user.recipes[i])) {
+            recipe.isfavorite = true
+          } else {
+            recipe.isfavorite = false
+          }
+          recipes.push(recipe)
         }
-        recipes.push(recipe)
       }
+      return recipes
     }
-
-    return recipes
   } catch (err) {
     // res.status(500).send('Get all Recipes unsuccessfully')
     console.log(err)

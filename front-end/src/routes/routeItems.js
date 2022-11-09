@@ -14,6 +14,7 @@ import {
   HOW_TO_UPLOAD,
   NOTIFICATION,
   ONE_USER_KITCHEN,
+  FRIEND_NOTIFICATION,
 } from './routeConstant'
 
 import {
@@ -31,7 +32,7 @@ import LoginPanel from '../containers/login/login'
 import EditRecipe from '../containers/feature/personalKitchen/editRecipe'
 import HowToUpload from '../containers/feature/frontPage/howToUpload'
 import NotiPopUp from '../containers/notification/notification'
-
+import FriendNotiPopUp from '../containers/friendNotification/notification'
 export const RouteItems = [
   {
     name: `Don't Forget Your Recipe`,
@@ -107,6 +108,13 @@ export const RouteItems = [
     name: 'Notification',
     path: NOTIFICATION,
     component: NotiPopUp,
+    exact: true,
+    show: false,
+  },
+  {
+    name: 'Friend Notification',
+    path: FRIEND_NOTIFICATION,
+    component: FriendNotiPopUp,
     exact: true,
     show: false,
   },

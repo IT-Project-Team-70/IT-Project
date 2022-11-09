@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router()
 
 const { isAuthenticated, hasRole } = require('../helper/authHelper')
-const ekController = require('../controllers/everyoneKitchenController')
-const oneUserController = require('../controllers/oneUserKitchenController')
+const oneUserKitchenController = require('../controllers/oneUserKitchenController')
 /* ********************************************************************************************* */
 
-router.get('/:userId', isAuthenticated, oneUserController.getOneUserKitchen)
+router.get('/:userId', isAuthenticated, oneUserKitchenController.getOneUserKitchen)
+router.get('/:userId/rejectRequest', isAuthenticated, oneUserKitchenController.rejectRequest)
 /*router.get('/:id', isAuthenticated, ekController.getOneRecipeById)
 
 router.post('/addFavorite/:id', isAuthenticated, ekController.addFavorite)
