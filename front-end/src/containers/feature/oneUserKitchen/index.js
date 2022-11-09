@@ -1,6 +1,5 @@
-/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react'
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import List from '@mui/material/List'
@@ -19,8 +18,7 @@ const OneUserKitchen = (props) => {
   const theme = useTheme()
   const [recipeList, setRecipeList] = useState([])
   const [friendStatus, setFriendStatus] = useState(null)
-  const { userId }= useParams()
-  //const [status, setStatus] = useState(null)
+  const { userId } = useParams()
   const [profile, setProfile] = useState(null)
   React.useEffect(() => {
     const url = window.location.href
@@ -48,12 +46,10 @@ const OneUserKitchen = (props) => {
         cancelToken.cancel('Request cancel.')
       }
     }, [cancelToken])
-    
+
     return recipeList.map((recipe) => {
       return (
-        <Grid
-          key={recipe._id}
-        >
+        <Grid key={recipe._id}>
           <RecipeCard
             userId={recipe.userId}
             recipeID={recipe._id}
@@ -73,45 +69,67 @@ const OneUserKitchen = (props) => {
         backgroundColor: '#FBEEDB',
       }}
     >
-      <img src='/fast-food-background.jpg' style={{width: '100vw', height: '30vh'}} />
-      <div style={{position: 'absolute',  width: '70vw', top: '30%', left: '15vw'}}>
-      {friendStatus && <UserInfo friendStatus={friendStatus} setFriendStatus={setFriendStatus} profile={profile} />}
-      <ThemeProvider theme={theme}>
+      <Box sx={{ height: '100%', overflowY: 'auto', position: 'relative' }}>
+        <img
+          src="/fast-food-background.jpg"
+          alt="headerImage"
+          style={{ width: '100vw', height: '30vh' }}
+        />
         <Box
-          sx={{
+          style={{
+            position: 'absolute',
+            width: '100%',
+            top: '30%',
             display: 'flex',
-            backgroundColor: '#FBEEDB',
-            width: '70vw',
-            mx: 'auto',
-            marginTop: '10px'
+            justifyContent: 'center',
           }}
         >
-          <Box sx={{ paddingLeft: 1 }}>
-            <List sx={{ width: '230px' }}>
-              <Typography
-                variant="h6"
-                fontWeight="bold"
-                sx={{ marginTop: 3, marginBottom: 3 }}
+          <Box style={{ width: '70vw' }}>
+            <ThemeProvider theme={theme}>
+              {friendStatus && (
+                <UserInfo
+                  friendStatus={friendStatus}
+                  setFriendStatus={setFriendStatus}
+                  profile={profile}
+                />
+              )}
+              <Box
+                sx={{
+                  display: 'flex',
+                  backgroundColor: '#FBEEDB',
+                  width: '100%',
+                  mx: 'auto',
+                  marginTop: '10px',
+                }}
               >
-                Filter Recipe:
-              </Typography>
-              <Typography variant="body1" fontWeight="bold">
-                By Courses:
-              </Typography>
-              <CheckboxList setRecipes={setRecipeList} />
-            </List>
-          </Box>
-          <Box sx={{ height: '100%', marginLeft: 1 }}>
-            <Typography variant="h6" fontWeight="300" sx={{ m: 1 }}>
-              Trending
-            </Typography>
-            <Grid container gap={1}>
-              {GetKitchen()}
-            </Grid>
+                <Box sx={{ paddingLeft: 1 }}>
+                  <List sx={{ width: '230px' }}>
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      sx={{ marginTop: 3, marginBottom: 3 }}
+                    >
+                      Filter Recipe:
+                    </Typography>
+                    <Typography variant="body1" fontWeight="bold">
+                      By Courses:
+                    </Typography>
+                    <CheckboxList setRecipes={setRecipeList} />
+                  </List>
+                </Box>
+                <Box sx={{ height: '100%', marginLeft: 1 }}>
+                  <Typography variant="h6" fontWeight="300" sx={{ m: 1 }}>
+                    Trending
+                  </Typography>
+                  <Grid container gap={1}>
+                    {GetKitchen()}
+                  </Grid>
+                </Box>
+              </Box>
+            </ThemeProvider>
           </Box>
         </Box>
-      </ThemeProvider>
-      </div>
+      </Box>
     </Box>
   )
 }
