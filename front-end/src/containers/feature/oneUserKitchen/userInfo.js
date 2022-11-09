@@ -7,7 +7,13 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import AlertDialog from '../../../component/alertDialog'
 import PersonAddDisabledIcon from '@mui/icons-material/PersonAddDisabled'
-export const UserInfo = (props) => {
+import PropTypes from 'prop-types'
+
+export const UserInfo = ({
+  friendStatus,
+  setFriendStatus = () => {},
+  profile,
+}) => {
   const { userId } = useParams()
   const [anchorEl, setAnchorEl] = useState(null)
   const handleClick = (event) => {
@@ -25,14 +31,14 @@ export const UserInfo = (props) => {
   const [alertDialog, setAlertDialog] = useState(initialAlertDialogState)
   const handleRequestClick = () => {
     //accept the friend request
-    if (props.friendStatus == 2) {
-      props.setFriendStatus(4)
+    if (friendStatus === 2) {
+      setFriendStatus(4)
       socketIo.socket.emit('sendFriendNoti', { type: 2, receiver: userId })
     }
     //send the friend request
-    else if (props.friendStatus == 3) {
-      //props.friendStatus = 1
-      props.setFriendStatus(1)
+    else if (friendStatus === 3) {
+      //friendStatus = 1
+      setFriendStatus(1)
       socketIo.socket.emit('sendFriendNoti', { type: 1, receiver: userId })
     }
   }
@@ -60,7 +66,7 @@ export const UserInfo = (props) => {
     >
       <FaceIcon sx={{ fontSize: '130px', color: '#00A86B' }} />
       <Typography variant="h5" sx={{ marginBottom: '20px' }}>
-        <strong>{props.profile.username}</strong>
+        <strong>{profile.username}</strong>
       </Typography>
       <Box
         sx={{
@@ -72,7 +78,7 @@ export const UserInfo = (props) => {
       >
         <span>
           <Typography variant="subtitle1" color="#560319" textAlign="center">
-            {props.profile.recipes.length}
+            {profile.recipes.length}
           </Typography>
           <Typography variant="subtitle2" color="#757575" textAlign="center">
             recipes
@@ -81,7 +87,7 @@ export const UserInfo = (props) => {
         <Divider orientation="vertical" />
         <span>
           <Typography variant="subtitle1" color="#560319" textAlign="center">
-            {props.profile.friends.length}
+            {profile.friends.length}
           </Typography>
           <Typography variant="subtitle2" color="#757575" textAlign="center">
             followers
@@ -96,7 +102,7 @@ export const UserInfo = (props) => {
             gap: '20px',
           }}
         >
-          {props.friendStatus == 1 && (
+          {friendStatus === 1 && (
             <Button
               onClick={() => handleRequestClick()}
               variant="contained"
@@ -105,7 +111,7 @@ export const UserInfo = (props) => {
               Already Sent Request
             </Button>
           )}
-          {props.friendStatus == 2 && (
+          {friendStatus === 2 && (
             <Button
               onClick={() => rejectFriendRequest()}
               variant="contained"
@@ -114,7 +120,7 @@ export const UserInfo = (props) => {
               Reject Request
             </Button>
           )}
-          {props.friendStatus == 2 && (
+          {friendStatus === 2 && (
             <Button
               onClick={() => handleRequestClick()}
               variant="contained"
@@ -123,7 +129,7 @@ export const UserInfo = (props) => {
               Accept Request
             </Button>
           )}
-          {props.friendStatus == 3 && (
+          {friendStatus === 3 && (
             <Button
               onClick={() => handleRequestClick()}
               variant="contained"
@@ -132,7 +138,7 @@ export const UserInfo = (props) => {
               Add Friends
             </Button>
           )}
-          {props.friendStatus == 4 && (
+          {friendStatus === 4 && (
             <Button
               onClick={(e) => handleClick(e)}
               variant="contained"
@@ -176,4 +182,10 @@ export const UserInfo = (props) => {
       />
     </Box>
   )
+}
+
+UserInfo.propTypes = {
+  friendStatus: PropTypes.number,
+  setFriendStatus: PropTypes.func,
+  profile: PropTypes.object,
 }

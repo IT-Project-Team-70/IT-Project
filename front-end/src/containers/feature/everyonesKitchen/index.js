@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-import React, { useContext,useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import List from '@mui/material/List'
@@ -55,13 +54,11 @@ const EveryonesKitchen = (props) => {
       return () => {
         cancelToken.cancel('Request cancel.')
       }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cancelToken,reloadTrigger])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cancelToken, reloadTrigger])
     return recipeList.map((recipe) => {
       return (
-        <Grid
-          key={recipe._id}
-        >
+        <Grid key={recipe._id}>
           <RecipeCard
             userId={recipe.userId}
             recipeID={recipe._id}
@@ -89,7 +86,7 @@ const EveryonesKitchen = (props) => {
       }}
     >
       <ThemeProvider theme={theme}>
-      {error.error ? (
+        {error.error ? (
           <Box
             display="flex"
             flexDirection={'column'}
@@ -108,37 +105,38 @@ const EveryonesKitchen = (props) => {
             </Typography>
           </Box>
         ) : (
-        <Box
-          sx={{
-            display: 'flex',
-            backgroundColor: '#FBEEDB',
-          }}
-        >
-          <Box sx={{ paddingLeft: 1 }}>
-            <List sx={{ width: '230px' }}>
-              <Typography
-                variant="h6"
-                fontWeight="bold"
-                sx={{ marginTop: 3, marginBottom: 3 }}
-              >
-                Filter Recipe:
+          <Box
+            sx={{
+              display: 'flex',
+              backgroundColor: '#FBEEDB',
+            }}
+          >
+            <Box sx={{ paddingLeft: 1 }}>
+              <List sx={{ width: '230px' }}>
+                <Typography
+                  variant="h6"
+                  fontWeight="bold"
+                  sx={{ marginTop: 3, marginBottom: 3 }}
+                >
+                  Filter Recipe:
+                </Typography>
+                <Typography variant="body1" fontWeight="bold">
+                  By Courses:
+                </Typography>
+                <CheckboxList setRecipes={setRecipeList} />
+              </List>
+            </Box>
+            <Box sx={{ height: '100%', marginLeft: 1 }}>
+              <Typography variant="h6" fontWeight="300" sx={{ m: 1 }}>
+                Trending
               </Typography>
-              <Typography variant="body1" fontWeight="bold">
-                By Courses:
-              </Typography>
-              <CheckboxList setRecipes={setRecipeList} />
-            </List>
+              <Grid container gap={1}>
+                {GetKitchen()}
+              </Grid>
+            </Box>
           </Box>
-          <Box sx={{ height: '100%', marginLeft: 1 }}>
-            <Typography variant="h6" fontWeight="300" sx={{ m: 1 }}>
-              Trending
-            </Typography>
-            <Grid container gap={1}>
-              {GetKitchen()}
-            </Grid>
-          </Box>
-        </Box>)}
-      <LoadingSpinner isLoading={ekStatus === 'loading'} />
+        )}
+        <LoadingSpinner isLoading={ekStatus === 'loading'} />
       </ThemeProvider>
     </Box>
   )
