@@ -13,9 +13,11 @@ import { callApi } from '../../../api/util/callAPI'
 import oneUserKitchenAPI from '../../../api/def/oneUserKitchen'
 import { UserInfo } from './userInfo'
 import { socketIo } from '../../../socket'
+import LoadingSpinner from '../../../component/loadingSpinner'
 
 const OneUserKitchen = (props) => {
   const theme = useTheme()
+  const [ukStatus, setUkStatus] = useState('initial')
   const [recipeList, setRecipeList] = useState([])
   const [friendStatus, setFriendStatus] = useState(null)
   const { userId } = useParams()
@@ -30,16 +32,20 @@ const OneUserKitchen = (props) => {
     const [cancelToken] = useState(AxiosV1.CancelToken.source())
     useEffect(() => {
       socketIo.socket.emit('getUserProfile', userId)
+      setUkStatus('loading')
       callApi({
         apiConfig: oneUserKitchenAPI.getOneUserKitchen(userId),
         onStart: () => {},
         onSuccess: (res) => {
+          setUkStatus('success')
           setProfile(res.data.profile)
           setFriendStatus(res.data.friendStatus)
           console.log(res.data)
           setRecipeList(res.data.kitchen)
         },
-        onError: (err) => {},
+        onError: (err) => {
+          setUkStatus('error')
+        },
         onFinally: () => {},
       })
       return () => {
@@ -130,6 +136,7 @@ const OneUserKitchen = (props) => {
           </Box>
         </Box>
       </Box>
+      <LoadingSpinner isLoading={ukStatus === 'loading'} />
     </Box>
   )
 }

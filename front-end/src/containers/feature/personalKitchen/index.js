@@ -27,7 +27,6 @@ const PersonalKitchen = (props) => {
   const history = useHistory()
   const theme = useTheme()
   const [userContext] = useContext(Context)
-  console.log(userContext?.userState?.userInfo)
   const [pkStatus, setPkStatus] = useState('initial')
   const [error, setError] = useState({ error: false, errorMessage: '' })
   const [buttonSatus, setButtonSatus] = useState('Personal')
